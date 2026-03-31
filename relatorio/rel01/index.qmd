@@ -40,8 +40,8 @@ Realizar um introdução ao R, fundamentado nas 26 aulas do curso R Básico 2024
 
 ### Objetivos específicos
 
-
-  Implementar a Eliminação de Gauss.
+Implementar a Eliminação de Gauss.
+  
 ---
 
 ## 📚  Fundamentação Teórica
