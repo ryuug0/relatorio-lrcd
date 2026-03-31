@@ -1,7 +1,7 @@
 ---
 # Só mude aqui!!!!
-author: "Nome do Aluno"
-title: "Relatório de Aula Prática 01"
+author: "Hugo Filho"
+title: "Relatório 01"
 bibliography: referencias.bib
 # A partir daqui nao faca alteracoes!!!!!
 link-citations: true
@@ -28,9 +28,7 @@ execute:
 
 ## 📌 Introdução
 
-Descreva o contexto da prática e sua importância.
-
-> Exemplo: análise da variabilidade em experimentos físicos utilizando uma catapulta.
+A prática consiste na aplicação do conteúdo visto no curso **R Básico**
 
 
 
