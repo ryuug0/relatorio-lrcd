@@ -36,59 +36,28 @@ A prática consiste na aplicação do conteúdo visto no curso **R Básico**
 
 ### Objetivo geral
 
-Descrever o objetivo principal da prática.
+Realizar um introdução ao R, fundamentado nas 26 aulas do curso R Básico 2024.
 
 ### Objetivos específicos
 
-- Coletar dados experimentais  
-- Aplicar estatística descritiva  
-- Construir gráficos  
-- Interpretar resultados  
-
+- Implementar a Eliminação de Gauss.
 ---
 
 ## 📚  Fundamentação Teórica
 
-Apresente os conceitos principais:
+- O método da Eliminação de Gauss consiste em anular o triângulo inferior de uma matriz A através de operações elementares entre as linhas.
 
-- Média
-- Variância
-- Desvio padrão
-- Amostragem
-
-$$
-\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
-$$
 
 ---
 
 ## ⚙️ Metodologia
 
-::: {.callout-note}
-Descreva como o experimento foi realizado.
-:::
-
-- Materiais utilizados  
-- Procedimento  
-- Número de repetições  
 
 ---
 
 ## 🔍 Resultados e Discussão
 
-Apresente e interprete os resultados obtidos a partir dos dados coletados.
 
-- Descreva os principais resultados numéricos (média, variabilidade, etc.).
-- Comente o comportamento dos dados observados nos gráficos.
-- Indique se há presença de valores discrepantes (outliers).
-- Avalie se os dados apresentam simetria ou tendência.
-
-Em seguida, discuta os resultados à luz dos conceitos teóricos:
-
-- Os resultados estão de acordo com o esperado?
-- Há grande variabilidade? O que isso significa no contexto do experimento?
-- Quais fatores podem ter influenciado os resultados?
-- Existem possíveis fontes de erro experimental?
 
 Procure não apenas descrever, mas **interpretar os dados**.
 
@@ -101,21 +70,11 @@ Depois de inserido as informaçõe no arquivo **referencias.bib**, use:
 
 ### 📊  Análise de Dados
 
-```{r}
-distancia <- c(10.2, 9.8, 10.5, 10.1, 9.9, 10.3)
-distancia
-```
+
 
 ## 🧠 Considerações finais
 
-Apresente uma síntese dos principais pontos observados no experimento.
 
-- Retome o objetivo da prática e indique se ele foi alcançado.
-- Destaque os principais aprendizados obtidos.
-- Comente brevemente sobre a qualidade dos dados coletados.
-- Sugira possíveis melhorias no procedimento experimental.
-
-Evite repetir apenas os resultados; foque nas **conclusões e reflexões** sobre a prática realizada.
 
 ## Aprenda Quarto
 
