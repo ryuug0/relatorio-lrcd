@@ -40,12 +40,13 @@ Realizar um introdução ao R, fundamentado nas 26 aulas do curso R Básico 2024
 
 ### Objetivos específicos
 
-- Implementar a Eliminação de Gauss.
+
+  Implementar a Eliminação de Gauss.
 ---
 
 ## 📚  Fundamentação Teórica
 
-- O método da Eliminação de Gauss consiste em anular o triângulo inferior de uma matriz A através de operações elementares entre as linhas.
+  O método da Eliminação de Gauss consiste em anular o triângulo inferior de uma matriz A através de operações elementares entre as linhas.
 
 
 ---
