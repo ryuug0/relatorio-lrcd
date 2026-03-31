@@ -8,6 +8,8 @@ links:
     url: "mailto:hugorp250@gmail.com"
   - label: Relatórios
     url: "./relatorio/index.html"
+  - label: LinkedIn
+    url: "https://www.linkedin.com/in/hugorp250/"
 output:
   postcards::jolla_blue
 ---

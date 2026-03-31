@@ -28,7 +28,7 @@ execute:
 
 ## 📌 Introdução
 
-A prática consiste na aplicação do conteúdo visto no curso **R Básico**
+A prática consiste na aplicação do conteúdo visto no curso **R Básico**.
 
 
 
@@ -40,7 +40,8 @@ Realizar um introdução ao R, fundamentado nas 26 aulas do curso R Básico 2024
 
 ### Objetivos específicos
 
-Implementar a Eliminação de Gauss.
+Resolver um sistema linear através do Método De Gauss, implementando o conteúdo visto durante o curso.
+
   
 ---
 
@@ -53,6 +54,11 @@ Implementar a Eliminação de Gauss.
 
 ## ⚙️ Metodologia
 
+A partir de uma matriz A:
+```r
+A<-matrix(c(2,3,-1,4,4,-3,2,-3,1),3,3, byrow=TRUE)
+A
+```
 
 ---
 
