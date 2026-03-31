@@ -12,4 +12,4 @@ output:
   postcards::jolla_blue
 ---
 
-Descrição ...
+Aluno do 9º período de Engenharia Mecatrônica na UFSJ
