@@ -1,7 +1,7 @@
 ---
 # Só mude aqui!!!!
-author: "Nome do Aluno"
-title: "Relatório de Aula Prática 03"
+author: "Hugo Filho"
+title: "Relatório de Aula Prática 03 - Como Usar o LEEM"
 bibliography: referencias.bib
 # A partir daqui nao faca alteracoes!!!!!
 link-citations: true
@@ -26,101 +26,264 @@ execute:
 ---
 
 
-## 📌 Introdução
+## O que é o LEEM?
 
-Descreva o contexto da prática e sua importância.
+  O **Laboratório de Ensino de Estatística e Matemática (LEEM)** é um pacote educacional para matemática e estatística tanto a nível escolar quanto superior. 
+  Desenvolvido pelo professor da atual disciplina, **Ben Dêivide**, tem como objetivo auxiliar no processo de ensino e aprendizagem do conteúdo no ambiente **R**.
 
-> Exemplo: análise da variabilidade em experimentos físicos utilizando uma catapulta.
+## Como Utilizar?
+  
+  O pacote **LEEM** precisa de um interpretador **R** para funcionar e, para auxiliar no desenvolvimento dos códigos, é de suma importância a utilização de uma **IDE**. No nosso caso, utilizaremos o RStudio.
 
+### Ambiente de Desenvolvimento R
+    
+  - O arquivo de instalação do interpretador R pode ser encontrado no seguinte [link](https://cran.rstudio.com/) .
+  
+  - Já o link para download do RStudio pode ser acessado clicando [aqui](https://posit.co/download/rstudio-desktop) 
 
+### Instalação das Bibliotecas
 
-## 🎯 Objetivos
+  Com o R e o RStudio instalados, precisamos adicionar a biblioteca ao ambiente. Atualmente, existem dois métodos para isso:
+  
+**1. Via CRAN**
 
-### Objetivo geral
+ Para isso, basta a seguinte linha de comando dentro do RStudio:
+  
+```r
+install.packages("leem")
+```
+**2. Via GitHub (recomendável)**
 
-Descrever o objetivo principal da prática.
-
-### Objetivos específicos
-
-- Coletar dados experimentais  
-- Aplicar estatística descritiva  
-- Construir gráficos  
-- Interpretar resultados  
-
----
-
-## 📚  Fundamentação Teórica
-
-Apresente os conceitos principais:
-
-- Média
-- Variância
-- Desvio padrão
-- Amostragem
-
-$$
-\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
-$$
-
----
-
-## ⚙️ Metodologia
+ A instalação via GitHub necessita da instalação de outras bibliotecas dependentes. A seguir os códigos que devem ser rodados linha por linha
+  
+```r
+# Instalar os pacotes dependentes
+pkgs <- c("manipulate", "tkRplotR", "tkrplot", "crayon", "diagram")
+install.packages(pkgs)
+# install.packages("devtools")
+devtools::install_github("bendeivide/leem")
+```
+ As bibliotecas dependentes instaladas são:
+ 
+ - **devtools:** Ferramentas de desenvolvimento 
+ - **tkrplot** e **tkRplotR:** Exibição de gráficos em janelas externas
+ - **manipulate:** Interatividade em tempo real
+ - **crayon:** Estilização de terminal
+ - **diagram:** Construção de diagramas e fluxogramas
 
 ::: {.callout-note}
-Descreva como o experimento foi realizado.
+A biblioteca **tcltk** geralmente é instalada junto com o **R**. Caso ela não esteja no sistema, é necessário instalá-la para o funcionamento das interfaces gráficas.
 :::
 
-- Materiais utilizados  
-- Procedimento  
-- Número de repetições  
+### Importação do LEEM Para o Ambiente R
 
----
-
-## 🔍 Resultados e Discussão
-
-Apresente e interprete os resultados obtidos a partir dos dados coletados.
-
-- Descreva os principais resultados numéricos (média, variabilidade, etc.).
-- Comente o comportamento dos dados observados nos gráficos.
-- Indique se há presença de valores discrepantes (outliers).
-- Avalie se os dados apresentam simetria ou tendência.
-
-Em seguida, discuta os resultados à luz dos conceitos teóricos:
-
-- Os resultados estão de acordo com o esperado?
-- Há grande variabilidade? O que isso significa no contexto do experimento?
-- Quais fatores podem ter influenciado os resultados?
-- Existem possíveis fontes de erro experimental?
-
-Procure não apenas descrever, mas **interpretar os dados**.
-
-### 💬 Exemplo de como citar uma referência bibliográfica
-
-Depois de inserido as informaçõe no arquivo **referencias.bib**, use:
-
-- Segundo @Rbasico2022
-- Tudo é um objeto em R [@Rbasico2022]
-
-### 📊  Análise de Dados
-
-```{r}
-distancia <- c(10.2, 9.8, 10.5, 10.1, 9.9, 10.3)
-distancia
+  Com o ambiente e as bibliotecas instalados, basta importar a biblioteca **LEEM** para o ambiente através da seguinte linha de código:
+  
+```r
+library(leem)
+```
+  Agora a biblioteca está pronta para uso, podendo ser testada com o comando para abrir sua interface gráfica:
+  
+```r
+leem()
 ```
 
-## 🧠 Considerações finais
+## Funções
 
-Apresente uma síntese dos principais pontos observados no experimento.
+ A seguir, serão apresentadas as principais funções e utilidades do pacote **LEEM**
+ 
+ 
+### Tabulação de Dados
 
-- Retome o objetivo da prática e indique se ele foi alcançado.
-- Destaque os principais aprendizados obtidos.
-- Comente brevemente sobre a qualidade dos dados coletados.
-- Sugira possíveis melhorias no procedimento experimental.
+  A tabulação consiste em resumir um conjunto de dados brutos em uma tabela de classes com suas devidas frequências. Isso facilita a análise humana: no exemplo a seguir, ao invés de avaliar um vetor com 1000 números isolados, analisaremos uma tabela com apenas 3 faixas de valores, suas frequências e a amplitude total da amostra.
+<br>
+<br>
+  Na biblioteca **LEEM**, utiliza-se a função `new_leem` para transformar um vetor em um objeto do tipo **leem**. Essa função recebe o parâmetro `variable`, que define a natureza do dado (**1** para qualitativa e **2** para quantitativa). Em seguida, a função `tabfreq` utiliza o parâmetro *k* para definir o número de classes que a tabela terá.
 
-Evite repetir apenas os resultados; foque nas **conclusões e reflexões** sobre a prática realizada.
+```{r}
+library(leem)
+set.seed(10)
+dados <- rnorm(1000, mean = 100, sd = 2)
+tab <- dados |>
+  new_leem(variable = 2) |>
+  tabfreq(k = 3); tab
+```
+ 
+**Interpretando saídas:**
+
+- **Classes:** São os intervalos de agrupamento dos dados.
+- **Fi:** Frequência absoluta, ou seja, quantos números estão dentro da **Classe**
+- **PM:** Ponto médio, o valor **central** da classe.
+- **Fr:** Frequência relativa, representa a **proporção** de cada classe em relação ao total.
+- **Fac1 / Fac2:** Frequências acumuladas (**"abaixo de"** e **"acima de"**, respectivamente).
+- **Fp / Fac1p / Fac2p:** Representação das **Frequências** em formato de **porcentagem** (%).
+
+### Apresentações Gráficas
+
+O pacote conta com apresentações gráficas próprias para lidar com os dados tabulados, facilitando ainda mais a visualização destes.
+
+#### Histogramas
+
+Os **Histogramas** são utilizados para visualizar a distribuição de dados quantitativos. No **LEEM**, o gráfico é gerado através da função `hist()`, que interpreta automaticamente as classes e frequências calculadas no objeto **leem**.
+
+```{r}
+tab |>
+  hist(
+    freq = "p", # tipo da frequência
+    bg = FALSE,  # Sem/com fundo
+    barcol = c("blue","purple","yellow"), # Cores nas barras
+    xlab = "Variável X"
+  )
+```
+**Principais Parâmetros**
+
+- `freq`: Define o tipo da frequência mostrado
+    - "a" para absoluto(default)
+    - "r" para relativo 
+    - "p" para porcentagem
+- `main`: Título do gráfico
+- `xlab` e `ylab`: Nome dos eixos **x** e **y**, respectivamente
+
+#### Ogivas
+As **Ogivas** são utilizadas para visualizar as frequências acumuladas de um conjunto de dados. No **LEEM** a função `ogive()` que plota tanto o acúmulo "abaixo" quanto o "acima", a mediana pode ser observada pelo cruzamento dessas linhas.
+
+```{r}
+tab |>
+  ogive(
+    bars = TRUE, # Inserir barras de fac1/2
+    both = TRUE,
+    barcol = c("yellow", "purple"), # cor da barra
+    lpcol = "blue", # cor da linha
+    pch = 8 # Tipo do ponto
+  ) |>
+  insert(
+    type = "median",
+    lcol = "red",
+    ptext = 0.15
+  )
+```
+**Principais Parâmetros**
+
+- `bars`: Insere as barras de frequência acumulada 1 e 2
+- `both`: Exibe as ogivas simultaneamente, mostrando a mediana
+- `decreasing`: Define a direção da curva, crescente ou decrescente
+
+#### Gráfico de Pizza
+
+O **Gráfico de Pizza** é utilizado para visualizar a composição proporcional das classes em relação ao todo. As frequências relativas do objeto são extraídas pela função `piechart()`
+
+```{r}
+tab |>
+piechart(
+  col = c("blue","purple","yellow"),
+  border = TRUE,
+)
+```
+**Principais Parâmetros**
+-`col`: Define as cores das fatias
+-`border`: Insere bordas entre as fatias
+-`labels`: Permite renomear as legendas das fatias
+
+
+### Medidas de Posição
+
+As **Medidas de Posição** (média, moda e mediana) podem ser obtidas através de uma única função no **LEEM**: a `mpos()`. Isso facilita e agiliza a análise dos dados, além de ser integrada com os dados tabulados do objeto **leem**
+```{r}
+tab |>
+  mpos(grouped = FALSE)
+```
+**Principais Parâmetros**
+
+- `grouped`: Alterna entre o cálculo dos dados brutos (False) e dados tabulados **leem** (True)
+- `rounding`: Define o número de casas decimais
+- `details`: Exibe as fórmulas e passo a passo (ideal para fins didáticos)
+
+### Medidas de Dispersão
+As **Medidas de Dispersão** medem o grau de variabilidade dos dados, ou seja, o tanto que a amostra está afastada da média central. Podem ser medidas de 3 formas utilizando o **LEEM**, que serão abordadas a seguir.
+
+- **Variância:** Mede o quão longe os valores da amostra estão da média aritmética através da função `variance()`
+```{r}
+tab |> variance()
+```
+- **Desvio Padrão:** É a raiz quadrada da **variância**, indica a dispersão dos dados na mesma unidade de medida da amostra original com `sdev()`.
+```{r}
+tab |> sdev()
+```
+- **Coeficiente de Variação:** Mede a variabilidade relativa em relação à média, expressa em porcentagem com a função `cv()`
+```{r}
+tab |> cv()
+```
+**Principais Parâmetros**
+
+Os três possuem parâmetros principais iguais, são eles:
+
+- `grouped`: Alterna entre o cálculo dos dados brutos (False) e dados tabulados **leem** (True)
+- `rounding`: Define o número de casas decimais
+- `details`: Exibe as fórmulas e passo a passo (ideal para fins didáticos)
+
+### Distribuição e Probabilidades
+
+Os cálculos de **Probabilidade** no **LEEM** são feitos através da função `P()`. Essa função aceita intervalos como argumento, além de chamar o `tcltk` para gerar uma interface própria.
+
+- **Distribuição Normal - Probabilidade em um Intervalo:**
+```{r}
+P(-1 %<=X<=% 1, mean = 0, sd = 1)
+```
+
+- **Distribuição Binomial - Probabilidade Pontual:**
+```{r}
+P(5, dist = "binomial", size = 10, prob = 0.5)
+```
+
+**Principais Parâmetros:**
+
+- `q`: Define o ponto ou o intervalo de interesse
+- `dist` Especifica a distribuição desejada
+  - "normal"(default)
+  - "binomial"
+  - "t-student"
+  - "chisq"
+  - "f"
+  
+- `lower.tail`: Define se a probabilidade será calculada à esquerda (TRUE) ou à direita (False)
+- `porcentage`: Alterna entre o resultado em decimal ou em porcentagem
+- `gui`: Define a interface de saída
+  - "plot": Gera um gráfico estático no RStudio
+  - "tcltk": Abre uma janela interativa
+
+### Teste de Hipóteses
+
+O **Teste de Hipóteses** serve para verificar se uma suposição sobre a população é estatisticamente viável com base em uma amostra. No **LEEM**, a função `th()` automatiza o cálculo e pode gerar os gráficos das regiões de aceitação e rejeição (região crítica).
+
+```{r}
+h0 <- 90
+set.seed(10)
+data <- rnorm(30, 100, 10)
+th(data, h0 = h0, sd = 10, plot = TRUE)
+```
+**Principais Parâmetros:**
+
+- `test`: Define o tipo de teste
+  - "ztest"
+  - "ttest"
+  - "ptest"
+  - "anova"
+- `h0`: Define o valor do parâmetro para a hipótese nula
+- `alternative`: Define a hipótese alternativa
+  - "two.sided": bilateral
+  - "less": unilateral inferior
+  - "greater": unilateral superior
+- `alpha`: Nível de significânica
+- `plot`: Gera o gráfico
+
+## Conclusão
+
+O **LEEM** ajuda a aplicar os conceitos estatísticos no **R** de um jeito fluido. Ele agiliza a criação de tabelas e gráficos, permitindo que o foco seja a análise e interpretação dos resultados. Por possuir funções intuitivas, uma documentação completa e uma curva de aprendizado relativamente baixa, o pacote atende bem tanto quem está começando agora quanto quem busca realizar análises mais avançadas de forma direta.
 
 ## Aprenda Quarto
 
 Acesse [Quarto](https://quarto.org/).
 
-## 📖 Referências
+## Referências
+
+[LEEM: Laboratório de Ensino à Estatística e Matemática](https://bendeivide.github.io/courses/leem/)
