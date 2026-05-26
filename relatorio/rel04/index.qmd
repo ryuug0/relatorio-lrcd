@@ -244,39 +244,28 @@ ggplot(
 
 ## Histograma
 
-O histograma abaixo mostra a distribuição da densidade populacional dos estados brasileiros.
+O histograma abaixo mostra como os estados brasileiros se distribuem em faixas de população.
 
 ```{r histograma}
-#########################################################
-# Criando densidade populacional aproximada
-#########################################################
-
-pop <- pop |>
-  
-  mutate(
-    densidade = populacao / 1000
-  )
-
 ggplot(
   pop,
-  aes(densidade)
+  aes(populacao / 1000000)
 ) +
   
   geom_histogram(
-    bins = 8,
+    binwidth = 5,
     fill = "steelblue",
     color = "white"
   ) +
   
   labs(
-    title = "Distribuição da Densidade Populacional",
-    x = "Densidade Populacional",
-    y = "Frequência"
+    title = "Distribuição da População dos Estados",
+    x = "População (milhões de habitantes)",
+    y = "Número de Estados"
   ) +
   
   theme_classic()
 ```
-
 ---
 
 ## Boxplot
