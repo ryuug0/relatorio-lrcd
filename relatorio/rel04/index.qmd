@@ -23,21 +23,21 @@ execute:
   message: false
 ---
 
-# 1. Introdução
+# Introdução
 
-O Brasil possui dimensões continentais e, por isso, apresenta diferenças populacionais muito grandes entre seus estados. Enquanto algumas unidades federativas possuem milhões de habitantes concentrados em grandes centros urbanos, outras apresentam menor densidade populacional e ocupação territorial mais dispersa.
+O Brasil possui grandes diferenças populacionais entre seus estados. Enquanto algumas regiões concentram milhões de habitantes e extensas áreas urbanizadas, outras apresentam população menor e distribuição territorial mais dispersa.
 
-Entender como essa população está distribuída ajuda no planejamento de políticas públicas, infraestrutura, saúde, educação e transporte. Além disso, a análise visual desses dados facilita a identificação de padrões regionais e desigualdades demográficas no país.
+Essas diferenças impactam diretamente áreas como transporte, saúde, educação, infraestrutura e planejamento público. Por isso, analisar dados populacionais ajuda a compreender melhor a organização demográfica do país.
 
-O objetivo deste trabalho é utilizar a linguagem R para analisar dados populacionais dos estados brasileiros por meio de gráficos e mapas temáticos, utilizando diferentes sistemas gráficos estudados em aula.
+Neste relatório, foram utilizados dados públicos do IBGE para construir gráficos e mapas utilizando a linguagem R. O objetivo é visualizar a distribuição da população entre os estados brasileiros e identificar padrões regionais de forma clara e intuitiva.
 
 ---
 
-# 2. Obtenção dos Dados
+# Obtenção dos Dados
 
-Os dados utilizados neste relatório foram obtidos através da API pública do SIDRA/IBGE, que disponibiliza indicadores oficiais produzidos pelo Instituto Brasileiro de Geografia e Estatística.
+Os dados utilizados foram obtidos através da API pública do SIDRA/IBGE, que disponibiliza indicadores oficiais produzidos pelo Instituto Brasileiro de Geografia e Estatística.
 
-Para a construção dos mapas foi utilizada a malha territorial oficial do IBGE referente aos estados brasileiros.
+Já a malha geográfica dos estados brasileiros foi obtida diretamente do servidor geográfico do IBGE, permitindo a construção do mapa temático.
 
 Os principais pacotes utilizados foram:
 
@@ -58,7 +58,7 @@ library(plotly)
 library(sf)
 
 #########################################################
-# 1. Obtendo dados do SIDRA
+# Obtendo dados do SIDRA
 #########################################################
 
 pop <- get_sidra(
@@ -69,7 +69,7 @@ pop <- get_sidra(
 )
 
 #########################################################
-# 2. Tratamento dos dados
+# Tratamento dos dados
 #########################################################
 
 pop <- pop |>
@@ -86,7 +86,7 @@ pop <- pop |>
   )
 
 #########################################################
-# 3. Criando regiões
+# Criando regiões
 #########################################################
 
 pop <- pop |>
@@ -110,7 +110,7 @@ pop <- pop |>
   )
 
 #########################################################
-# 4. Criando nova variável
+# Criando variável auxiliar
 #########################################################
 
 media_brasil <- mean(pop$populacao)
@@ -127,7 +127,7 @@ pop <- pop |>
   )
 
 #########################################################
-# 5. Obtendo malha territorial do IBGE
+# Obtendo malha territorial do IBGE
 #########################################################
 
 url_malha <- paste0(
@@ -148,7 +148,7 @@ estados <- st_read(
 )
 
 #########################################################
-# 6. Ajustando código da malha
+# Ajustando código da malha
 #########################################################
 
 estados <- estados |>
@@ -158,7 +158,7 @@ estados <- estados |>
   )
 
 #########################################################
-# 7. Join
+# Join entre dados e malha
 #########################################################
 
 mapa <- estados |>
@@ -171,21 +171,21 @@ mapa <- estados |>
 
 ---
 
-# 3. Tratamento dos Dados
+# Tratamento dos Dados
 
-Após a obtenção dos dados pela API do SIDRA, foi realizada uma etapa de organização e padronização das variáveis.
+Após a coleta dos dados, foi necessário organizar e padronizar algumas variáveis para facilitar as análises gráficas.
 
-Os códigos dos estados foram convertidos para formato numérico para permitir a junção com a malha territorial do IBGE. Também foi criada uma variável indicando se a população do estado está acima ou abaixo da média nacional.
+Os códigos dos estados foram convertidos para formato numérico para permitir a junção com a malha geográfica do IBGE. Também foi criada uma variável indicando se o estado possui população acima ou abaixo da média nacional.
 
-Além disso, os estados foram agrupados por região geográfica para facilitar algumas comparações visuais ao longo do relatório.
+Além disso, os estados foram agrupados por regiões brasileiras, permitindo comparações regionais ao longo do relatório.
 
 ---
 
-# 4. Construção dos Gráficos
+# Construção dos Gráficos
 
-## 4.1 Gráfico de Barras
+## Gráfico de Barras
 
-O gráfico de barras permite comparar a população dos estados brasileiros de maneira simples e direta.
+O gráfico de barras facilita a comparação da população entre os estados brasileiros.
 
 ```{r barras}
 ggplot(
@@ -212,78 +212,27 @@ ggplot(
 
 ---
 
-## 4.2 Gráfico de Dispersão
+## Gráfico de Dispersão
 
-O gráfico de dispersão foi utilizado para observar como a população se distribui em relação aos códigos dos estados.
+O gráfico de dispersão mostra a relação entre população e região do país.
 
 ```{r dispersao}
 ggplot(
   pop,
   aes(
-    code_state,
+    regiao,
     populacao,
     color = regiao
   )
 ) +
   
-  geom_point(size = 4) +
-  
-  labs(
-    title = "Dispersão da População por Estado",
-    x = "Código do Estado",
-    y = "População"
-  ) +
-  
-  theme_minimal()
-```
-
----
-
-## 4.3 Histograma
-
-O histograma mostra como os estados se distribuem em relação ao tamanho populacional.
-
-```{r histograma}
-ggplot(
-  pop,
-  aes(populacao)
-) +
-  
-  geom_histogram(
-    bins = 10,
-    fill = "steelblue",
-    color = "white"
+  geom_jitter(
+    size = 3,
+    width = 0.2
   ) +
   
   labs(
-    title = "Distribuição da População",
-    x = "População",
-    y = "Frequência"
-  ) +
-  
-  theme_classic()
-```
-
----
-
-## 4.4 Boxplot
-
-O boxplot permite comparar a distribuição populacional entre as regiões brasileiras.
-
-```{r boxplot}
-ggplot(
-  pop,
-  aes(
-    regiao,
-    populacao,
-    fill = regiao
-  )
-) +
-  
-  geom_boxplot() +
-  
-  labs(
-    title = "População por Região",
+    title = "Distribuição Populacional por Região",
     x = "Região",
     y = "População"
   ) +
@@ -293,9 +242,63 @@ ggplot(
 
 ---
 
-## 4.5 Mapa Temático
+## Histograma
 
-O mapa temático facilita a visualização espacial da população brasileira.
+O histograma permite visualizar como os estados se distribuem em relação ao tamanho da população.
+
+```{r histograma}
+ggplot(
+  pop,
+  aes(populacao / 1000000)
+) +
+  
+  geom_histogram(
+    bins = 8,
+    fill = "steelblue",
+    color = "white"
+  ) +
+  
+  labs(
+    title = "Distribuição da População dos Estados",
+    x = "População (milhões de habitantes)",
+    y = "Quantidade de Estados"
+  ) +
+  
+  theme_classic()
+```
+
+---
+
+## Boxplot
+
+O boxplot abaixo compara a distribuição populacional entre as regiões brasileiras, destacando diferenças de concentração e possíveis valores extremos.
+
+```{r boxplot}
+ggplot(
+  pop,
+  aes(
+    regiao,
+    populacao / 1000000,
+    fill = regiao
+  )
+) +
+  
+  geom_boxplot() +
+  
+  labs(
+    title = "Distribuição Populacional por Região",
+    x = "Região",
+    y = "População (milhões de habitantes)"
+  ) +
+  
+  theme_classic()
+```
+
+---
+
+## Mapa Temático
+
+O mapa temático permite visualizar espacialmente como a população está distribuída pelo território brasileiro.
 
 ```{r mapa}
 ggplot(mapa) +
@@ -310,7 +313,7 @@ ggplot(mapa) +
   ) +
   
   labs(
-    title = "Mapa da População dos Estados Brasileiros",
+    title = "População dos Estados Brasileiros",
     fill = "População"
   ) +
   
@@ -319,33 +322,36 @@ ggplot(mapa) +
 
 ---
 
-## 4.6 Gráfico Interativo
+## Gráfico Interativo
 
-O gráfico interativo permite explorar os dados de forma dinâmica.
+O gráfico interativo facilita a exploração dos dados pelo usuário.
 
 ```{r interativo}
 g <- ggplot(
   pop,
   aes(
-    estado,
-    populacao
+    reorder(estado, populacao),
+    populacao,
+    fill = regiao
   )
 ) +
   
-  geom_col(fill = "steelblue") +
+  geom_col() +
   
-  coord_flip()
+  coord_flip() +
+  
+  theme_minimal()
 
 ggplotly(g)
 ```
 
 ---
 
-# 5. Comparação entre Base R e ggplot2
+# Comparação entre Base R e ggplot2
 
-## 5.1 Base R
+## Base R
 
-O Base R já acompanha a instalação padrão do R e permite criar gráficos rapidamente.
+O Base R permite criar gráficos de maneira rápida e simples.
 
 ```{r base_r}
 barplot(
@@ -363,9 +369,9 @@ barplot(
 
 ---
 
-## 5.2 ggplot2
+## ggplot2
 
-O ggplot2 possui uma estrutura mais moderna e facilita a personalização visual.
+O ggplot2 oferece maior flexibilidade visual e melhor organização estética.
 
 ```{r ggplot_comp}
 ggplot(
@@ -395,40 +401,36 @@ ggplot(
 
 ---
 
-## 5.3 Comparação
+## Comparação
 
-Os dois sistemas conseguem produzir gráficos eficientes, porém apresentam diferenças importantes.
+Os dois sistemas conseguem produzir gráficos eficientes, mas possuem propostas diferentes.
 
-O Base R é mais simples e rápido para gráficos básicos, sendo útil em análises rápidas e scripts menores.
+O Base R é mais direto e simples para análises rápidas. Já o ggplot2 facilita a personalização visual e produz gráficos mais organizados e modernos.
 
-Já o ggplot2 oferece maior flexibilidade visual e uma estrutura mais organizada baseada em camadas, facilitando ajustes estéticos e criação de gráficos mais profissionais.
-
-Para relatórios e apresentações, o ggplot2 geralmente produz resultados visualmente mais agradáveis.
+Para relatórios e apresentações, o ggplot2 acaba sendo mais vantajoso pela estética e flexibilidade.
 
 ---
 
-# 6. Interpretação dos Resultados
+# Interpretação dos Resultados
 
-Os gráficos mostram diferenças populacionais bastante significativas entre os estados brasileiros.
+Os gráficos mostram que a população brasileira está concentrada principalmente nos estados do Sudeste, especialmente em São Paulo e Minas Gerais.
 
-Estados como São Paulo, Minas Gerais e Rio de Janeiro apresentam populações muito superiores às de estados da região Norte. Isso pode ser observado tanto nos gráficos de barras quanto no mapa temático.
+Já estados da região Norte apresentam populações menores e distribuição mais dispersa.
 
-O histograma mostra que a maior parte dos estados possui população intermediária, enquanto poucos estados concentram valores extremamente altos.
+O histograma indica que poucos estados possuem populações muito elevadas, enquanto a maioria se concentra em faixas intermediárias.
 
-O boxplot evidencia diferenças entre as regiões do país, especialmente no Sudeste, que concentra alguns dos estados mais populosos do Brasil.
+O boxplot também evidencia diferenças importantes entre as regiões brasileiras, principalmente entre Sudeste e Norte.
 
-O mapa facilita bastante a percepção espacial desses padrões, permitindo visualizar regiões mais densamente povoadas.
+O mapa temático foi um dos gráficos mais úteis, pois permitiu visualizar essas diferenças de maneira espacial e intuitiva.
 
 ---
 
-# 7. Conclusão
+# Conclusão
 
-A utilização da linguagem R permitiu transformar dados públicos em informações visuais claras e fáceis de interpretar.
+A utilização da linguagem R permitiu transformar dados públicos em visualizações claras e informativas.
 
-Os gráficos ajudaram a identificar padrões populacionais importantes entre os estados brasileiros, destacando diferenças regionais e concentração demográfica em determinadas áreas do país.
+Os gráficos facilitaram a identificação de padrões populacionais e diferenças regionais entre os estados brasileiros.
 
-Entre os gráficos utilizados, o mapa temático e o gráfico de barras foram os mais úteis para interpretação dos dados.
+Entre as visualizações produzidas, o gráfico de barras e o mapa temático foram os mais eficientes para interpretação dos dados.
 
-Durante o desenvolvimento do trabalho, as principais dificuldades envolveram o tratamento dos dados e a integração com a malha geográfica do IBGE.
-
-De maneira geral, o R demonstrou ser uma ferramenta bastante eficiente para análise, visualização e organização de dados públicos.
+Além disso, o trabalho mostrou como o R pode ser utilizado para coleta, tratamento e visualização de dados reais obtidos através de APIs públicas.
