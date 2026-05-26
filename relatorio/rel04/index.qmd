@@ -244,7 +244,7 @@ ggplot(
 
 ## Histograma
 
-O histograma abaixo mostra como os estados brasileiros se distribuem em faixas de população.
+O histograma abaixo mostra como os estados brasileiros se distribuem em diferentes faixas populacionais.
 
 ```{r histograma}
 ggplot(
@@ -256,6 +256,10 @@ ggplot(
     binwidth = 5,
     fill = "steelblue",
     color = "white"
+  ) +
+  
+  scale_y_continuous(
+    breaks = seq(0, 10, 1)
   ) +
   
   labs(
