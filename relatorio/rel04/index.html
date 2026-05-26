@@ -390,38 +390,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="histograma" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="histograma"><span class="header-section-number">4.3</span> Histograma</h2>
-<p>O histograma abaixo mostra a distribuição da densidade populacional dos estados brasileiros.</p>
+<p>O histograma abaixo mostra como os estados brasileiros se distribuem em diferentes faixas populacionais.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando densidade populacional aproximada</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> pop <span class="sc">|&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">densidade =</span> populacao <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  pop,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(densidade)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  pop,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(populacao <span class="sc">/</span> <span class="dv">1000000</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="dv">5</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">8</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição da População dos Estados"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"População (milhões de habitantes)"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Número de Estados"</span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição da Densidade Populacional"</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Densidade Populacional"</span>,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequência"</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -526,8 +520,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(g)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-fb9b84b723520773b3b7" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-fb9b84b723520773b3b7">{"x":{"data":[{"orientation":"h","width":[0.90000000000000036,0.89999999999999858,0.89999999999999858,0.89999999999999947],"base":[0,0,0,0],"x":[2924631,3893659,7423629,2996899],"y":[7,12,17,8],"text":["reorder(estado, populacao): Mato Grosso do Sul<br />populacao:  2924631<br />regiao: Centro-Oeste","reorder(estado, populacao): Mato Grosso<br />populacao:  3893659<br />regiao: Centro-Oeste","reorder(estado, populacao): Goiás<br />populacao:  7423629<br />regiao: Centro-Oeste","reorder(estado, populacao): Distrito Federal<br />populacao:  2996899<br />regiao: Centro-Oeste"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Centro-Oeste","legendgroup":"Centro-Oeste","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.90000000000000036,0.89999999999999858],"base":[0,0,0,0,0,0,0,0,0],"x":[7018211,3384547,9268836,3455236,4164468,9562007,3220848,2299425,14870907],"y":[16,10,20,11,14,21,9,6,24],"text":["reorder(estado, populacao): Maranhão<br />populacao:  7018211<br />regiao: Nordeste","reorder(estado, populacao): Piauí<br />populacao:  3384547<br />regiao: Nordeste","reorder(estado, populacao): Ceará<br />populacao:  9268836<br />regiao: Nordeste","reorder(estado, populacao): Rio Grande do Norte<br />populacao:  3455236<br />regiao: Nordeste","reorder(estado, populacao): Paraíba<br />populacao:  4164468<br />regiao: Nordeste","reorder(estado, populacao): Pernambuco<br />populacao:  9562007<br />regiao: Nordeste","reorder(estado, populacao): Alagoas<br />populacao:  3220848<br />regiao: Nordeste","reorder(estado, populacao): Sergipe<br />populacao:  2299425<br />regiao: Nordeste","reorder(estado, populacao): Bahia<br />populacao: 14870907<br />regiao: Nordeste"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(163,165,0,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Nordeste","legendgroup":"Nordeste","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.90000000000000036,0.90000000000000036,0.89999999999999858,0.89999999999999991,0.89999999999999858,0.90000000000000013,0.90000000000000036],"base":[0,0,0,0,0,0,0],"x":[1751950,884372,4321616,738772,8711196,806517,1586859],"y":[5,3,15,1,19,2,4],"text":["reorder(estado, populacao): Rondônia<br />populacao:  1751950<br />regiao: Norte","reorder(estado, populacao): Acre<br />populacao:   884372<br />regiao: Norte","reorder(estado, populacao): Amazonas<br />populacao:  4321616<br />regiao: Norte","reorder(estado, populacao): Roraima<br />populacao:   738772<br />regiao: Norte","reorder(estado, populacao): Pará<br />populacao:  8711196<br />regiao: Norte","reorder(estado, populacao): Amapá<br />populacao:   806517<br />regiao: Norte","reorder(estado, populacao): Tocantins<br />populacao:  1586859<br />regiao: Norte"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,191,125,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Norte","legendgroup":"Norte","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858],"base":[0,0,0,0],"x":[21393441,4126854,17223547,46081801],"y":[26,13,25,27],"text":["reorder(estado, populacao): Minas Gerais<br />populacao: 21393441<br />regiao: Sudeste","reorder(estado, populacao): Espírito Santo<br />populacao:  4126854<br />regiao: Sudeste","reorder(estado, populacao): Rio de Janeiro<br />populacao: 17223547<br />regiao: Sudeste","reorder(estado, populacao): São Paulo<br />populacao: 46081801<br />regiao: Sudeste"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,176,246,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Sudeste","legendgroup":"Sudeste","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.89999999999999858,0.89999999999999858,0.89999999999999858],"base":[0,0,0],"x":[11890517,8187029,11233263],"y":[23,18,22],"text":["reorder(estado, populacao): Paraná<br />populacao: 11890517<br />regiao: Sul","reorder(estado, populacao): Santa Catarina<br />populacao:  8187029<br />regiao: Sul","reorder(estado, populacao): Rio Grande do Sul<br />populacao: 11233263<br />regiao: Sul"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(231,107,243,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Sul","legendgroup":"Sul","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.305936073059364,"r":7.3059360730593621,"b":37.260273972602747,"l":136.62100456621008},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2304090.0500000003,48385891.049999997],"tickmode":"array","ticktext":["0e+00","1e+07","2e+07","3e+07","4e+07"],"tickvals":[0,10000000,20000000,30000000,40000000],"categoryorder":"array","categoryarray":["0e+00","1e+07","2e+07","3e+07","4e+07"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"populacao","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,27.600000000000001],"tickmode":"array","ticktext":["Roraima","Amapá","Acre","Tocantins","Rondônia","Sergipe","Mato Grosso do Sul","Distrito Federal","Alagoas","Piauí","Rio Grande do Norte","Mato Grosso","Espírito Santo","Paraíba","Amazonas","Maranhão","Goiás","Santa Catarina","Pará","Ceará","Pernambuco","Rio Grande do Sul","Paraná","Bahia","Rio de Janeiro","Minas Gerais","São Paulo"],"tickvals":[1,2,3,4.0000000000000009,5,6,7,8,9,10,11,12,13,14,15.000000000000002,16,17,18,19,20,21,22,23,24,25,26,27],"categoryorder":"array","categoryarray":["Roraima","Amapá","Acre","Tocantins","Rondônia","Sergipe","Mato Grosso do Sul","Distrito Federal","Alagoas","Piauí","Rio Grande do Norte","Mato Grosso","Espírito Santo","Paraíba","Amazonas","Maranhão","Goiás","Santa Catarina","Pará","Ceará","Pernambuco","Rio Grande do Sul","Paraná","Bahia","Rio de Janeiro","Minas Gerais","São Paulo"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"reorder(estado, populacao)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"regiao","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"2a7f46eb121a":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"2a7f46eb121a","visdat":{"2a7f46eb121a":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-01e567fd79441d0fb10e" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-01e567fd79441d0fb10e">{"x":{"data":[{"orientation":"h","width":[0.90000000000000036,0.89999999999999858,0.89999999999999858,0.89999999999999947],"base":[0,0,0,0],"x":[2924631,3893659,7423629,2996899],"y":[7,12,17,8],"text":["reorder(estado, populacao): Mato Grosso do Sul<br />populacao:  2924631<br />regiao: Centro-Oeste","reorder(estado, populacao): Mato Grosso<br />populacao:  3893659<br />regiao: Centro-Oeste","reorder(estado, populacao): Goiás<br />populacao:  7423629<br />regiao: Centro-Oeste","reorder(estado, populacao): Distrito Federal<br />populacao:  2996899<br />regiao: Centro-Oeste"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Centro-Oeste","legendgroup":"Centro-Oeste","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858,0.90000000000000036,0.89999999999999858],"base":[0,0,0,0,0,0,0,0,0],"x":[7018211,3384547,9268836,3455236,4164468,9562007,3220848,2299425,14870907],"y":[16,10,20,11,14,21,9,6,24],"text":["reorder(estado, populacao): Maranhão<br />populacao:  7018211<br />regiao: Nordeste","reorder(estado, populacao): Piauí<br />populacao:  3384547<br />regiao: Nordeste","reorder(estado, populacao): Ceará<br />populacao:  9268836<br />regiao: Nordeste","reorder(estado, populacao): Rio Grande do Norte<br />populacao:  3455236<br />regiao: Nordeste","reorder(estado, populacao): Paraíba<br />populacao:  4164468<br />regiao: Nordeste","reorder(estado, populacao): Pernambuco<br />populacao:  9562007<br />regiao: Nordeste","reorder(estado, populacao): Alagoas<br />populacao:  3220848<br />regiao: Nordeste","reorder(estado, populacao): Sergipe<br />populacao:  2299425<br />regiao: Nordeste","reorder(estado, populacao): Bahia<br />populacao: 14870907<br />regiao: Nordeste"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(163,165,0,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Nordeste","legendgroup":"Nordeste","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.90000000000000036,0.90000000000000036,0.89999999999999858,0.89999999999999991,0.89999999999999858,0.90000000000000013,0.90000000000000036],"base":[0,0,0,0,0,0,0],"x":[1751950,884372,4321616,738772,8711196,806517,1586859],"y":[5,3,15,1,19,2,4],"text":["reorder(estado, populacao): Rondônia<br />populacao:  1751950<br />regiao: Norte","reorder(estado, populacao): Acre<br />populacao:   884372<br />regiao: Norte","reorder(estado, populacao): Amazonas<br />populacao:  4321616<br />regiao: Norte","reorder(estado, populacao): Roraima<br />populacao:   738772<br />regiao: Norte","reorder(estado, populacao): Pará<br />populacao:  8711196<br />regiao: Norte","reorder(estado, populacao): Amapá<br />populacao:   806517<br />regiao: Norte","reorder(estado, populacao): Tocantins<br />populacao:  1586859<br />regiao: Norte"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,191,125,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Norte","legendgroup":"Norte","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.89999999999999858,0.89999999999999858,0.89999999999999858,0.89999999999999858],"base":[0,0,0,0],"x":[21393441,4126854,17223547,46081801],"y":[26,13,25,27],"text":["reorder(estado, populacao): Minas Gerais<br />populacao: 21393441<br />regiao: Sudeste","reorder(estado, populacao): Espírito Santo<br />populacao:  4126854<br />regiao: Sudeste","reorder(estado, populacao): Rio de Janeiro<br />populacao: 17223547<br />regiao: Sudeste","reorder(estado, populacao): São Paulo<br />populacao: 46081801<br />regiao: Sudeste"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,176,246,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Sudeste","legendgroup":"Sudeste","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.89999999999999858,0.89999999999999858,0.89999999999999858],"base":[0,0,0],"x":[11890517,8187029,11233263],"y":[23,18,22],"text":["reorder(estado, populacao): Paraná<br />populacao: 11890517<br />regiao: Sul","reorder(estado, populacao): Santa Catarina<br />populacao:  8187029<br />regiao: Sul","reorder(estado, populacao): Rio Grande do Sul<br />populacao: 11233263<br />regiao: Sul"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(231,107,243,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"Sul","legendgroup":"Sul","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.305936073059364,"r":7.3059360730593621,"b":37.260273972602747,"l":136.62100456621008},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2304090.0500000003,48385891.049999997],"tickmode":"array","ticktext":["0e+00","1e+07","2e+07","3e+07","4e+07"],"tickvals":[0,10000000,20000000,30000000,40000000],"categoryorder":"array","categoryarray":["0e+00","1e+07","2e+07","3e+07","4e+07"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"populacao","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,27.600000000000001],"tickmode":"array","ticktext":["Roraima","Amapá","Acre","Tocantins","Rondônia","Sergipe","Mato Grosso do Sul","Distrito Federal","Alagoas","Piauí","Rio Grande do Norte","Mato Grosso","Espírito Santo","Paraíba","Amazonas","Maranhão","Goiás","Santa Catarina","Pará","Ceará","Pernambuco","Rio Grande do Sul","Paraná","Bahia","Rio de Janeiro","Minas Gerais","São Paulo"],"tickvals":[1,2,3,4.0000000000000009,5,6,7,8,9,10,11,12,13,14,15.000000000000002,16,17,18,19,20,21,22,23,24,25,26,27],"categoryorder":"array","categoryarray":["Roraima","Amapá","Acre","Tocantins","Rondônia","Sergipe","Mato Grosso do Sul","Distrito Federal","Alagoas","Piauí","Rio Grande do Norte","Mato Grosso","Espírito Santo","Paraíba","Amazonas","Maranhão","Goiás","Santa Catarina","Pará","Ceará","Pernambuco","Rio Grande do Sul","Paraná","Bahia","Rio de Janeiro","Minas Gerais","São Paulo"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"reorder(estado, populacao)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"regiao","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3342532954a7":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"3342532954a7","visdat":{"3342532954a7":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <hr>
@@ -1329,206 +1323,199 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-244"><a href="#cb10-244" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-245"><a href="#cb10-245" aria-hidden="true" tabindex="-1"></a><span class="fu">## Histograma</span></span>
 <span id="cb10-246"><a href="#cb10-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-247"><a href="#cb10-247" aria-hidden="true" tabindex="-1"></a>O histograma abaixo mostra a distribuição da densidade populacional dos estados brasileiros.</span>
+<span id="cb10-247"><a href="#cb10-247" aria-hidden="true" tabindex="-1"></a>O histograma abaixo mostra como os estados brasileiros se distribuem em diferentes faixas populacionais.</span>
 <span id="cb10-248"><a href="#cb10-248" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-249"><a href="#cb10-249" aria-hidden="true" tabindex="-1"></a><span class="in">```{r histograma}</span></span>
-<span id="cb10-250"><a href="#cb10-250" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
-<span id="cb10-251"><a href="#cb10-251" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando densidade populacional aproximada</span></span>
-<span id="cb10-252"><a href="#cb10-252" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
-<span id="cb10-253"><a href="#cb10-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-254"><a href="#cb10-254" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> pop <span class="sc">|&gt;</span></span>
-<span id="cb10-255"><a href="#cb10-255" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-256"><a href="#cb10-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-257"><a href="#cb10-257" aria-hidden="true" tabindex="-1"></a>    <span class="at">densidade =</span> populacao <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb10-258"><a href="#cb10-258" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-259"><a href="#cb10-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-260"><a href="#cb10-260" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb10-261"><a href="#cb10-261" aria-hidden="true" tabindex="-1"></a>  pop,</span>
-<span id="cb10-262"><a href="#cb10-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(densidade)</span>
-<span id="cb10-263"><a href="#cb10-263" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb10-250"><a href="#cb10-250" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb10-251"><a href="#cb10-251" aria-hidden="true" tabindex="-1"></a>  pop,</span>
+<span id="cb10-252"><a href="#cb10-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(populacao <span class="sc">/</span> <span class="dv">1000000</span>)</span>
+<span id="cb10-253"><a href="#cb10-253" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb10-254"><a href="#cb10-254" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-255"><a href="#cb10-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb10-256"><a href="#cb10-256" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="dv">5</span>,</span>
+<span id="cb10-257"><a href="#cb10-257" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>,</span>
+<span id="cb10-258"><a href="#cb10-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb10-259"><a href="#cb10-259" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-260"><a href="#cb10-260" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-261"><a href="#cb10-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb10-262"><a href="#cb10-262" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1</span>)</span>
+<span id="cb10-263"><a href="#cb10-263" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb10-264"><a href="#cb10-264" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-265"><a href="#cb10-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb10-266"><a href="#cb10-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">8</span>,</span>
-<span id="cb10-267"><a href="#cb10-267" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>,</span>
-<span id="cb10-268"><a href="#cb10-268" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb10-265"><a href="#cb10-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-266"><a href="#cb10-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição da População dos Estados"</span>,</span>
+<span id="cb10-267"><a href="#cb10-267" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"População (milhões de habitantes)"</span>,</span>
+<span id="cb10-268"><a href="#cb10-268" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Número de Estados"</span></span>
 <span id="cb10-269"><a href="#cb10-269" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb10-270"><a href="#cb10-270" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-271"><a href="#cb10-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-272"><a href="#cb10-272" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição da Densidade Populacional"</span>,</span>
-<span id="cb10-273"><a href="#cb10-273" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Densidade Populacional"</span>,</span>
-<span id="cb10-274"><a href="#cb10-274" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequência"</span></span>
-<span id="cb10-275"><a href="#cb10-275" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-276"><a href="#cb10-276" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-277"><a href="#cb10-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb10-278"><a href="#cb10-278" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-279"><a href="#cb10-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-280"><a href="#cb10-280" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-281"><a href="#cb10-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-282"><a href="#cb10-282" aria-hidden="true" tabindex="-1"></a><span class="fu">## Boxplot</span></span>
-<span id="cb10-283"><a href="#cb10-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-284"><a href="#cb10-284" aria-hidden="true" tabindex="-1"></a>O boxplot abaixo compara a distribuição populacional entre as regiões brasileiras, destacando diferenças de concentração e possíveis valores extremos.</span>
-<span id="cb10-285"><a href="#cb10-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-286"><a href="#cb10-286" aria-hidden="true" tabindex="-1"></a><span class="in">```{r boxplot}</span></span>
-<span id="cb10-287"><a href="#cb10-287" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb10-288"><a href="#cb10-288" aria-hidden="true" tabindex="-1"></a>  pop,</span>
-<span id="cb10-289"><a href="#cb10-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
-<span id="cb10-290"><a href="#cb10-290" aria-hidden="true" tabindex="-1"></a>    regiao,</span>
-<span id="cb10-291"><a href="#cb10-291" aria-hidden="true" tabindex="-1"></a>    populacao <span class="sc">/</span> <span class="dv">1000000</span>,</span>
-<span id="cb10-292"><a href="#cb10-292" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> regiao</span>
-<span id="cb10-293"><a href="#cb10-293" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-294"><a href="#cb10-294" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb10-295"><a href="#cb10-295" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-296"><a href="#cb10-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb10-297"><a href="#cb10-297" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-298"><a href="#cb10-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-299"><a href="#cb10-299" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição Populacional por Região"</span>,</span>
-<span id="cb10-300"><a href="#cb10-300" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Região"</span>,</span>
-<span id="cb10-301"><a href="#cb10-301" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"População (milhões de habitantes)"</span></span>
-<span id="cb10-302"><a href="#cb10-302" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-303"><a href="#cb10-303" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-304"><a href="#cb10-304" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb10-305"><a href="#cb10-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-306"><a href="#cb10-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-307"><a href="#cb10-307" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-308"><a href="#cb10-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-309"><a href="#cb10-309" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mapa Temático</span></span>
-<span id="cb10-310"><a href="#cb10-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-311"><a href="#cb10-311" aria-hidden="true" tabindex="-1"></a>O mapa temático permite visualizar espacialmente como a população está distribuída pelo território brasileiro.</span>
-<span id="cb10-312"><a href="#cb10-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-313"><a href="#cb10-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r mapa}</span></span>
-<span id="cb10-314"><a href="#cb10-314" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
-<span id="cb10-315"><a href="#cb10-315" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-316"><a href="#cb10-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(</span>
-<span id="cb10-317"><a href="#cb10-317" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> populacao),</span>
-<span id="cb10-318"><a href="#cb10-318" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
-<span id="cb10-319"><a href="#cb10-319" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-320"><a href="#cb10-320" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-321"><a href="#cb10-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
-<span id="cb10-322"><a href="#cb10-322" aria-hidden="true" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">"plasma"</span></span>
-<span id="cb10-323"><a href="#cb10-323" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-324"><a href="#cb10-324" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-325"><a href="#cb10-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-326"><a href="#cb10-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"População dos Estados Brasileiros"</span>,</span>
-<span id="cb10-327"><a href="#cb10-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"População"</span></span>
-<span id="cb10-328"><a href="#cb10-328" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-329"><a href="#cb10-329" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-330"><a href="#cb10-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb10-331"><a href="#cb10-331" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-332"><a href="#cb10-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-333"><a href="#cb10-333" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-334"><a href="#cb10-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-335"><a href="#cb10-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gráfico Interativo</span></span>
-<span id="cb10-336"><a href="#cb10-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-337"><a href="#cb10-337" aria-hidden="true" tabindex="-1"></a>O gráfico interativo facilita a exploração dos dados pelo usuário.</span>
-<span id="cb10-338"><a href="#cb10-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-339"><a href="#cb10-339" aria-hidden="true" tabindex="-1"></a><span class="in">```{r interativo}</span></span>
-<span id="cb10-340"><a href="#cb10-340" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
-<span id="cb10-341"><a href="#cb10-341" aria-hidden="true" tabindex="-1"></a>  pop,</span>
-<span id="cb10-342"><a href="#cb10-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
-<span id="cb10-343"><a href="#cb10-343" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reorder</span>(estado, populacao),</span>
-<span id="cb10-344"><a href="#cb10-344" aria-hidden="true" tabindex="-1"></a>    populacao,</span>
-<span id="cb10-345"><a href="#cb10-345" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> regiao</span>
-<span id="cb10-346"><a href="#cb10-346" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-347"><a href="#cb10-347" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb10-348"><a href="#cb10-348" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-349"><a href="#cb10-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb10-350"><a href="#cb10-350" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-351"><a href="#cb10-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb10-352"><a href="#cb10-352" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-353"><a href="#cb10-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb10-271"><a href="#cb10-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb10-272"><a href="#cb10-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-273"><a href="#cb10-273" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-274"><a href="#cb10-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-275"><a href="#cb10-275" aria-hidden="true" tabindex="-1"></a><span class="fu">## Boxplot</span></span>
+<span id="cb10-276"><a href="#cb10-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-277"><a href="#cb10-277" aria-hidden="true" tabindex="-1"></a>O boxplot abaixo compara a distribuição populacional entre as regiões brasileiras, destacando diferenças de concentração e possíveis valores extremos.</span>
+<span id="cb10-278"><a href="#cb10-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-279"><a href="#cb10-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r boxplot}</span></span>
+<span id="cb10-280"><a href="#cb10-280" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb10-281"><a href="#cb10-281" aria-hidden="true" tabindex="-1"></a>  pop,</span>
+<span id="cb10-282"><a href="#cb10-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
+<span id="cb10-283"><a href="#cb10-283" aria-hidden="true" tabindex="-1"></a>    regiao,</span>
+<span id="cb10-284"><a href="#cb10-284" aria-hidden="true" tabindex="-1"></a>    populacao <span class="sc">/</span> <span class="dv">1000000</span>,</span>
+<span id="cb10-285"><a href="#cb10-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> regiao</span>
+<span id="cb10-286"><a href="#cb10-286" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-287"><a href="#cb10-287" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb10-288"><a href="#cb10-288" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-289"><a href="#cb10-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb10-290"><a href="#cb10-290" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-291"><a href="#cb10-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-292"><a href="#cb10-292" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição Populacional por Região"</span>,</span>
+<span id="cb10-293"><a href="#cb10-293" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Região"</span>,</span>
+<span id="cb10-294"><a href="#cb10-294" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"População (milhões de habitantes)"</span></span>
+<span id="cb10-295"><a href="#cb10-295" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-296"><a href="#cb10-296" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-297"><a href="#cb10-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb10-298"><a href="#cb10-298" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-299"><a href="#cb10-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-300"><a href="#cb10-300" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-301"><a href="#cb10-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-302"><a href="#cb10-302" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mapa Temático</span></span>
+<span id="cb10-303"><a href="#cb10-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-304"><a href="#cb10-304" aria-hidden="true" tabindex="-1"></a>O mapa temático permite visualizar espacialmente como a população está distribuída pelo território brasileiro.</span>
+<span id="cb10-305"><a href="#cb10-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-306"><a href="#cb10-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r mapa}</span></span>
+<span id="cb10-307"><a href="#cb10-307" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
+<span id="cb10-308"><a href="#cb10-308" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-309"><a href="#cb10-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(</span>
+<span id="cb10-310"><a href="#cb10-310" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> populacao),</span>
+<span id="cb10-311"><a href="#cb10-311" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb10-312"><a href="#cb10-312" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-313"><a href="#cb10-313" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-314"><a href="#cb10-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb10-315"><a href="#cb10-315" aria-hidden="true" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">"plasma"</span></span>
+<span id="cb10-316"><a href="#cb10-316" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-317"><a href="#cb10-317" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-318"><a href="#cb10-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-319"><a href="#cb10-319" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"População dos Estados Brasileiros"</span>,</span>
+<span id="cb10-320"><a href="#cb10-320" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"População"</span></span>
+<span id="cb10-321"><a href="#cb10-321" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-322"><a href="#cb10-322" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-323"><a href="#cb10-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb10-324"><a href="#cb10-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-325"><a href="#cb10-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-326"><a href="#cb10-326" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-327"><a href="#cb10-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-328"><a href="#cb10-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gráfico Interativo</span></span>
+<span id="cb10-329"><a href="#cb10-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-330"><a href="#cb10-330" aria-hidden="true" tabindex="-1"></a>O gráfico interativo facilita a exploração dos dados pelo usuário.</span>
+<span id="cb10-331"><a href="#cb10-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-332"><a href="#cb10-332" aria-hidden="true" tabindex="-1"></a><span class="in">```{r interativo}</span></span>
+<span id="cb10-333"><a href="#cb10-333" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb10-334"><a href="#cb10-334" aria-hidden="true" tabindex="-1"></a>  pop,</span>
+<span id="cb10-335"><a href="#cb10-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
+<span id="cb10-336"><a href="#cb10-336" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reorder</span>(estado, populacao),</span>
+<span id="cb10-337"><a href="#cb10-337" aria-hidden="true" tabindex="-1"></a>    populacao,</span>
+<span id="cb10-338"><a href="#cb10-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> regiao</span>
+<span id="cb10-339"><a href="#cb10-339" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-340"><a href="#cb10-340" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb10-341"><a href="#cb10-341" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-342"><a href="#cb10-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb10-343"><a href="#cb10-343" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-344"><a href="#cb10-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb10-345"><a href="#cb10-345" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-346"><a href="#cb10-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb10-347"><a href="#cb10-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-348"><a href="#cb10-348" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(g)</span>
+<span id="cb10-349"><a href="#cb10-349" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-350"><a href="#cb10-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-351"><a href="#cb10-351" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-352"><a href="#cb10-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-353"><a href="#cb10-353" aria-hidden="true" tabindex="-1"></a><span class="fu"># Comparação entre Base R e ggplot2</span></span>
 <span id="cb10-354"><a href="#cb10-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-355"><a href="#cb10-355" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(g)</span>
-<span id="cb10-356"><a href="#cb10-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-357"><a href="#cb10-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-358"><a href="#cb10-358" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-359"><a href="#cb10-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-360"><a href="#cb10-360" aria-hidden="true" tabindex="-1"></a><span class="fu"># Comparação entre Base R e ggplot2</span></span>
-<span id="cb10-361"><a href="#cb10-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-362"><a href="#cb10-362" aria-hidden="true" tabindex="-1"></a><span class="fu">## Base R</span></span>
-<span id="cb10-363"><a href="#cb10-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-364"><a href="#cb10-364" aria-hidden="true" tabindex="-1"></a>O Base R permite criar gráficos de maneira rápida e simples.</span>
-<span id="cb10-365"><a href="#cb10-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-366"><a href="#cb10-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r base_r}</span></span>
-<span id="cb10-367"><a href="#cb10-367" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
-<span id="cb10-368"><a href="#cb10-368" aria-hidden="true" tabindex="-1"></a>  pop<span class="sc">$</span>populacao,</span>
-<span id="cb10-369"><a href="#cb10-369" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-370"><a href="#cb10-370" aria-hidden="true" tabindex="-1"></a>  <span class="at">names.arg =</span> pop<span class="sc">$</span>estado,</span>
-<span id="cb10-371"><a href="#cb10-371" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-372"><a href="#cb10-372" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"tomato"</span>,</span>
-<span id="cb10-373"><a href="#cb10-373" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-374"><a href="#cb10-374" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span>,</span>
-<span id="cb10-375"><a href="#cb10-375" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-376"><a href="#cb10-376" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"População dos Estados - Base R"</span></span>
-<span id="cb10-377"><a href="#cb10-377" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-378"><a href="#cb10-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-379"><a href="#cb10-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-380"><a href="#cb10-380" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-381"><a href="#cb10-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-382"><a href="#cb10-382" aria-hidden="true" tabindex="-1"></a><span class="fu">## ggplot2</span></span>
-<span id="cb10-383"><a href="#cb10-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-384"><a href="#cb10-384" aria-hidden="true" tabindex="-1"></a>O ggplot2 oferece maior flexibilidade visual e melhor organização estética.</span>
-<span id="cb10-385"><a href="#cb10-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-386"><a href="#cb10-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ggplot_comp}</span></span>
-<span id="cb10-387"><a href="#cb10-387" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb10-388"><a href="#cb10-388" aria-hidden="true" tabindex="-1"></a>  pop,</span>
-<span id="cb10-389"><a href="#cb10-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
-<span id="cb10-390"><a href="#cb10-390" aria-hidden="true" tabindex="-1"></a>    estado,</span>
-<span id="cb10-391"><a href="#cb10-391" aria-hidden="true" tabindex="-1"></a>    populacao</span>
-<span id="cb10-392"><a href="#cb10-392" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-393"><a href="#cb10-393" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb10-394"><a href="#cb10-394" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-395"><a href="#cb10-395" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"tomato"</span>) <span class="sc">+</span></span>
-<span id="cb10-396"><a href="#cb10-396" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-397"><a href="#cb10-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-398"><a href="#cb10-398" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"População dos Estados - ggplot2"</span>,</span>
-<span id="cb10-399"><a href="#cb10-399" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Estado"</span>,</span>
-<span id="cb10-400"><a href="#cb10-400" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"População"</span></span>
-<span id="cb10-401"><a href="#cb10-401" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-402"><a href="#cb10-402" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-403"><a href="#cb10-403" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb10-404"><a href="#cb10-404" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-405"><a href="#cb10-405" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb10-406"><a href="#cb10-406" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
-<span id="cb10-407"><a href="#cb10-407" aria-hidden="true" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span></span>
-<span id="cb10-408"><a href="#cb10-408" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb10-409"><a href="#cb10-409" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-410"><a href="#cb10-410" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-411"><a href="#cb10-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-412"><a href="#cb10-412" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-413"><a href="#cb10-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-414"><a href="#cb10-414" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparação</span></span>
-<span id="cb10-415"><a href="#cb10-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-416"><a href="#cb10-416" aria-hidden="true" tabindex="-1"></a>Os dois sistemas conseguem produzir gráficos eficientes, mas possuem propostas diferentes.</span>
-<span id="cb10-417"><a href="#cb10-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-418"><a href="#cb10-418" aria-hidden="true" tabindex="-1"></a>O Base R é mais direto e simples para análises rápidas. Já o ggplot2 facilita a personalização visual e produz gráficos mais organizados e modernos.</span>
-<span id="cb10-419"><a href="#cb10-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-420"><a href="#cb10-420" aria-hidden="true" tabindex="-1"></a>Para relatórios e apresentações, o ggplot2 acaba sendo mais vantajoso pela estética e flexibilidade.</span>
-<span id="cb10-421"><a href="#cb10-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-422"><a href="#cb10-422" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-423"><a href="#cb10-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-424"><a href="#cb10-424" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interpretação dos Resultados</span></span>
-<span id="cb10-425"><a href="#cb10-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-426"><a href="#cb10-426" aria-hidden="true" tabindex="-1"></a>Os gráficos mostram que a população brasileira está concentrada principalmente nos estados do Sudeste, especialmente em São Paulo e Minas Gerais.</span>
-<span id="cb10-427"><a href="#cb10-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-428"><a href="#cb10-428" aria-hidden="true" tabindex="-1"></a>Já estados da região Norte apresentam populações menores e distribuição mais dispersa.</span>
-<span id="cb10-429"><a href="#cb10-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-430"><a href="#cb10-430" aria-hidden="true" tabindex="-1"></a>O histograma indica que poucos estados possuem populações muito elevadas, enquanto a maioria se concentra em faixas intermediárias.</span>
-<span id="cb10-431"><a href="#cb10-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-432"><a href="#cb10-432" aria-hidden="true" tabindex="-1"></a>O boxplot também evidencia diferenças importantes entre as regiões brasileiras, principalmente entre Sudeste e Norte.</span>
-<span id="cb10-433"><a href="#cb10-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-434"><a href="#cb10-434" aria-hidden="true" tabindex="-1"></a>O mapa temático foi um dos gráficos mais úteis, pois permitiu visualizar essas diferenças de maneira espacial e intuitiva.</span>
-<span id="cb10-435"><a href="#cb10-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-436"><a href="#cb10-436" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-437"><a href="#cb10-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-438"><a href="#cb10-438" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusão</span></span>
-<span id="cb10-439"><a href="#cb10-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-440"><a href="#cb10-440" aria-hidden="true" tabindex="-1"></a>A utilização da linguagem R permitiu transformar dados públicos em visualizações claras e informativas.</span>
-<span id="cb10-441"><a href="#cb10-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-442"><a href="#cb10-442" aria-hidden="true" tabindex="-1"></a>Os gráficos facilitaram a identificação de padrões populacionais e diferenças regionais entre os estados brasileiros.</span>
-<span id="cb10-443"><a href="#cb10-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-444"><a href="#cb10-444" aria-hidden="true" tabindex="-1"></a>Entre as visualizações produzidas, o gráfico de barras e o mapa temático foram os mais eficientes para interpretação dos dados.</span>
-<span id="cb10-445"><a href="#cb10-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-446"><a href="#cb10-446" aria-hidden="true" tabindex="-1"></a>Além disso, o trabalho mostrou como o R pode ser utilizado para coleta, tratamento e visualização de dados reais obtidos através de APIs públicas.</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb10-355"><a href="#cb10-355" aria-hidden="true" tabindex="-1"></a><span class="fu">## Base R</span></span>
+<span id="cb10-356"><a href="#cb10-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-357"><a href="#cb10-357" aria-hidden="true" tabindex="-1"></a>O Base R permite criar gráficos de maneira rápida e simples.</span>
+<span id="cb10-358"><a href="#cb10-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-359"><a href="#cb10-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r base_r}</span></span>
+<span id="cb10-360"><a href="#cb10-360" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb10-361"><a href="#cb10-361" aria-hidden="true" tabindex="-1"></a>  pop<span class="sc">$</span>populacao,</span>
+<span id="cb10-362"><a href="#cb10-362" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-363"><a href="#cb10-363" aria-hidden="true" tabindex="-1"></a>  <span class="at">names.arg =</span> pop<span class="sc">$</span>estado,</span>
+<span id="cb10-364"><a href="#cb10-364" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-365"><a href="#cb10-365" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"tomato"</span>,</span>
+<span id="cb10-366"><a href="#cb10-366" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-367"><a href="#cb10-367" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span>,</span>
+<span id="cb10-368"><a href="#cb10-368" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-369"><a href="#cb10-369" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"População dos Estados - Base R"</span></span>
+<span id="cb10-370"><a href="#cb10-370" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-371"><a href="#cb10-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-372"><a href="#cb10-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-373"><a href="#cb10-373" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-374"><a href="#cb10-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-375"><a href="#cb10-375" aria-hidden="true" tabindex="-1"></a><span class="fu">## ggplot2</span></span>
+<span id="cb10-376"><a href="#cb10-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-377"><a href="#cb10-377" aria-hidden="true" tabindex="-1"></a>O ggplot2 oferece maior flexibilidade visual e melhor organização estética.</span>
+<span id="cb10-378"><a href="#cb10-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-379"><a href="#cb10-379" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ggplot_comp}</span></span>
+<span id="cb10-380"><a href="#cb10-380" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb10-381"><a href="#cb10-381" aria-hidden="true" tabindex="-1"></a>  pop,</span>
+<span id="cb10-382"><a href="#cb10-382" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
+<span id="cb10-383"><a href="#cb10-383" aria-hidden="true" tabindex="-1"></a>    estado,</span>
+<span id="cb10-384"><a href="#cb10-384" aria-hidden="true" tabindex="-1"></a>    populacao</span>
+<span id="cb10-385"><a href="#cb10-385" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-386"><a href="#cb10-386" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb10-387"><a href="#cb10-387" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-388"><a href="#cb10-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"tomato"</span>) <span class="sc">+</span></span>
+<span id="cb10-389"><a href="#cb10-389" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-390"><a href="#cb10-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-391"><a href="#cb10-391" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"População dos Estados - ggplot2"</span>,</span>
+<span id="cb10-392"><a href="#cb10-392" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Estado"</span>,</span>
+<span id="cb10-393"><a href="#cb10-393" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"População"</span></span>
+<span id="cb10-394"><a href="#cb10-394" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-395"><a href="#cb10-395" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-396"><a href="#cb10-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb10-397"><a href="#cb10-397" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-398"><a href="#cb10-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb10-399"><a href="#cb10-399" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
+<span id="cb10-400"><a href="#cb10-400" aria-hidden="true" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span></span>
+<span id="cb10-401"><a href="#cb10-401" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-402"><a href="#cb10-402" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-403"><a href="#cb10-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-404"><a href="#cb10-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-405"><a href="#cb10-405" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-406"><a href="#cb10-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-407"><a href="#cb10-407" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparação</span></span>
+<span id="cb10-408"><a href="#cb10-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-409"><a href="#cb10-409" aria-hidden="true" tabindex="-1"></a>Os dois sistemas conseguem produzir gráficos eficientes, mas possuem propostas diferentes.</span>
+<span id="cb10-410"><a href="#cb10-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-411"><a href="#cb10-411" aria-hidden="true" tabindex="-1"></a>O Base R é mais direto e simples para análises rápidas. Já o ggplot2 facilita a personalização visual e produz gráficos mais organizados e modernos.</span>
+<span id="cb10-412"><a href="#cb10-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-413"><a href="#cb10-413" aria-hidden="true" tabindex="-1"></a>Para relatórios e apresentações, o ggplot2 acaba sendo mais vantajoso pela estética e flexibilidade.</span>
+<span id="cb10-414"><a href="#cb10-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-415"><a href="#cb10-415" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-416"><a href="#cb10-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-417"><a href="#cb10-417" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interpretação dos Resultados</span></span>
+<span id="cb10-418"><a href="#cb10-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-419"><a href="#cb10-419" aria-hidden="true" tabindex="-1"></a>Os gráficos mostram que a população brasileira está concentrada principalmente nos estados do Sudeste, especialmente em São Paulo e Minas Gerais.</span>
+<span id="cb10-420"><a href="#cb10-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-421"><a href="#cb10-421" aria-hidden="true" tabindex="-1"></a>Já estados da região Norte apresentam populações menores e distribuição mais dispersa.</span>
+<span id="cb10-422"><a href="#cb10-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-423"><a href="#cb10-423" aria-hidden="true" tabindex="-1"></a>O histograma indica que poucos estados possuem populações muito elevadas, enquanto a maioria se concentra em faixas intermediárias.</span>
+<span id="cb10-424"><a href="#cb10-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-425"><a href="#cb10-425" aria-hidden="true" tabindex="-1"></a>O boxplot também evidencia diferenças importantes entre as regiões brasileiras, principalmente entre Sudeste e Norte.</span>
+<span id="cb10-426"><a href="#cb10-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-427"><a href="#cb10-427" aria-hidden="true" tabindex="-1"></a>O mapa temático foi um dos gráficos mais úteis, pois permitiu visualizar essas diferenças de maneira espacial e intuitiva.</span>
+<span id="cb10-428"><a href="#cb10-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-429"><a href="#cb10-429" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-430"><a href="#cb10-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-431"><a href="#cb10-431" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusão</span></span>
+<span id="cb10-432"><a href="#cb10-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-433"><a href="#cb10-433" aria-hidden="true" tabindex="-1"></a>A utilização da linguagem R permitiu transformar dados públicos em visualizações claras e informativas.</span>
+<span id="cb10-434"><a href="#cb10-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-435"><a href="#cb10-435" aria-hidden="true" tabindex="-1"></a>Os gráficos facilitaram a identificação de padrões populacionais e diferenças regionais entre os estados brasileiros.</span>
+<span id="cb10-436"><a href="#cb10-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-437"><a href="#cb10-437" aria-hidden="true" tabindex="-1"></a>Entre as visualizações produzidas, o gráfico de barras e o mapa temático foram os mais eficientes para interpretação dos dados.</span>
+<span id="cb10-438"><a href="#cb10-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-439"><a href="#cb10-439" aria-hidden="true" tabindex="-1"></a>Além disso, o trabalho mostrou como o R pode ser utilizado para coleta, tratamento e visualização de dados reais obtidos através de APIs públicas.</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
