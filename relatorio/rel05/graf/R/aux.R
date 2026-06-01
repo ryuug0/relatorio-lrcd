@@ -2,14 +2,15 @@
 
 meu_git <- function(msg) {
 
-  message("=> Passo 1: Executando Quarto Render...")
+  message("=> Passo 1: Renderizando com Quarto + Knitr...")
 
-  # Executa e captura se o comando rodou com sucesso (0 significa sucesso)
-  status_quarto <- system("quarto render", wait = TRUE)
-
-  if (status_quarto != 0) {
-    stop("O Quarto nao conseguiu gerar o HTML. Verifique o erro acima no console.")
+  # Garante que o pacote 'quarto' esta instalado para fazer a ponte com o knitr
+  if (!requireNamespace("quarto", quietly = TRUE)) {
+    install.packages("quarto")
   }
+
+  # Executa a renderizacao nativa dentro do R
+  quarto::quarto_render()
 
   message("=> Passo 2: Executando Git Add...")
   system("git add .")
