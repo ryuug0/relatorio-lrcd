@@ -5,3 +5,6 @@
 .DS_Store
 .quarto
 .RData
+
+/.quarto/
+**/*.quarto_ipynb
