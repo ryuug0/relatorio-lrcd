@@ -24,7 +24,77 @@ execute:
   message: false
 ---
 
-asma
+## 1. Introdução
+
+Este relatório documenta o processo de desenvolvimento e os desafios superados na criação do pacote `graf`, projetado para automatizar a renderização de documentos dinâmicos (`.qmd` e `.Rmd`) e a sincronização direta com o GitHub por meio de uma única função chamada `git()`.
+
+---
+
+## 2. Principais Dificuldades Encontradas
+
+O desenvolvimento enfrentou obstáculos técnicos causados pela estrutura aninhada de diretórios do projeto e o comportamento padrão das ferramentas de execução:
+
+* **Renderização Assíncrona (*Background Jobs*):** A função nativa `quarto::quarto_render()` rodava processos em segundo plano. O R continuava a execução do script e disparava o `git push` antes do HTML ser totalmente gerado, subindo arquivos desatualizados.
+* **Escopo de Caminhos Aninhados:** O comando padrão `quarto render` executado na raiz não localizava arquivos `index.qmd` em subpastas profundas (como `relatorio/rel05/`).
+* **Rejeição de Commits Vazios:** Por padrão, o terminal Git abortava a operação caso a função fosse chamada sem uma mensagem de commit definida.
+* **Conflito de Repositórios (*Embedded Git*):** A presença acidental de um diretório `.git` interno na pasta do pacote gerou avisos de submódulos travados no cache do repositório principal.
+
+---
+
+## 3. Soluções Implementadas
+
+Para mitigar os erros e garantir robustez, a lógica foi centralizada em chamadas de sistema síncronas e varredura dinâmica:
+
+1. **Sincronismo via Terminal:** Uso de `system(..., wait = TRUE)` para pausar o script do R até a conclusão total da renderização de cada arquivo.
+2. **Busca Recursiva:** Uso de `list.files(recursive = TRUE)` para mapear automaticamente todos os arquivos `.qmd` e `.Rmd` do projeto, independentemente da pasta onde estejam guardados.
+3. **Flexibilização do Commit:** Inclusão da flag `--allow-empty-message` no comando de envio para aceitar execuções rápidas sem texto obrigatório.
+
+---
+
+## 4. Estrutura do Código (`R/funcoes_auxiliares.R`)
+
+```r
+# Funcoes auxiliares de automacao do pacote graf
+
+meu_git <- function(msg) {
+  
+  # 1. Busca e renderiza de forma isolada e síncrona todos os arquivos .qmd
+  arquivos_qmd <- list.files(pattern = "\\.qmd$", recursive = TRUE, full.names = TRUE)
+  if (length(arquivos_qmd) > 0) {
+    message("=> Passo 1: Renderizando todos os arquivos .qmd...")
+    for (qmd in arquivos_qmd) {
+      message(paste("-> Processando Quarto:", basename(qmd)))
+      system(paste("quarto render", shQuote(qmd)), wait = TRUE)
+    }
+  }
+  
+  # 2. Busca e executa o processamento (knit) de todos os arquivos .Rmd
+  arquivos_rmd <- list.files(pattern = "\\.[Rr]md$", recursive = TRUE, full.names = TRUE)
+  if (length(arquivos_rmd) > 0) {
+    message("=> Passo 2: Knitando todos os arquivos .Rmd...")
+    for (rmd in arquivos_rmd) {
+      message(paste("-> Processando RMarkdown:", basename(rmd)))
+      rmarkdown::render(rmd, quiet = TRUE)
+    }
+  }
+  
+  # 3. Pipeline sequencial de sincronizacao com o GitHub
+  message("=> Passo 3: Sincronizando com o GitHub...")
+  system("git add .")
+  
+  comando_commit <- sprintf('git commit --allow-empty-message -m "%s"', msg)
+  system(comando_commit)
+  
+  system("git push")
+  message("=> Sucesso: Tudo atualizado e no ar!")
+}
+```
+
+---
+
+## 5. Conclusão
+
+A automação final eliminou a necessidade de gerenciar caminhos manualmente. O pipeline garante que toda alteração no código gerado pelo `knitr` ou pelo `quarto` seja compilada localmente em sua totalidade antes de qualquer envio ao repositório remoto.
 
 
 
