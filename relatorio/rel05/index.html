@@ -115,13 +115,14 @@ window.Quarto = {
    
   <ul>
   <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">1</span> Introdução</a></li>
-  <li><a href="#funções" id="toc-funções" class="nav-link" data-scroll-target="#funções"><span class="header-section-number">2</span> Funções</a>
+  <li><a href="#instalação-e-documentação-do-pacote" id="toc-instalação-e-documentação-do-pacote" class="nav-link" data-scroll-target="#instalação-e-documentação-do-pacote"><span class="header-section-number">2</span> Instalação e Documentação do Pacote</a></li>
+  <li><a href="#as-funções" id="toc-as-funções" class="nav-link" data-scroll-target="#as-funções"><span class="header-section-number">3</span> As Funções</a>
   <ul class="collapse">
-  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git"><span class="header-section-number">2.1</span> git()</a></li>
-  <li><a href="#mpot" id="toc-mpot" class="nav-link" data-scroll-target="#mpot"><span class="header-section-number">2.2</span> mpot()</a></li>
-  <li><a href="#mdes" id="toc-mdes" class="nav-link" data-scroll-target="#mdes"><span class="header-section-number">2.3</span> mdes()</a></li>
+  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git"><span class="header-section-number">3.1</span> git()</a></li>
+  <li><a href="#mpot" id="toc-mpot" class="nav-link" data-scroll-target="#mpot"><span class="header-section-number">3.2</span> mpot()</a></li>
+  <li><a href="#mdes" id="toc-mdes" class="nav-link" data-scroll-target="#mdes"><span class="header-section-number">3.3</span> mdes()</a></li>
   </ul></li>
-  <li><a href="#organização" id="toc-organização" class="nav-link" data-scroll-target="#organização"><span class="header-section-number">3</span> Organização</a></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">4</span> Conclusão</a></li>
   </ul>
 </nav>
 </div>
@@ -137,7 +138,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Relatório de Aula Prática 05</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar o código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Esconder o código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver o código fonte</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Relatório de Aula Prática 05</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
 <p class="subtitle lead"><a href="https://bendeivide.github.io/courses/epaec/" target="_blank">Estatística e Probabilidade</a> <br> <a href="https://bendeivide.github.io" target="_blank">Prof.&nbsp;Ben Dêivide (DEFIM/CAP/UFSJ)</a></p>
 </div>
 
@@ -169,17 +170,29 @@ window.Quarto = {
 
 <section id="introdução" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">1</span> Introdução</h2>
-<p>Este relatório aborda o desenvolvimento de um pacote de funções para o ambiente R. O pacote <code>graf</code> conta com três funções principais: <code>git()</code>, <code>mpot()</code> e <code>mdes()</code>, que serão detalhadas a seguir. Apesar do nome, o pacote não realiza análises gráficas; trata-se de um resquício da proposta inicial do projeto, descartada devido à existência de ferramentas mais robustas para esse fim, como <code>leem</code>, <code>ggplot2</code> e as funções nativas do R.</p>
+<p>Este relatório aborda o desenvolvimento de um pacote de funções personalizado para o ambiente R, criado para resolver problemas práticos do meu dia a dia. O pacote, batizado de <code>graf</code>, conta com três funções principais: <code>git()</code>, <code>mpot()</code> e <code>mdes()</code>, que detalharei a seguir.</p>
+<p>Um detalhe curioso: apesar do nome “graf”, o pacote não faz análises gráficas. Isso é apenas um resquício da proposta inicial do projeto, que acabei descartando porque já existem pacotes muito mais robustos e consolidados para gráficos, como o <code>leem</code>, o <code>ggplot2</code> e as próprias funções nativas do R. O foco aqui virou produtividade e engenharia.</p>
 </section>
-<section id="funções" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="funções"><span class="header-section-number">2</span> Funções</h2>
-<section id="git" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="git"><span class="header-section-number">2.1</span> git()</h3>
-<p>Esta função foi desenvolvida para solucionar problemas recorrentes na publicação dos relatórios da disciplina no GitHub. A estrutura do projeto consiste em várias pastas aninhadas contendo arquivos <code>index.qmd</code> e <code>index.Rmd</code>, o que causava falhas de compilação e impedia a atualização correta da página web.</p>
-<p>Para automatizar a solução, a função realiza uma busca recursiva a partir da pasta raiz do projeto, executando <code>quarto render</code> nos arquivos <code>.qmd</code> e <code>rmarkdown::render</code> nos arquivos <code>.Rmd</code>. Isso garante a compilação integral do projeto. Em seguida, a função executa a esteira do Git (<code>add</code>, <code>commit</code> e <code>push</code>), permitindo commits sem mensagem explícita para agilizar testes e atualizações frequentes.</p>
-<p>Abaixo, a estrutura do código da função dividida em etapas:</p>
+<section id="instalação-e-documentação-do-pacote" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="instalação-e-documentação-do-pacote"><span class="header-section-number">2</span> Instalação e Documentação do Pacote</h2>
+<p>Antes de usar qualquer uma dessas funções, o pacote precisava ser estruturado, documentado e instalado localmente no R. Para não ter que fazer nada disso na mão, utilizei a dupla de ouro da criação de pacotes: <code>roxygen2</code> e <code>devtools</code>.</p>
+<p>A organização e a documentação foram feitas direto no código, usando comentários especiais com <code>#'</code> e tags como <code>@param</code> e <code>@export</code>. Assim que o código fica pronto, utilizamos dois comandos essenciais no console para fazer a coisa toda funcionar:</p>
+<ol type="1">
+<li><code>devtools::document()</code>: Esse comando é fundamental. Ele varre o nosso script, lê todas aquelas marcações do <em>roxygen</em>, gera automaticamente as páginas de ajuda (o help do R) e, o mais importante, escreve o arquivo <code>NAMESPACE</code>. Isso garante que as nossas funções sejam exportadas corretamente sem dar conflito com o resto do R.</li>
+<li><code>devtools::install()</code>: Depois que a documentação está gerada, esse comando pega a pasta do nosso projeto, compila tudo e instala de fato o pacote na biblioteca do R do nosso computador.</li>
+</ol>
+<p>Só depois de rodar essa dupla é que podemos usar o famoso <code>library(graf)</code> para carregar o pacote e colocar as funções para trabalhar.</p>
+</section>
+<section id="as-funções" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="as-funções"><span class="header-section-number">3</span> As Funções</h2>
+<section id="git" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="git"><span class="header-section-number">3.1</span> git()</h3>
+<p>Essa função nasceu puramente do ódio de tentar publicar os relatórios da disciplina na página do GitHub Pages e ver que as coisas não atualizavam. Como a nossa estrutura de pastas tem vários diretórios filhos e aninhados (cheios de <code>index.qmd</code> e <code>index.Rmd</code>), rodar a renderização padrão causava vários bugs e deixava arquivos para trás.</p>
+<p>A solução para automatizar essa dor de cabeça foi criar uma função que, partindo da raiz do projeto, faz uma busca recursiva em todas as pastas. Ela encontra os arquivos e roda o <code>quarto render</code> para os <code>.qmd</code> e o <code>rmarkdown::render</code> (knit) para os <code>.Rmd</code>. Isso garante que o projeto inteiro seja compilado, e não só o arquivo que está aberto no momento.</p>
+<p>De quebra, para economizar tempo em testes, a função já emenda os comandos do terminal (<code>git add .</code>, <code>git commit</code> e <code>git push</code>), permitindo até enviar commits sem comentários (<code>--allow-empty-message</code>), o que agiliza muito a vida.</p>
+<p>Abaixo, a lógica da função separada por etapas:</p>
 <p>Renderizando todos os <code>.qmd</code> do projeto:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  meu_git <span class="ot">&lt;-</span> <span class="cf">function</span>(msg) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>meu_git <span class="ot">&lt;-</span> <span class="cf">function</span>(msg) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  arquivos_qmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.qmd$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_qmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
@@ -189,7 +202,7 @@ window.Quarto = {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">system</span>(<span class="fu">paste</span>(<span class="st">"quarto render"</span>, <span class="fu">shQuote</span>(qmd)))</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Processando (“Knitando”) todos os <code>.Rmd</code> do projeto:</p>
+<p>“Costurando” todos os <code>.Rmd</code> do projeto:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  arquivos_rmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.[Rr]md$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_rmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 2: Knitando todos os arquivos .Rmd..."</span>)</span>
@@ -198,7 +211,7 @@ window.Quarto = {
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      rmarkdown<span class="sc">::</span><span class="fu">render</span>(rmd, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Sincronizando o projeto com o GitHub:</p>
+<p>Subindo tudo para o GitHub:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Passo 3: Enviando tudo para o GitHub..."</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git add ."</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -209,14 +222,15 @@ window.Quarto = {
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Feito! Tudo atualizado e no ar."</span>)</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="mpot" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="mpot"><span class="header-section-number">2.2</span> mpot()</h3>
-<p>A segunda função implementada automatiza um cálculo diário do meu estágio com motores elétricos. Frequentemente, a placa de identificação desses motores está danificada. Contudo, como vários parâmetros são interdependentes, é possível calcular a potência a partir da tensão nominal, corrente nominal, fator de potência, rendimento e número de fases. Embora o cálculo seja simples, o objetivo a longo prazo é escalar o pacote para cruzar esses dados com catálogos e identificar o modelo exato do equipamento. Por enquanto, o escopo da função limita-se ao cálculo da potência.</p>
-<p>A potência elétrica ativa do motor é dada, em kW, pela fórmula:</p>
+<section id="mpot" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="mpot"><span class="header-section-number">3.2</span> mpot()</h3>
+<p>A próxima função ataca um problema diário que enfrento no meu estágio na oficina. Trabalho com manutenção e identificação de motores elétricos, e direto os equipamentos chegam com a placa de identificação ilegível ou danificada. Como os parâmetros do motor são amarrados uns aos outros, podemos descobrir a potência a partir da tensão, corrente, fator de potência, rendimento e número de fases.</p>
+<p>É uma conta que daria para fazer na calculadora, claro, mas a ideia futura é escalar o pacote: inserir os dados que a gente tem e fazer o R buscar em catálogos qual é exatamente aquele motor. Por enquanto, como cruzar dados de catálogo dá bastante trabalho de gerenciamento de banco de dados, a função se limita a entregar o cálculo limpo da potência.</p>
+<p>A potência elétrica ativa consumida da rede é dada, em kW, pela fórmula:</p>
 <p><span class="math display">\[P_{kW} = \sqrt{3} \cdot V \cdot I \cdot F_P \cdot \eta\]</span></p>
-<p>Para converter o resultado em cavalos-vapor (CV):</p>
+<p>E para converter isso em Cavalos-Vapor (CV):</p>
 <p><span class="math display">\[P_{cv} = P_{kW} \cdot 1,36\]</span></p>
-<p>O código avalia o número de fases para adaptar a fórmula (o fator <span class="math inline">\(\sqrt{3}\)</span> é exclusivo para sistemas trifásicos) e verifica se o rendimento (<span class="math inline">\(\eta\)</span>) foi informado, determinando se o retorno representa a potência elétrica da rede ou a potência mecânica na ponta do eixo:</p>
+<p>A função que montei é esperta o suficiente para olhar o número de fases (usando o <span class="math inline">\(\sqrt{3}\)</span> apenas se for trifásico) e verificar se o usuário inseriu o rendimento <span class="math inline">\(\eta\)</span>. Se o rendimento não for informado, ela retorna a potência elétrica da rede; se for, ela entrega a potência mecânica real lá na ponta do eixo.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>meu_mpot <span class="ot">&lt;-</span> <span class="cf">function</span>(f, v, i, fp, rendimento) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  fator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(f <span class="sc">==</span> <span class="dv">3</span>, <span class="fu">sqrt</span>(<span class="dv">3</span>), <span class="dv">1</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  p_kw <span class="ot">&lt;-</span> (fator <span class="sc">*</span> v <span class="sc">*</span> i <span class="sc">*</span> fp) <span class="sc">/</span> <span class="dv">1000</span></span>
@@ -236,13 +250,11 @@ window.Quarto = {
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">CV =</span> <span class="fu">round</span>(p_cv, <span class="dv">2</span>)</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exemplo prático de uso para um motor trifásico com tensão de 380 V, corrente de 21,5 A, Fator de Potência de 0,92 e rendimento de 97%:</p>
+<p>Aqui vai um exemplo rodando nativamente para um motor trifásico, com tensão de 380 V, corrente de 21,5 A, fator de potência de 0,92 e rendimento de 97%:</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="dv">3</span>, <span class="dv">380</span>, <span class="fl">21.5</span>, <span class="fl">0.92</span>, <span class="fl">0.97</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="at">f =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">380</span>, <span class="at">i =</span> <span class="fl">21.5</span>, <span class="at">fp =</span> <span class="fl">0.92</span>, <span class="at">rendimento =</span> <span class="fl">0.97</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Tipo
 [1] "Potência Mecânica no Eixo"
@@ -255,12 +267,13 @@ $CV
 </div>
 </div>
 </section>
-<section id="mdes" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="mdes"><span class="header-section-number">2.3</span> mdes()</h3>
-<p>Esta função também é voltada para motores elétricos, mas focada na análise de falhas operacionais. Ela avalia o desbalanceamento de corrente entre as fases, condição que, ao ultrapassar o limite de 5%, compromete a integridade térmica do estator.</p>
-<p>Enquanto a norma NEMA baseia o cálculo nos desvios em relação à média das correntes, a abordagem implementada no pacote utiliza a razão direta entre a maior e a menor corrente medida. Esse método é adotado na prática de manutenção de campo por ser mais conservador e sensível, garantindo uma resposta de segurança mais rápida.</p>
-<p>O cálculo executado é dado pela fórmula:</p>
+<section id="mdes" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="mdes"><span class="header-section-number">3.3</span> mdes()</h3>
+<p>Essa última função também é voltada para a rotina com motores, mas o foco dela é a análise de falhas. A partir das correntes medidas nas fases do motor em funcionamento, ela calcula o desbalanceamento. Se a assimetria passar de 5%, a integridade do isolamento térmico do motor já corre sérios riscos.</p>
+<p>A norma clássica (NEMA) manda calcular esse desbalanceamento usando a média das correntes. Só que, na oficina, a gente não gosta de média porque ela suaviza os problemas. Nós usamos a relação direta entre a maior corrente e a menor corrente medida. É um método muito mais conservador, rígido e que garante uma margem de segurança maior para o motor do cliente.</p>
+<p>A fórmula pessimista que utilizamos é:</p>
 <p><span class="math display">\[D_{\%} = \left(\frac{I_{max}}{I_{min}}-1\right)\cdot 100\]</span></p>
+<p>A implementação tem um gatilho de segurança que joga um alerta vermelho no console do R se o resultado estourar o limite de 5%:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>meu_mdes <span class="ot">&lt;-</span> <span class="cf">function</span>(correntes) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(correntes)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -277,11 +290,20 @@ $CV
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(desbal, <span class="dv">2</span>))</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Exemplo prático de uma medição onde o motor apresentou um leve desequilíbrio crítico nas fases (13.0 A, 14.5 A e 17.2 A):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>correntes_medidas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">13.0</span>, <span class="fl">14.5</span>, <span class="fl">17.2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mdes</span>(correntes_medidas)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 32.31</code></pre>
+</div>
+</div>
 </section>
 </section>
-<section id="organização" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="organização"><span class="header-section-number">3</span> Organização</h2>
-<p>Para estruturar o pacote, documentar as restrições dos parâmetros de cada função e incluir os exemplos de uso de forma eficiente, utilizou-se o pacote <code>roxygen2</code>. Através de marcações no código-fonte com a sintaxe <code>#'</code> e tags declarativas como <code>@param</code> e <code>@export</code>, a ferramenta compila o manual de ajuda nativo do R e atualiza o arquivo <code>NAMESPACE</code> do pacote de forma totalmente automatizada.</p>
+<section id="conclusão" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="conclusão"><span class="header-section-number">4</span> Conclusão</h2>
+<p>Ter aprendido a estruturar e criar o meu próprio pacote no R se provou uma ferramenta excelente. A grande sacada dessa abordagem é a dinamicidade e o altíssimo nível de personalização.</p>
+<p>Em vez de ficar dependendo de scripts soltos ou softwares engessados, criar um pacote te permite moldar o ambiente de trabalho exatamente para a sua realidade. Comandos repetitivos e problemas práticos, como o caos das pastas para atualizar o GitHub e os cálculos de bancada da oficina, foram resolvidos com soluções construídas sob medida. Isso mostra que programar em R vai muito além da estatística: é, acima de tudo, facilitar e otimizar o nosso próprio fluxo de trabalho.</p>
 <!-- -->
 
 </section>
@@ -739,160 +761,193 @@ $CV
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Só mude aqui!!!!</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Hugo Araújo Souza Filho"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Relatório de Aula Prática 05"</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> referencias.bib</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A partir daqui nao faca alteracoes!!!!!</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="an">csl:</span><span class="co"> associacao-brasileira-de-normas-tecnicas-ipea.csl</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "&lt;a href='https://bendeivide.github.io/courses/epaec/' target='_blank'&gt;Estatística e Probabilidade&lt;/a&gt; &lt;/br&gt; &lt;a href='https://bendeivide.github.io' target='_blank'&gt;Prof. Ben Dêivide (DEFIM/CAP/UFSJ)&lt;/a&gt;"</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="an">include-before-body:</span><span class="co"> header.html</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-BR</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: bootstrap</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">    #css: styles.css</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>Este relatório aborda o desenvolvimento de um pacote de funções para o ambiente R. O pacote <span class="in">`graf`</span> conta com três funções principais: <span class="in">`git()`</span>, <span class="in">`mpot()`</span> e <span class="in">`mdes()`</span>, que serão detalhadas a seguir. Apesar do nome, o pacote não realiza análises gráficas; trata-se de um resquício da proposta inicial do projeto, descartada devido à existência de ferramentas mais robustas para esse fim, como <span class="in">`leem`</span>, <span class="in">`ggplot2`</span> e as funções nativas do R.</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Funções</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="fu">### git()</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>Esta função foi desenvolvida para solucionar problemas recorrentes na publicação dos relatórios da disciplina no GitHub. A estrutura do projeto consiste em várias pastas aninhadas contendo arquivos <span class="in">`index.qmd`</span> e <span class="in">`index.Rmd`</span>, o que causava falhas de compilação e impedia a atualização correta da página web.</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>Para automatizar a solução, a função realiza uma busca recursiva a partir da pasta raiz do projeto, executando <span class="in">`quarto render`</span> nos arquivos <span class="in">`.qmd`</span> e <span class="in">`rmarkdown::render`</span> nos arquivos <span class="in">`.Rmd`</span>. Isso garante a compilação integral do projeto. Em seguida, a função executa a esteira do Git (<span class="in">`add`</span>, <span class="in">`commit`</span> e <span class="in">`push`</span>), permitindo commits sem mensagem explícita para agilizar testes e atualizações frequentes.</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>Abaixo, a estrutura do código da função dividida em etapas:</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>Renderizando todos os <span class="in">`.qmd`</span> do projeto:</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  meu_git <span class="ot">&lt;-</span> <span class="cf">function</span>(msg) {</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  arquivos_qmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.qmd$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_qmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 1: Renderizando todos os arquivos .qmd..."</span>)</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (qmd <span class="cf">in</span> arquivos_qmd) {</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Renderizando:"</span>, <span class="fu">basename</span>(qmd)))</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">system</span>(<span class="fu">paste</span>(<span class="st">"quarto render"</span>, <span class="fu">shQuote</span>(qmd)))</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="at">Processando ("Knitando") todos os </span><span class="st">`</span>.Rmd<span class="st">`</span><span class="at"> do projeto:</span></span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="st">```</span>r</span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>  arquivos_rmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.[Rr]md$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_rmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 2: Knitando todos os arquivos .Rmd..."</span>)</span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (rmd <span class="cf">in</span> arquivos_rmd) {</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Knitando:"</span>, <span class="fu">basename</span>(rmd)))</span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>      rmarkdown<span class="sc">::</span><span class="fu">render</span>(rmd, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="at">Sincronizando o projeto com o GitHub:</span></span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="st">```</span>r</span>
-<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Passo 3: Enviando tudo para o GitHub..."</span>)</span>
-<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git add ."</span>)</span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>  comando_commit <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">'git commit --allow-empty-message -m "%s"'</span>, msg)</span>
-<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(comando_commit)</span>
-<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git push"</span>)</span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Feito! Tudo atualizado e no ar."</span>)</span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="fu">### mpot()</span></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>A segunda função implementada automatiza um cálculo diário do meu estágio com motores elétricos. Frequentemente, a placa de identificação desses motores está danificada. Contudo, como vários parâmetros são interdependentes, é possível calcular a potência a partir da tensão nominal, corrente nominal, fator de potência, rendimento e número de fases. Embora o cálculo seja simples, o objetivo a longo prazo é escalar o pacote para cruzar esses dados com catálogos e identificar o modelo exato do equipamento. Por enquanto, o escopo da função limita-se ao cálculo da potência.</span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>A potência elétrica ativa do motor é dada, em kW, pela fórmula:</span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>$$P_{kW} = \sqrt{3} \cdot V \cdot I \cdot F_P \cdot \eta$$</span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>Para converter o resultado em cavalos-vapor (CV):</span>
-<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>$$P_{cv} = P_{kW} \cdot 1,36$$</span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>O código avalia o número de fases para adaptar a fórmula (o fator $\sqrt{3}$ é exclusivo para sistemas trifásicos) e verifica se o rendimento ($\eta$) foi informado, determinando se o retorno representa a potência elétrica da rede ou a potência mecânica na ponta do eixo:</span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>meu_mpot <span class="ot">&lt;-</span> <span class="cf">function</span>(f, v, i, fp, rendimento) {</span>
-<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>  fator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(f <span class="sc">==</span> <span class="dv">3</span>, <span class="fu">sqrt</span>(<span class="dv">3</span>), <span class="dv">1</span>)</span>
-<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>  p_kw <span class="ot">&lt;-</span> (fator <span class="sc">*</span> v <span class="sc">*</span> i <span class="sc">*</span> fp) <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(rendimento)) {</span>
-<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>    tipo <span class="ot">&lt;-</span> <span class="st">"Potência Elétrica Ativa"</span></span>
-<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>    tipo <span class="ot">&lt;-</span> <span class="st">"Potência Mecânica no Eixo"</span></span>
-<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>    p_kw <span class="ot">&lt;-</span> p_kw <span class="sc">*</span> rendimento</span>
-<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>  p_cv <span class="ot">&lt;-</span> p_kw <span class="sc">*</span> <span class="fl">1.35962</span></span>
-<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>    <span class="at">Tipo =</span> tipo,</span>
-<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>    <span class="at">kW =</span> <span class="fu">round</span>(p_kw, <span class="dv">2</span>),</span>
-<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>    <span class="at">CV =</span> <span class="fu">round</span>(p_cv, <span class="dv">2</span>)</span>
-<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>Exemplo prático de uso para um motor trifásico com tensão de 380 V, corrente de 21,5 A, Fator de Potência de 0,92 e rendimento de 97%:</span>
-<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span>
-<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="dv">3</span>, <span class="dv">380</span>, <span class="fl">21.5</span>, <span class="fl">0.92</span>, <span class="fl">0.97</span>)</span>
-<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="fu">### mdes()</span></span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>Esta função também é voltada para motores elétricos, mas focada na análise de falhas operacionais. Ela avalia o desbalanceamento de corrente entre as fases, condição que, ao ultrapassar o limite de 5%, compromete a integridade térmica do estator. </span>
-<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a>Enquanto a norma NEMA baseia o cálculo nos desvios em relação à média das correntes, a abordagem implementada no pacote utiliza a razão direta entre a maior e a menor corrente medida. Esse método é adotado na prática de manutenção de campo por ser mais conservador e sensível, garantindo uma resposta de segurança mais rápida.</span>
-<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a>O cálculo executado é dado pela fórmula:</span>
-<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a>$$D_{\%} = \left(\frac{I_{max}}{I_{min}}-1\right)\cdot 100$$</span>
-<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a>meu_mdes <span class="ot">&lt;-</span> <span class="cf">function</span>(correntes) {</span>
-<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(correntes)</span>
-<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"Motores monofásicos não possuem desbalanceamento de fase."</span>)</span>
-<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
-<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (n <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
-<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a>    desbal <span class="ot">&lt;-</span> (((<span class="fu">max</span>(correntes) <span class="sc">/</span> <span class="fu">min</span>(correntes)) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>)</span>
-<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(desbal) <span class="sc">&amp;&amp;</span> desbal <span class="sc">&gt;</span> <span class="dv">5</span>) {</span>
-<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"ALERTA: Desbalanceamento acima de 5% (risco de superaquecimento)."</span>)</span>
-<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(desbal, <span class="dv">2</span>))</span>
-<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a><span class="fu">## Organização</span></span>
-<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a>Para estruturar o pacote, documentar as restrições dos parâmetros de cada função e incluir os exemplos de uso de forma eficiente, utilizou-se o pacote <span class="in">`roxygen2`</span>. Através de marcações no código-fonte com a sintaxe <span class="in">`#'`</span> e tags declarativas como <span class="in">`@param`</span> e <span class="in">`@export`</span>, a ferramenta compila o manual de ajuda nativo do R e atualiza o arquivo <span class="in">`NAMESPACE`</span> do pacote de forma totalmente automatizada.</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Só mude aqui!!!!</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Hugo Araújo Souza Filho"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Relatório de Aula Prática 05"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> referencias.bib</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A partir daqui nao faca alteracoes!!!!!</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="an">csl:</span><span class="co"> associacao-brasileira-de-normas-tecnicas-ipea.csl</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "&lt;a href='https://bendeivide.github.io/courses/epaec/' target='_blank'&gt;Estatística e Probabilidade&lt;/a&gt; &lt;/br&gt; &lt;a href='https://bendeivide.github.io' target='_blank'&gt;Prof. Ben Dêivide (DEFIM/CAP/UFSJ)&lt;/a&gt;"</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="an">include-before-body:</span><span class="co"> header.html</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-BR</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: bootstrap</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">    #css: styles.css</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>Este relatório aborda o desenvolvimento de um pacote de funções personalizado para o ambiente R, criado para resolver problemas práticos do meu dia a dia. O pacote, batizado de <span class="in">`graf`</span>, conta com três funções principais: <span class="in">`git()`</span>, <span class="in">`mpot()`</span> e <span class="in">`mdes()`</span>, que detalharei a seguir. </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>Um detalhe curioso: apesar do nome "graf", o pacote não faz análises gráficas. Isso é apenas um resquício da proposta inicial do projeto, que acabei descartando porque já existem pacotes muito mais robustos e consolidados para gráficos, como o <span class="in">`leem`</span>, o <span class="in">`ggplot2`</span> e as próprias funções nativas do R. O foco aqui virou produtividade e engenharia.</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Instalação e Documentação do Pacote</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>Antes de usar qualquer uma dessas funções, o pacote precisava ser estruturado, documentado e instalado localmente no R. Para não ter que fazer nada disso na mão, utilizei a dupla de ouro da criação de pacotes: <span class="in">`roxygen2`</span> e <span class="in">`devtools`</span>.</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>A organização e a documentação foram feitas direto no código, usando comentários especiais com <span class="in">`#'`</span> e tags como <span class="in">`@param`</span> e <span class="in">`@export`</span>. Assim que o código fica pronto, utilizamos dois comandos essenciais no console para fazer a coisa toda funcionar:</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`devtools::document()`</span>: Esse comando é fundamental. Ele varre o nosso script, lê todas aquelas marcações do *roxygen*, gera automaticamente as páginas de ajuda (o help do R) e, o mais importante, escreve o arquivo <span class="in">`NAMESPACE`</span>. Isso garante que as nossas funções sejam exportadas corretamente sem dar conflito com o resto do R.</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`devtools::install()`</span>: Depois que a documentação está gerada, esse comando pega a pasta do nosso projeto, compila tudo e instala de fato o pacote na biblioteca do R do nosso computador. </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>Só depois de rodar essa dupla é que podemos usar o famoso <span class="in">`library(graf)`</span> para carregar o pacote e colocar as funções para trabalhar.</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## As Funções</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="fu">### git()</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>Essa função nasceu puramente do ódio de tentar publicar os relatórios da disciplina na página do GitHub Pages e ver que as coisas não atualizavam. Como a nossa estrutura de pastas tem vários diretórios filhos e aninhados (cheios de <span class="in">`index.qmd`</span> e <span class="in">`index.Rmd`</span>), rodar a renderização padrão causava vários bugs e deixava arquivos para trás.</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>A solução para automatizar essa dor de cabeça foi criar uma função que, partindo da raiz do projeto, faz uma busca recursiva em todas as pastas. Ela encontra os arquivos e roda o <span class="in">`quarto render`</span> para os <span class="in">`.qmd`</span> e o <span class="in">`rmarkdown::render`</span> (knit) para os <span class="in">`.Rmd`</span>. Isso garante que o projeto inteiro seja compilado, e não só o arquivo que está aberto no momento. </span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>De quebra, para economizar tempo em testes, a função já emenda os comandos do terminal (<span class="in">`git add .`</span>, <span class="in">`git commit`</span> e <span class="in">`git push`</span>), permitindo até enviar commits sem comentários (<span class="in">`--allow-empty-message`</span>), o que agiliza muito a vida.</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>Abaixo, a lógica da função separada por etapas:</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>Renderizando todos os <span class="in">`.qmd`</span> do projeto:</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>meu_git <span class="ot">&lt;-</span> <span class="cf">function</span>(msg) {</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>  arquivos_qmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.qmd$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_qmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 1: Renderizando todos os arquivos .qmd..."</span>)</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (qmd <span class="cf">in</span> arquivos_qmd) {</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Renderizando:"</span>, <span class="fu">basename</span>(qmd)))</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">system</span>(<span class="fu">paste</span>(<span class="st">"quarto render"</span>, <span class="fu">shQuote</span>(qmd)))</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a><span class="at">"Costurando" todos os </span><span class="st">`</span>.Rmd<span class="st">`</span><span class="at"> do projeto:</span></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a><span class="st">```</span>r</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>  arquivos_rmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.[Rr]md$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_rmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 2: Knitando todos os arquivos .Rmd..."</span>)</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (rmd <span class="cf">in</span> arquivos_rmd) {</span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Knitando:"</span>, <span class="fu">basename</span>(rmd)))</span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>      rmarkdown<span class="sc">::</span><span class="fu">render</span>(rmd, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="at">Subindo tudo para o GitHub:</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a><span class="st">```</span>r</span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Passo 3: Enviando tudo para o GitHub..."</span>)</span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git add ."</span>)</span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>  comando_commit <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">'git commit --allow-empty-message -m "%s"'</span>, msg)</span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(comando_commit)</span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git push"</span>)</span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Feito! Tudo atualizado e no ar."</span>)</span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### mpot()</span></span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>A próxima função ataca um problema diário que enfrento no meu estágio na oficina. Trabalho com manutenção e identificação de motores elétricos, e direto os equipamentos chegam com a placa de identificação ilegível ou danificada. Como os parâmetros do motor são amarrados uns aos outros, podemos descobrir a potência a partir da tensão, corrente, fator de potência, rendimento e número de fases. </span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>É uma conta que daria para fazer na calculadora, claro, mas a ideia futura é escalar o pacote: inserir os dados que a gente tem e fazer o R buscar em catálogos qual é exatamente aquele motor. Por enquanto, como cruzar dados de catálogo dá bastante trabalho de gerenciamento de banco de dados, a função se limita a entregar o cálculo limpo da potência.</span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>A potência elétrica ativa consumida da rede é dada, em kW, pela fórmula:</span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>$$P_{kW} = \sqrt{3} \cdot V \cdot I \cdot F_P \cdot \eta$$</span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a>E para converter isso em Cavalos-Vapor (CV):</span>
+<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a>$$P_{cv} = P_{kW} \cdot 1,36$$</span>
+<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a>A função que montei é esperta o suficiente para olhar o número de fases (usando o $\sqrt{3}$ apenas se for trifásico) e verificar se o usuário inseriu o rendimento $\eta$. Se o rendimento não for informado, ela retorna a potência elétrica da rede; se for, ela entrega a potência mecânica real lá na ponta do eixo.</span>
+<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a>meu_mpot <span class="ot">&lt;-</span> <span class="cf">function</span>(f, v, i, fp, rendimento) {</span>
+<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>  fator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(f <span class="sc">==</span> <span class="dv">3</span>, <span class="fu">sqrt</span>(<span class="dv">3</span>), <span class="dv">1</span>)</span>
+<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a>  p_kw <span class="ot">&lt;-</span> (fator <span class="sc">*</span> v <span class="sc">*</span> i <span class="sc">*</span> fp) <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-116"><a href="#cb10-116" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(rendimento)) {</span>
+<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a>    tipo <span class="ot">&lt;-</span> <span class="st">"Potência Elétrica Ativa"</span></span>
+<span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a>    tipo <span class="ot">&lt;-</span> <span class="st">"Potência Mecânica no Eixo"</span></span>
+<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a>    p_kw <span class="ot">&lt;-</span> p_kw <span class="sc">*</span> rendimento</span>
+<span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-122"><a href="#cb10-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a>  p_cv <span class="ot">&lt;-</span> p_kw <span class="sc">*</span> <span class="fl">1.35962</span></span>
+<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a>    <span class="at">Tipo =</span> tipo,</span>
+<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">kW =</span> <span class="fu">round</span>(p_kw, <span class="dv">2</span>),</span>
+<span id="cb10-128"><a href="#cb10-128" aria-hidden="true" tabindex="-1"></a>    <span class="at">CV =</span> <span class="fu">round</span>(p_cv, <span class="dv">2</span>)</span>
+<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a>Aqui vai um exemplo rodando nativamente para um motor trifásico, com tensão de 380 V, corrente de 21,5 A, fator de potência de 0,92 e rendimento de 97%:</span>
+<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
+<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span>
+<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="at">f =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">380</span>, <span class="at">i =</span> <span class="fl">21.5</span>, <span class="at">fp =</span> <span class="fl">0.92</span>, <span class="at">rendimento =</span> <span class="fl">0.97</span>)</span>
+<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a><span class="fu">### mdes()</span></span>
+<span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a>Essa última função também é voltada para a rotina com motores, mas o foco dela é a análise de falhas. A partir das correntes medidas nas fases do motor em funcionamento, ela calcula o desbalanceamento. Se a assimetria passar de 5%, a integridade do isolamento térmico do motor já corre sérios riscos.</span>
+<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>A norma clássica (NEMA) manda calcular esse desbalanceamento usando a média das correntes. Só que, na oficina, a gente não gosta de média porque ela suaviza os problemas. Nós usamos a relação direta entre a maior corrente e a menor corrente medida. É um método muito mais conservador, rígido e que garante uma margem de segurança maior para o motor do cliente.</span>
+<span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a>A fórmula pessimista que utilizamos é:</span>
+<span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a>$$D_{\%} = \left(\frac{I_{max}}{I_{min}}-1\right)\cdot 100$$</span>
+<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a>A implementação tem um gatilho de segurança que joga um alerta vermelho no console do R se o resultado estourar o limite de 5%:</span>
+<span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a>meu_mdes <span class="ot">&lt;-</span> <span class="cf">function</span>(correntes) {</span>
+<span id="cb10-159"><a href="#cb10-159" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(correntes)</span>
+<span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb10-162"><a href="#cb10-162" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"Motores monofásicos não possuem desbalanceamento de fase."</span>)</span>
+<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (n <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a>    desbal <span class="ot">&lt;-</span> (((<span class="fu">max</span>(correntes) <span class="sc">/</span> <span class="fu">min</span>(correntes)) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(desbal) <span class="sc">&amp;&amp;</span> desbal <span class="sc">&gt;</span> <span class="dv">5</span>) {</span>
+<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"ALERTA: Desbalanceamento acima de 5% (risco de superaquecimento)."</span>)</span>
+<span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(desbal, <span class="dv">2</span>))</span>
+<span id="cb10-173"><a href="#cb10-173" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a>Exemplo prático de uma medição onde o motor apresentou um leve desequilíbrio crítico nas fases (13.0 A, 14.5 A e 17.2 A):</span>
+<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb10-181"><a href="#cb10-181" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
+<span id="cb10-182"><a href="#cb10-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb10-183"><a href="#cb10-183" aria-hidden="true" tabindex="-1"></a>correntes_medidas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">13.0</span>, <span class="fl">14.5</span>, <span class="fl">17.2</span>)</span>
+<span id="cb10-184"><a href="#cb10-184" aria-hidden="true" tabindex="-1"></a><span class="fu">mdes</span>(correntes_medidas)</span>
+<span id="cb10-185"><a href="#cb10-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-186"><a href="#cb10-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-187"><a href="#cb10-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusão</span></span>
+<span id="cb10-188"><a href="#cb10-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-189"><a href="#cb10-189" aria-hidden="true" tabindex="-1"></a>Ter aprendido a estruturar e criar o meu próprio pacote no R se provou uma ferramenta excelente. A grande sacada dessa abordagem é a dinamicidade e o altíssimo nível de personalização. </span>
+<span id="cb10-190"><a href="#cb10-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-191"><a href="#cb10-191" aria-hidden="true" tabindex="-1"></a>Em vez de ficar dependendo de scripts soltos ou softwares engessados, criar um pacote te permite moldar o ambiente de trabalho exatamente para a sua realidade. Comandos repetitivos e problemas práticos, como o caos das pastas para atualizar o GitHub e os cálculos de bancada da oficina, foram resolvidos com soluções construídas sob medida. Isso mostra que programar em R vai muito além da estatística: é, acima de tudo, facilitar e otimizar o nosso próprio fluxo de trabalho.</span>
 </code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
