@@ -74,6 +74,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -85,11 +114,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">1</span> 1. Introdução</a></li>
-  <li><a href="#principais-dificuldades-encontradas" id="toc-principais-dificuldades-encontradas" class="nav-link" data-scroll-target="#principais-dificuldades-encontradas"><span class="header-section-number">2</span> 2. Principais Dificuldades Encontradas</a></li>
-  <li><a href="#soluções-implementadas" id="toc-soluções-implementadas" class="nav-link" data-scroll-target="#soluções-implementadas"><span class="header-section-number">3</span> 3. Soluções Implementadas</a></li>
-  <li><a href="#estrutura-do-código-rfuncoes_auxiliares.r" id="toc-estrutura-do-código-rfuncoes_auxiliares.r" class="nav-link" data-scroll-target="#estrutura-do-código-rfuncoes_auxiliares.r"><span class="header-section-number">4</span> 4. Estrutura do Código (<code>R/funcoes_auxiliares.R</code>)</a></li>
-  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">5</span> 5. Conclusão</a></li>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">1</span> Introdução</a></li>
+  <li><a href="#criação-estruturação-e-instalação-do-pacote" id="toc-criação-estruturação-e-instalação-do-pacote" class="nav-link" data-scroll-target="#criação-estruturação-e-instalação-do-pacote"><span class="header-section-number">2</span> Criação, Estruturação e Instalação do Pacote</a>
+  <ul class="collapse">
+  <li><a href="#arquitetura-de-código-separada" id="toc-arquitetura-de-código-separada" class="nav-link" data-scroll-target="#arquitetura-de-código-separada"><span class="header-section-number">2.1</span> Arquitetura de Código Separada</a></li>
+  <li><a href="#o-papel-do-roxygen2-na-documentação-científica" id="toc-o-papel-do-roxygen2-na-documentação-científica" class="nav-link" data-scroll-target="#o-papel-do-roxygen2-na-documentação-científica"><span class="header-section-number">2.2</span> O Papel do roxygen2 na Documentação Científica</a></li>
+  <li><a href="#pipeline-de-compilação-e-instalação-local" id="toc-pipeline-de-compilação-e-instalação-local" class="nav-link" data-scroll-target="#pipeline-de-compilação-e-instalação-local"><span class="header-section-number">2.3</span> Pipeline de Compilação e Instalação Local</a></li>
+  </ul></li>
+  <li><a href="#principais-dificuldades-encontradas-e-decisões-técnicas" id="toc-principais-dificuldades-encontradas-e-decisões-técnicas" class="nav-link" data-scroll-target="#principais-dificuldades-encontradas-e-decisões-técnicas"><span class="header-section-number">3</span> Principais Dificuldades Encontradas e Decisões Técnicas</a>
+  <ul class="collapse">
+  <li><a href="#renderização-assíncrona-background-jobs" id="toc-renderização-assíncrona-background-jobs" class="nav-link" data-scroll-target="#renderização-assíncrona-background-jobs"><span class="header-section-number">3.1</span> Renderização Assíncrona (<em>Background Jobs</em>)</a></li>
+  <li><a href="#escopo-de-caminhos-aninhados-e-resolução-dinâmica" id="toc-escopo-de-caminhos-aninhados-e-resolução-dinâmica" class="nav-link" data-scroll-target="#escopo-de-caminhos-aninhados-e-resolução-dinâmica"><span class="header-section-number">3.2</span> Escopo de Caminhos Aninhados e Resolução Dinâmica</a></li>
+  <li><a href="#rejeição-de-commits-vazios-e-captura-de-símbolos-do-console" id="toc-rejeição-de-commits-vazios-e-captura-de-símbolos-do-console" class="nav-link" data-scroll-target="#rejeição-de-commits-vazios-e-captura-de-símbolos-do-console"><span class="header-section-number">3.3</span> Rejeição de Commits Vazios e Captura de Símbolos do Console</a></li>
+  <li><a href="#modelagem-do-desbalanceamento-de-corrente-abordagem-de-campo" id="toc-modelagem-do-desbalanceamento-de-corrente-abordagem-de-campo" class="nav-link" data-scroll-target="#modelagem-do-desbalanceamento-de-corrente-abordagem-de-campo"><span class="header-section-number">3.4</span> Modelagem do Desbalanceamento de Corrente: Abordagem de Campo</a></li>
+  </ul></li>
+  <li><a href="#desenvolvimento-e-demonstração-das-funções" id="toc-desenvolvimento-e-demonstração-das-funções" class="nav-link" data-scroll-target="#desenvolvimento-e-demonstração-das-funções"><span class="header-section-number">4</span> Desenvolvimento e Demonstração das Funções</a>
+  <ul class="collapse">
+  <li><a href="#sincronização-e-compilação-dinâmica-via-git" id="toc-sincronização-e-compilação-dinâmica-via-git" class="nav-link" data-scroll-target="#sincronização-e-compilação-dinâmica-via-git"><span class="header-section-number">4.1</span> Sincronização e Compilação Dinâmica via <code>git()</code></a></li>
+  <li><a href="#dimensionamento-energético-e-eficiência-via-mpot" id="toc-dimensionamento-energético-e-eficiência-via-mpot" class="nav-link" data-scroll-target="#dimensionamento-energético-e-eficiência-via-mpot"><span class="header-section-number">4.2</span> Dimensionamento Energético e Eficiência via <code>mpot()</code></a></li>
+  <li><a href="#análise-de-assimetria-de-fase-via-mdes" id="toc-análise-de-assimetria-de-fase-via-mdes" class="nav-link" data-scroll-target="#análise-de-assimetria-de-fase-via-mdes"><span class="header-section-number">4.3</span> Análise de Assimetria de Fase via <code>mdes()</code></a></li>
+  </ul></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">5</span> Conclusão</a></li>
   </ul>
 </nav>
 </div>
@@ -105,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Relatório de Aula Prática XX</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Relatório de Aula Prática XX</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar o código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Esconder o código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver o código fonte</a></li></ul></div></div>
 <p class="subtitle lead"><a href="https://bendeivide.github.io/courses/epaec/" target="_blank">Estatística e Probabilidade</a> <br> <a href="https://bendeivide.github.io" target="_blank">Prof.&nbsp;Ben Dêivide (DEFIM/CAP/UFSJ)</a></p>
 </div>
 
@@ -123,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">5 de junho de 2026</p>
+      <p class="date">6 de junho de 2026</p>
     </div>
   </div>
   
@@ -136,72 +181,159 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <section id="introdução" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">1</span> 1. Introdução</h2>
-<p>Este relatório documenta o processo de desenvolvimento e os desafios superados na criação do pacote <code>graf</code>, projetado para automatizar a renderização de documentos dinâmicos (<code>.qmd</code> e <code>.Rmd</code>) e a sincronização direta com o GitHub por meio de uma única função chamada <code>git()</code>.</p>
+<h2 data-number="1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">1</span> Introdução</h2>
+<p>Este relatório aborda o processo de desenvolvimento, decisões de engenharia de software e os fundamentos matemáticos aplicados na criação do pacote R <code>graf</code>. O projeto foi projetado para solucionar duas dores latentes no ecossistema de desenvolvimento e manutenção técnica: a automação do pipeline de compilação gráfica sincronizada com o GitHub e a implementação de rotinas analíticas robustas voltadas à eficiência e diagnóstico operacional de motores elétricos monofásicos, bifásicos e trifásicos.</p>
 <hr>
 </section>
-<section id="principais-dificuldades-encontradas" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="principais-dificuldades-encontradas"><span class="header-section-number">2</span> 2. Principais Dificuldades Encontradas</h2>
-<p>O desenvolvimento enfrentou obstáculos técnicos causados pela estrutura aninhada de diretórios do projeto e o comportamento padrão das ferramentas de execução:</p>
+<section id="criação-estruturação-e-instalação-do-pacote" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="criação-estruturação-e-instalação-do-pacote"><span class="header-section-number">2</span> Criação, Estruturação e Instalação do Pacote</h2>
+<p>O desenvolvimento do pacote <code>graf</code> seguiu estritamente as diretrizes estruturais para a criação de pacotes modulares em R, utilizando as ferramentas de automação <code>devtools</code> e <code>roxygen2</code>.</p>
+<section id="arquitetura-de-código-separada" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="arquitetura-de-código-separada"><span class="header-section-number">2.1</span> Arquitetura de Código Separada</h3>
+<p>Para garantir manutenibilidade e isolamento de escopo, o código do pacote foi fracionado em dois arquivos fundamentais armazenados dentro do diretório <code>R/</code>: * <code>graf.R</code>: Responsável por abrigar as funções de interface voltadas diretamente ao usuário final, contendo as declarações de escopo e as diretrizes estruturadas de documentação. * <code>aux.R</code>: Atua como o motor interno e de bastidores do pacote. Armazena as funções homólogas (prefixadas com <code>meu_</code>) que executam o processamento bruto de dados, chamadas de sistema e manipulação de strings.</p>
+</section>
+<section id="o-papel-do-roxygen2-na-documentação-científica" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="o-papel-do-roxygen2-na-documentação-científica"><span class="header-section-number">2.2</span> O Papel do roxygen2 na Documentação Científica</h3>
+<p>A documentação integrada del código foi construída utilizando a sintaxe de comentários avançados <code>#'</code> inserida diretamente acima das funções exportadas em <code>graf.R</code>. O uso sistemático das tags cumpre os seguintes papéis técnico-acadêmicos: * <code>@title</code> e <code>@description</code>: Fornecem o mapeamento conceitual e de escopo para os manuais de ajuda nativos do R. * <code>@param</code>: Define formalmente o comportamento esperado de cada variável de entrada (como tensões, correntes e fatores de potência), mitigando erros de tipagem. * <code>@return</code>: Especifica rigorosamente a estrutura do objeto de saída devolvido (seja uma lista nomeada estruturada ou um escalar percentual). * <code>@export</code>: Registra formalmente a função na interface pública do pacote, instruindo o compilador a alimentar o arquivo <code>NAMESPACE</code> automaticamente, prevenindo conflitos de mascaramento no ambiente global do R.</p>
+</section>
+<section id="pipeline-de-compilação-e-instalação-local" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="pipeline-de-compilação-e-instalação-local"><span class="header-section-number">2.3</span> Pipeline de Compilação e Instalação Local</h3>
+<p>Para consolidar as alterações no código-fonte, gerar os manuais estruturados e injetar o pacote diretamente na biblioteca nativa do R, o fluxo sistemático de desenvolvimento exige a execução sequencial dos seguintes comandos no console:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Processa as tags roxygen, gera os arquivos .Rd e atualiza o NAMESPACE</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">document</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Executa o build físico e instala o pacote 'graf' no repositório local do R</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Carrega o pacote na sessão corrente para disponibilizar as funções</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="principais-dificuldades-encontradas-e-decisões-técnicas" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="principais-dificuldades-encontradas-e-decisões-técnicas"><span class="header-section-number">3</span> Principais Dificuldades Encontradas e Decisões Técnicas</h2>
+<p>O desenvolvimento do pacote impôs barreiras operacionais de baixo nível associadas à execução de subprocessos no sistema operacional e à readequação de modelos analíticos para manutenção de campo.</p>
+<section id="renderização-assíncrona-background-jobs" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="renderização-assíncrona-background-jobs"><span class="header-section-number">3.1</span> Renderização Assíncrona (<em>Background Jobs</em>)</h3>
 <ul>
-<li><strong>Renderização Assíncrona (<em>Background Jobs</em>):</strong> A função nativa <code>quarto::quarto_render()</code> rodava processos em segundo plano. O R continuava a execução do script e disparava o <code>git push</code> antes do HTML ser totalmente gerado, subindo arquivos desatualizados.</li>
-<li><strong>Escopo de Caminhos Aninhados:</strong> O comando padrão <code>quarto render</code> executado na raiz não localizava arquivos <code>index.qmd</code> em subpastas profundas (como <code>relatorio/rel05/</code>).</li>
-<li><strong>Rejeição de Commits Vazios:</strong> Por padrão, o terminal Git abortava a operação caso a função fosse chamada sem uma mensagem de commit definida.</li>
-<li><strong>Conflito de Repositórios (<em>Embedded Git</em>):</strong> A presença acidental de um diretório <code>.git</code> interno na pasta do pacote gerou avisos de submódulos travados no cache do repositório principal.</li>
+<li><strong>Problema:</strong> A função nativa <code>quarto::quarto_render()</code> operava por meio de chamadas assíncronas em segundo plano. O interpretador do R continuava a leitura do script de forma linear e disparava os comandos de terminal <code>git commit</code> e <code>git push</code> antes que os arquivos físicos de saída <code>.html</code> estivessem totalmente compilados em disco, gerando envios incompletos ou desatualizados ao GitHub.</li>
+<li><strong>Solução:</strong> Substituição por chamadas síncronas diretas via terminal de sistema utilizando a flag <code>wait = TRUE</code> dentro da função <code>system()</code>. Esta decisão congela a execução do ambiente R até que o motor externo do Quarto ou RMarkdown encerre completamente a gravação do relatório em disco.</li>
 </ul>
+</section>
+<section id="escopo-de-caminhos-aninhados-e-resolução-dinâmica" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="escopo-de-caminhos-aninhados-e-resolução-dinâmica"><span class="header-section-number">3.2</span> Escopo de Caminhos Aninhados e Resolução Dinâmica</h3>
+<ul>
+<li><strong>Problema:</strong> A execução de instruções do Quarto na raiz de projetos complexos falhava em localizar arquivos de documentação intermediários posicionados em subpastas ou partições profundas (ex: <code>relatorio/rel05/index.qmd</code>).</li>
+<li><strong>Solução:</strong> Implementação de varredura automatizada e recursiva utilizando a instrução <code>list.files(recursive = TRUE)</code>. O motor auxiliar passou a mapear dinamicamente toda a árvore de diretórios a partir do ponto de execução, filtrando os arquivos por extensão (<code>\\.qmd$</code> e <code>\\.[Rr]md$</code>) e aplicando o compilador de forma cirúrgica em cada alvo absoluto isolado.</li>
+</ul>
+</section>
+<section id="rejeição-de-commits-vazios-e-captura-de-símbolos-do-console" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="rejeição-de-commits-vazios-e-captura-de-símbolos-do-console"><span class="header-section-number">3.3</span> Rejeição de Commits Vazios e Captura de Símbolos do Console</h3>
+<ul>
+<li><strong>Problema:</strong> O interpretador do Git rejeitava a execução de pipelines de envio caso o parâmetro de comentário fosse omitido ou enviado sem formatação estrita de strings (aspas).</li>
+<li><strong>Solução:</strong> Injeção da flag <code>--allow-empty-message</code> diretamente na montagem da string de comando enviada ao terminal. Adicionalmente, implementou-se a captura de expressões via <code>deparse(substitute())</code> combinada com expressões regulares (<code>gsub</code>), permitindo que o usuário digite o comentário diretamente como um símbolo livre no console (ex: <code>git(versao_final)</code>), sem a obrigatoriedade do uso de aspas.</li>
+</ul>
+</section>
+<section id="modelagem-do-desbalanceamento-de-corrente-abordagem-de-campo" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="modelagem-do-desbalanceamento-de-corrente-abordagem-de-campo"><span class="header-section-number">3.4</span> Modelagem do Desbalanceamento de Corrente: Abordagem de Campo</h3>
+<ul>
+<li><strong>Problema:</strong> Formulações acadêmicas clássicas (como a norma NEMA) baseiam o cálculo de desbalanceamento em desvios complexos relacionados à média aritmética. Em cenários reais de manutenção preventiva, as médias atenuam estatisticamente os picos de assimetria e impõem passos matemáticos desnecessários para diagnósticos rápidos na linha de produção.</li>
+<li><strong>Solução:</strong> Implementação da fórmula de extremos de corrente, amplamente adotada em procedimentos rigorosos de manutenção industrial para avaliação de desequilíbrio de fases:</li>
+</ul>
+<p><span class="math display">\[\text{Desbal} (\%) = \left( \frac{I_{\text{máx}}}{I_{\text{mín}}} - 1 \right) \times 100\]</span></p>
+<p>Esta abordagem apresenta um caráter intencionalmente mais conservador e pessimista, evidenciando o estresse térmico real provocado pelo desalinhamento entre a fase mais carregada e a fase mais ociosa. A lógica foi projetada com um gatilho de segurança para emitir mensagens de aviso automáticas (<code>warning</code>) caso o desbalanceamento supere o limite técnico crítico de <strong>5%</strong>, limiar que expõe o isolamento das bobinas a riscos severos de degradação por efeito Joule.</p>
 <hr>
 </section>
-<section id="soluções-implementadas" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="soluções-implementadas"><span class="header-section-number">3</span> 3. Soluções Implementadas</h2>
-<p>Para mitigar os erros e garantir robustez, a lógica foi centralizada em chamadas de sistema síncronas e varredura dinâmica:</p>
-<ol type="1">
-<li><strong>Sincronismo via Terminal:</strong> Uso de <code>system(..., wait = TRUE)</code> para pausar o script do R até a conclusão total da renderização de cada arquivo.</li>
-<li><strong>Busca Recursiva:</strong> Uso de <code>list.files(recursive = TRUE)</code> para mapear automaticamente todos os arquivos <code>.qmd</code> e <code>.Rmd</code> do projeto, independentemente da pasta onde estejam guardados.</li>
-<li><strong>Flexibilização do Commit:</strong> Inclusão da flag <code>--allow-empty-message</code> no comando de envio para aceitar execuções rápidas sem texto obrigatório.</li>
-</ol>
+</section>
+<section id="desenvolvimento-e-demonstração-das-funções" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="desenvolvimento-e-demonstração-das-funções"><span class="header-section-number">4</span> Desenvolvimento e Demonstração das Funções</h2>
+<p>As funções desenvolvidas foram testadas e validadas. Abaixo constam os exemplos práticos de execução e seus respectivos comportamentos.</p>
+<section id="sincronização-e-compilação-dinâmica-via-git" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="sincronização-e-compilação-dinâmica-via-git"><span class="header-section-number">4.1</span> Sincronização e Compilação Dinâmica via <code>git()</code></h3>
+<p>A função mapeia o projeto recursivamente, renderiza os documentos pendentes e realiza a sincronização automática com o repositório remoto. Esta seção é apenas demonstrativa.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Chamada simplificada (Gera commit com comentário vazio e força o push)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Chamada com passagem de símbolo direto sem aspas no console</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span>(implementacao_funcoes_motores)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="dimensionamento-energético-e-eficiência-via-mpot" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="dimensionamento-energético-e-eficiência-via-mpot"><span class="header-section-number">4.2</span> Dimensionamento Energético e Eficiência via <code>mpot()</code></h3>
+<p>A função processa as variáveis elétricas da instalação. Na ausência do parâmetro de rendimento, retorna a <strong>Potência Elétrica Ativa</strong> consumida da rede. Caso o rendimento seja fornecido, calcula a <strong>Potência Mecânica Real no Eixo</strong>, expressando os resultados de forma simultânea em kW e CV.</p>
+<p>Para configurações trifásicas (fases = 3), o cálculo utiliza a equação de equilíbrio fasorial:</p>
+<p><span class="math display">\[\text{Potência (kW)} = \frac{\sqrt{3} \times V \times I \times FP \times \eta}{1000}\]</span></p>
+<p>Para cenários monofásicos ou bifásicos (fases = 1 ou 2), a equação assume o modelo direto:</p>
+<p><span class="math display">\[\text{Potência (kW)} = \frac{V \times I \times FP \times \eta}{1000}\]</span></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inicialização obrigatória do pacote para execução do relatório</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso A: Avaliação de Potência Elétrica Ativa (Sem rendimento informado)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Entrada: Motor Trifásico, 220V, 13.5A, Fator de Potência 0.89</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="at">f =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">220</span>, <span class="at">i =</span> <span class="fl">13.5</span>, <span class="at">fp =</span> <span class="fl">0.89</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Tipo
+[1] "Potência Elétrica Ativa"
+
+$kW
+[1] 4.58
+
+$CV
+[1] 6.22</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso B: Avaliação de Potência Mecânica Disponível no Eixo (Com rendimento de 85%)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="at">f =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">220</span>, <span class="at">i =</span> <span class="fl">13.5</span>, <span class="at">fp =</span> <span class="fl">0.89</span>, <span class="at">rendimento =</span> <span class="fl">0.85</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Tipo
+[1] "Potência Mecânica no Eixo"
+
+$kW
+[1] 3.89
+
+$CV
+[1] 5.29</code></pre>
+</div>
+</div>
+</section>
+<section id="análise-de-assimetria-de-fase-via-mdes" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="análise-de-assimetria-de-fase-via-mdes"><span class="header-section-number">4.3</span> Análise de Assimetria de Fase via <code>mdes()</code></h3>
+<p>A função interpreta um vetor de correntes lidas nas fases do estator e retorna o desbalanceamento com base na equação de extremos.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso A: Sistema operando sob condições normais e equilibradas de carga</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>correntes_estaveis <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">14.1</span>, <span class="fl">14.8</span>, <span class="fl">15.2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mdes</span>(correntes_estaveis)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.8</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso B: Sistema operando sob desequilíbrio crítico (Gera alerta de segurança)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>correntes_assimetricas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">13.0</span>, <span class="fl">14.5</span>, <span class="fl">17.2</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mdes</span>(correntes_assimetricas)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 32.31</code></pre>
+</div>
+</div>
 <hr>
 </section>
-<section id="estrutura-do-código-rfuncoes_auxiliares.r" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="estrutura-do-código-rfuncoes_auxiliares.r"><span class="header-section-number">4</span> 4. Estrutura do Código (<code>R/funcoes_auxiliares.R</code>)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Funcoes auxiliares de automacao do pacote graf</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>meu_git <span class="ot">&lt;-</span> <span class="cf">function</span>(msg) {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Busca e renderiza de forma isolada e síncrona todos os arquivos .qmd</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  arquivos_qmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.qmd$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_qmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 1: Renderizando todos os arquivos .qmd..."</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (qmd <span class="cf">in</span> arquivos_qmd) {</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Processando Quarto:"</span>, <span class="fu">basename</span>(qmd)))</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">system</span>(<span class="fu">paste</span>(<span class="st">"quarto render"</span>, <span class="fu">shQuote</span>(qmd)), <span class="at">wait =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Busca e executa o processamento (knit) de todos os arquivos .Rmd</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  arquivos_rmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.[Rr]md$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_rmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 2: Knitando todos os arquivos .Rmd..."</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (rmd <span class="cf">in</span> arquivos_rmd) {</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Processando RMarkdown:"</span>, <span class="fu">basename</span>(rmd)))</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      rmarkdown<span class="sc">::</span><span class="fu">render</span>(rmd, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Pipeline sequencial de sincronizacao com o GitHub</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Passo 3: Sincronizando com o GitHub..."</span>)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git add ."</span>)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  comando_commit <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">'git commit --allow-empty-message -m "%s"'</span>, msg)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(comando_commit)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git push"</span>)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Sucesso: Tudo atualizado e no ar!"</span>)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<hr>
 </section>
 <section id="conclusão" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="conclusão"><span class="header-section-number">5</span> 5. Conclusão</h2>
-<p>A automação final eliminou a necessidade de gerenciar caminhos manualmente. O pipeline garante que toda alteração no código gerado pelo <code>knitr</code> ou pelo <code>quarto</code> seja compilada localmente em sua totalidade antes de qualquer envio ao repositório remoto.</p>
+<h2 data-number="5" class="anchored" data-anchor-id="conclusão"><span class="header-section-number">5</span> Conclusão</h2>
+<p>A consolidação do pacote <code>graf</code> resolveu os gargalos operacionais de sincronização assíncrona durante o desenvolvimento de relatórios dinâmicos na plataforma Quarto. Sob a perspectiva da engenharia, o encapsulamento das funções matemáticas <code>mpot</code> e <code>mdes</code> forneceu uma ferramenta computacional robusta para o diagnóstico ágil em plantas industriais. A readequação da fórmula de desbalanceamento para o modelo de razão extrema elevou o nível de proteção preventiva dos ativos elétricos analisados, estabelecendo uma estrutura de código sólida e pronta para futuras integrações de bancos de dados multiplataforma.</p>
 <!-- -->
 
 </section>
@@ -659,106 +791,158 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Só mude aqui!!!!</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Nome do Aluno"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Relatório de Aula Prática XX"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> referencias.bib</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A partir daqui nao faca alteracoes!!!!!</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="an">csl:</span><span class="co"> associacao-brasileira-de-normas-tecnicas-ipea.csl</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "&lt;a href='https://bendeivide.github.io/courses/epaec/' target='_blank'&gt;Estatística e Probabilidade&lt;/a&gt; &lt;/br&gt; &lt;a href='https://bendeivide.github.io' target='_blank'&gt;Prof. Ben Dêivide (DEFIM/CAP/UFSJ)&lt;/a&gt;"</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">include-before-body:</span><span class="co"> header.html</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-BR</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: bootstrap</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">    #css: styles.css</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Introdução</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>Este relatório documenta o processo de desenvolvimento e os desafios superados na criação do pacote <span class="in">`graf`</span>, projetado para automatizar a renderização de documentos dinâmicos (<span class="in">`.qmd`</span> e <span class="in">`.Rmd`</span>) e a sincronização direta com o GitHub por meio de uma única função chamada <span class="in">`git()`</span>.</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Principais Dificuldades Encontradas</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>O desenvolvimento enfrentou obstáculos técnicos causados pela estrutura aninhada de diretórios do projeto e o comportamento padrão das ferramentas de execução:</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Renderização Assíncrona (*Background Jobs*):** A função nativa <span class="in">`quarto::quarto_render()`</span> rodava processos em segundo plano. O R continuava a execução do script e disparava o <span class="in">`git push`</span> antes do HTML ser totalmente gerado, subindo arquivos desatualizados.</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Escopo de Caminhos Aninhados:** O comando padrão <span class="in">`quarto render`</span> executado na raiz não localizava arquivos <span class="in">`index.qmd`</span> em subpastas profundas (como <span class="in">`relatorio/rel05/`</span>).</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Rejeição de Commits Vazios:** Por padrão, o terminal Git abortava a operação caso a função fosse chamada sem uma mensagem de commit definida.</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Conflito de Repositórios (*Embedded Git*):** A presença acidental de um diretório <span class="in">`.git`</span> interno na pasta do pacote gerou avisos de submódulos travados no cache do repositório principal.</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Soluções Implementadas</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>Para mitigar os erros e garantir robustez, a lógica foi centralizada em chamadas de sistema síncronas e varredura dinâmica:</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Sincronismo via Terminal:** Uso de <span class="in">`system(..., wait = TRUE)`</span> para pausar o script do R até a conclusão total da renderização de cada arquivo.</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Busca Recursiva:** Uso de <span class="in">`list.files(recursive = TRUE)`</span> para mapear automaticamente todos os arquivos <span class="in">`.qmd`</span> e <span class="in">`.Rmd`</span> do projeto, independentemente da pasta onde estejam guardados.</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Flexibilização do Commit:** Inclusão da flag <span class="in">`--allow-empty-message`</span> no comando de envio para aceitar execuções rápidas sem texto obrigatório.</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Estrutura do Código (`R/funcoes_auxiliares.R`)</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Funcoes auxiliares de automacao do pacote graf</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>meu_git <span class="ot">&lt;-</span> <span class="cf">function</span>(msg) {</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Busca e renderiza de forma isolada e síncrona todos os arquivos .qmd</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>  arquivos_qmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.qmd$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_qmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 1: Renderizando todos os arquivos .qmd..."</span>)</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (qmd <span class="cf">in</span> arquivos_qmd) {</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Processando Quarto:"</span>, <span class="fu">basename</span>(qmd)))</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>      <span class="fu">system</span>(<span class="fu">paste</span>(<span class="st">"quarto render"</span>, <span class="fu">shQuote</span>(qmd)), <span class="at">wait =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Busca e executa o processamento (knit) de todos os arquivos .Rmd</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>  arquivos_rmd <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.[Rr]md$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(arquivos_rmd) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"=&gt; Passo 2: Knitando todos os arquivos .Rmd..."</span>)</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (rmd <span class="cf">in</span> arquivos_rmd) {</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"-&gt; Processando RMarkdown:"</span>, <span class="fu">basename</span>(rmd)))</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>      rmarkdown<span class="sc">::</span><span class="fu">render</span>(rmd, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Pipeline sequencial de sincronizacao com o GitHub</span></span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Passo 3: Sincronizando com o GitHub..."</span>)</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git add ."</span>)</span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  comando_commit <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">'git commit --allow-empty-message -m "%s"'</span>, msg)</span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(comando_commit)</span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">"git push"</span>)</span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"=&gt; Sucesso: Tudo atualizado e no ar!"</span>)</span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Conclusão</span></span>
-<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>A automação final eliminou a necessidade de gerenciar caminhos manualmente. O pipeline garante que toda alteração no código gerado pelo <span class="in">`knitr`</span> ou pelo <span class="in">`quarto`</span> seja compilada localmente em sua totalidade antes de qualquer envio ao repositório remoto.</span>
-<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Só mude aqui!!!!</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Nome do Aluno"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Relatório de Aula Prática XX"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> referencias.bib</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A partir daqui nao faca alteracoes!!!!!</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="an">csl:</span><span class="co"> associacao-brasileira-de-normas-tecnicas-ipea.csl</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "&lt;a href='https://bendeivide.github.io/courses/epaec/' target='_blank'&gt;Estatística e Probabilidade&lt;/a&gt; &lt;/br&gt; &lt;a href='https://bendeivide.github.io' target='_blank'&gt;Prof. Ben Dêivide (DEFIM/CAP/UFSJ)&lt;/a&gt;"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="an">include-before-body:</span><span class="co"> header.html</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-BR</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: bootstrap</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">    #css: styles.css</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>Este relatório aborda o processo de desenvolvimento, decisões de engenharia de software e os fundamentos matemáticos aplicados na criação do pacote R <span class="in">`graf`</span>. O projeto foi projetado para solucionar duas dores latentes no ecossistema de desenvolvimento e manutenção técnica: a automação do pipeline de compilação gráfica sincronizada com o GitHub e a implementação de rotinas analíticas robustas voltadas à eficiência e diagnóstico operacional de motores elétricos monofásicos, bifásicos e trifásicos.</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Criação, Estruturação e Instalação do Pacote</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>O desenvolvimento do pacote <span class="in">`graf`</span> seguiu estritamente as diretrizes estruturais para a criação de pacotes modulares em R, utilizando as ferramentas de automação <span class="in">`devtools`</span> e <span class="in">`roxygen2`</span>.</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="fu">### Arquitetura de Código Separada</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>Para garantir manutenibilidade e isolamento de escopo, o código do pacote foi fracionado em dois arquivos fundamentais armazenados dentro do diretório <span class="in">`R/`</span>:</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`graf.R`</span>: Responsável por abrigar as funções de interface voltadas diretamente ao usuário final, contendo as declarações de escopo e as diretrizes estruturadas de documentação.</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`aux.R`</span>: Atua como o motor interno e de bastidores do pacote. Armazena as funções homólogas (prefixadas com <span class="in">`meu_`</span>) que executam o processamento bruto de dados, chamadas de sistema e manipulação de strings.</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### O Papel do roxygen2 na Documentação Científica</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>A documentação integrada del código foi construída utilizando a sintaxe de comentários avançados <span class="in">`#'`</span> inserida diretamente acima das funções exportadas em <span class="in">`graf.R`</span>. O uso sistemático das tags cumpre os seguintes papéis técnico-acadêmicos:</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`@title`</span> e <span class="in">`@description`</span>: Fornecem o mapeamento conceitual e de escopo para os manuais de ajuda nativos do R.</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`@param`</span>: Define formalmente o comportamento esperado de cada variável de entrada (como tensões, correntes e fatores de potência), mitigando erros de tipagem.</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`@return`</span>: Especifica rigorosamente a estrutura do objeto de saída devolvido (seja uma lista nomeada estruturada ou um escalar percentual).</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`@export`</span>: Registra formalmente a função na interface pública do pacote, instruindo o compilador a alimentar o arquivo <span class="in">`NAMESPACE`</span> automaticamente, prevenindo conflitos de mascaramento no ambiente global do R.</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pipeline de Compilação e Instalação Local</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>Para consolidar as alterações no código-fonte, gerar os manuais estruturados e injetar o pacote diretamente na biblioteca nativa do R, o fluxo sistemático de desenvolvimento exige a execução sequencial dos seguintes comandos no console:</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Processa as tags roxygen, gera os arquivos .Rd e atualiza o NAMESPACE</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">document</span>()</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Executa o build físico e instala o pacote 'graf' no repositório local do R</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install</span>()</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Carrega o pacote na sessão corrente para disponibilizar as funções</span></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Principais Dificuldades Encontradas e Decisões Técnicas</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>O desenvolvimento do pacote impôs barreiras operacionais de baixo nível associadas à execução de subprocessos no sistema operacional e à readequação de modelos analíticos para manutenção de campo.</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="fu">### Renderização Assíncrona (*Background Jobs*)</span></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Problema:** A função nativa <span class="in">`quarto::quarto_render()`</span> operava por meio de chamadas assíncronas em segundo plano. O interpretador do R continuava a leitura do script de forma linear e disparava os comandos de terminal <span class="in">`git commit`</span> e <span class="in">`git push`</span> antes que os arquivos físicos de saída <span class="in">`.html`</span> estivessem totalmente compilados em disco, gerando envios incompletos ou desatualizados ao GitHub.</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Solução:** Substituição por chamadas síncronas diretas via terminal de sistema utilizando a flag <span class="in">`wait = TRUE`</span> dentro da função <span class="in">`system()`</span>. Esta decisão congela a execução do ambiente R até que o motor externo do Quarto ou RMarkdown encerre completamente a gravação do relatório em disco.</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### Escopo de Caminhos Aninhados e Resolução Dinâmica</span></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Problema:** A execução de instruções do Quarto na raiz de projetos complexos falhava em localizar arquivos de documentação intermediários posicionados em subpastas ou partições profundas (ex: <span class="in">`relatorio/rel05/index.qmd`</span>).</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Solução:** Implementação de varredura automatizada e recursiva utilizando a instrução <span class="in">`list.files(recursive = TRUE)`</span>. O motor auxiliar passou a mapear dinamicamente toda a árvore de diretórios a partir do ponto de execução, filtrando os arquivos por extensão (<span class="in">`\\.qmd$`</span> e <span class="in">`\\.[Rr]md$`</span>) e aplicando o compilador de forma cirúrgica em cada alvo absoluto isolado.</span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rejeição de Commits Vazios e Captura de Símbolos do Console</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Problema:** O interpretador do Git rejeitava a execução de pipelines de envio caso o parâmetro de comentário fosse omitido ou enviado sem formatação estrita de strings (aspas).</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Solução:** Injeção da flag <span class="in">`--allow-empty-message`</span> diretamente na montagem da string de comando enviada ao terminal. Adicionalmente, implementou-se a captura de expressões via <span class="in">`deparse(substitute())`</span> combinada com expressões regulares (<span class="in">`gsub`</span>), permitindo que o usuário digite o comentário diretamente como um símbolo livre no console (ex: <span class="in">`git(versao_final)`</span>), sem a obrigatoriedade do uso de aspas.</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modelagem do Desbalanceamento de Corrente: Abordagem de Campo</span></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Problema:** Formulações acadêmicas clássicas (como a norma NEMA) baseiam o cálculo de desbalanceamento em desvios complexos relacionados à média aritmética. Em cenários reais de manutenção preventiva, as médias atenuam estatisticamente os picos de assimetria e impõem passos matemáticos desnecessários para diagnósticos rápidos na linha de produção.</span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Solução:** Implementação da fórmula de extremos de corrente, amplamente adotada em procedimentos rigorosos de manutenção industrial para avaliação de desequilíbrio de fases:</span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>$$\text{Desbal} (\%) = \left( \frac{I_{\text{máx}}}{I_{\text{mín}}} - 1 \right) \times 100$$</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>Esta abordagem apresenta um caráter intencionalmente mais conservador e pessimista, evidenciando o estresse térmico real provocado pelo desalinhamento entre a fase mais carregada e a fase mais ociosa. A lógica foi projetada com um gatilho de segurança para emitir mensagens de aviso automáticas (<span class="in">`warning`</span>) caso o desbalanceamento supere o limite técnico crítico de **5%**, limiar que expõe o isolamento das bobinas a riscos severos de degradação por efeito Joule.</span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## Desenvolvimento e Demonstração das Funções</span></span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>As funções desenvolvidas foram testadas e validadas. Abaixo constam os exemplos práticos de execução e seus respectivos comportamentos.</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sincronização e Compilação Dinâmica via `git()`</span></span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>A função mapeia o projeto recursivamente, renderiza os documentos pendentes e realiza a sincronização automática com o repositório remoto. Esta seção é apenas demonstrativa.</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="co"># Chamada simplificada (Gera commit com comentário vazio e força o push)</span></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span>()</span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="co"># Chamada com passagem de símbolo direto sem aspas no console</span></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span>(implementacao_funcoes_motores)</span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dimensionamento Energético e Eficiência via `mpot()`</span></span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>A função processa as variáveis elétricas da instalação. Na ausência do parâmetro de rendimento, retorna a **Potência Elétrica Ativa** consumida da rede. Caso o rendimento seja fornecido, calcula a **Potência Mecânica Real no Eixo**, expressando os resultados de forma simultânea em kW e CV.</span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>Para configurações trifásicas (fases = 3), o cálculo utiliza a equação de equilíbrio fasorial:</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>$$\text{Potência (kW)} = \frac{\sqrt{3} \times V \times I \times FP \times \eta}{1000}$$</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>Para cenários monofásicos ou bifásicos (fases = 1 ou 2), a equação assume o modelo direto:</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>$$\text{Potência (kW)} = \frac{V \times I \times FP \times \eta}{1000}$$</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a><span class="co"># Inicialização obrigatória do pacote para execução do relatório</span></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(graf)</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso A: Avaliação de Potência Elétrica Ativa (Sem rendimento informado)</span></span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a><span class="co"># Entrada: Motor Trifásico, 220V, 13.5A, Fator de Potência 0.89</span></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="at">f =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">220</span>, <span class="at">i =</span> <span class="fl">13.5</span>, <span class="at">fp =</span> <span class="fl">0.89</span>)</span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso B: Avaliação de Potência Mecânica Disponível no Eixo (Com rendimento de 85%)</span></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a><span class="fu">mpot</span>(<span class="at">f =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">220</span>, <span class="at">i =</span> <span class="fl">13.5</span>, <span class="at">fp =</span> <span class="fl">0.89</span>, <span class="at">rendimento =</span> <span class="fl">0.85</span>)</span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="fu">### Análise de Assimetria de Fase via `mdes()`</span></span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>A função interpreta um vetor de correntes lidas nas fases do estator e retorna o desbalanceamento com base na equação de extremos.</span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso A: Sistema operando sob condições normais e equilibradas de carga</span></span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>correntes_estaveis <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">14.1</span>, <span class="fl">14.8</span>, <span class="fl">15.2</span>)</span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a><span class="fu">mdes</span>(correntes_estaveis)</span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a><span class="co"># Caso B: Sistema operando sob desequilíbrio crítico (Gera alerta de segurança)</span></span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>correntes_assimetricas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">13.0</span>, <span class="fl">14.5</span>, <span class="fl">17.2</span>)</span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a><span class="fu">mdes</span>(correntes_assimetricas)</span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusão</span></span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>A consolidação do pacote <span class="in">`graf`</span> resolveu os gargalos operacionais de sincronização assíncrona durante o desenvolvimento de relatórios dinâmicos na plataforma Quarto. Sob a perspectiva da engenharia, o encapsulamento das funções matemáticas <span class="in">`mpot`</span> e <span class="in">`mdes`</span> forneceu uma ferramenta computacional robusta para o diagnóstico ágil em plantas industriais. A readequação da fórmula de desbalanceamento para o modelo de razão extrema elevou o nível de proteção preventiva dos ativos elétricos analisados, estabelecendo uma estrutura de código sólida e pronta para futuras integrações de bancos de dados multiplataforma.</span>
+</code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

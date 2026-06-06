@@ -5,7 +5,7 @@ title: "Relatório de Aula Prática XX"
 bibliography: referencias.bib
 # A partir daqui nao faca alteracoes!!!!!
 link-citations: true
-csl: associacao-braileira-de-normas-tecnicas-ipea.csl
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
 subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
 include-before-body: header.html
 date: today
