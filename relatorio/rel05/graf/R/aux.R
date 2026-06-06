@@ -8,7 +8,7 @@ meu_git <- function(msg) {
     message("=> Passo 1: Renderizando todos os arquivos .qmd...")
     for (qmd in arquivos_qmd) {
       message(paste("-> Renderizando:", basename(qmd)))
-      system(paste("quarto render", shQuote(qmd)), wait = TRUE)
+      system(paste("quarto render", shQuote(qmd)))
     }
   }
 
@@ -33,8 +33,8 @@ meu_git <- function(msg) {
   message("=> Feito! Tudo atualizado e no ar.")
 }
 
-meu_mpot <- function(fases, v, i, fp, rendimento) {
-  fator <- ifelse(fases == 3, sqrt(3), 1)
+meu_mpot <- function(f, v, i, fp, rendimento) {
+  fator <- ifelse(f == 3, sqrt(3), 1)
   p_kw <- (fator * v * i * fp) / 1000
 
   if (is.null(rendimento)) {
@@ -44,7 +44,7 @@ meu_mpot <- function(fases, v, i, fp, rendimento) {
     p_kw <- p_kw * rendimento
   }
 
-  p_cv <- p_kw * 1.35962 # 1 kW = 1.35962 CV
+  p_cv <- p_kw * 1.35962
 
   list(
     Tipo = tipo,

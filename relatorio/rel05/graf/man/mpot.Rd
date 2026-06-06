@@ -4,10 +4,10 @@
 \alias{mpot}
 \title{Cálculo de Potência de Motores Elétricos}
 \usage{
-mpot(fases, v, i, fp, rendimento = NULL)
+mpot(f, v, i, fp, rendimento = NULL)
 }
 \arguments{
-\item{fases}{Número de fases (1, 2 ou 3).}
+\item{f}{Número de fases (1, 2 ou 3).}
 
 \item{v}{Tensão de alimentação (Volts).}
 
@@ -25,9 +25,6 @@ Lista com o tipo de potência e valores em kW e CV.
 }
 \examples{
 library(graf)
-# Potência elétrica ativa (sem rendimento) para motor trifásico
 # mpot(3, 380, 14.8, 0.85)
-
-# Potência mecânica no eixo (com rendimento)
 # mpot(3, 380, 14.8, 0.85, 0.90)
 }

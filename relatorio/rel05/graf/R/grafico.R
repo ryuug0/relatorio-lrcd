@@ -23,7 +23,7 @@ git <- function(comentario) {
 #' Cálculo de Potência de Motores Elétricos
 #'
 #' \code{mpot} calcula a potência elétrica ativa ou a potência mecânica no eixo (se o rendimento for informado).
-#' @param fases Número de fases (1, 2 ou 3).
+#' @param f Número de fases (1, 2 ou 3).
 #' @param v Tensão de alimentação (Volts).
 #' @param i Corrente elétrica (Amperes).
 #' @param fp Fator de potência.
@@ -31,14 +31,11 @@ git <- function(comentario) {
 #' @return Lista com o tipo de potência e valores em kW e CV.
 #' @examples
 #' library(graf)
-#' # Potência elétrica ativa (sem rendimento) para motor trifásico
 #' # mpot(3, 380, 14.8, 0.85)
-#'
-#' # Potência mecânica no eixo (com rendimento)
 #' # mpot(3, 380, 14.8, 0.85, 0.90)
 #' @export
-mpot <- function(fases, v, i, fp, rendimento = NULL) {
-  res <- meu_mpot(fases, v, i, fp, rendimento)
+mpot <- function(f, v, i, fp, rendimento = NULL) {
+  res <- meu_mpot(f, v, i, fp, rendimento)
   return(res)
 }
 
@@ -49,11 +46,7 @@ mpot <- function(fases, v, i, fp, rendimento = NULL) {
 #' @return O desbalanceamento em porcentagem.
 #' @examples
 #' library(graf)
-#' # Sistema trifásico
 #' # mdes(c(14.8, 15.2, 14.1))
-#'
-#' # Sistema bifásico
-#' # mdes(c(13.5, 12.1))
 #' @export
 mdes <- function(correntes) {
   res <- meu_mdes(correntes)

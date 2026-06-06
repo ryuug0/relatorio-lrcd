@@ -17,9 +17,5 @@ O desbalanceamento em porcentagem.
 }
 \examples{
 library(graf)
-# Sistema trifásico
 # mdes(c(14.8, 15.2, 14.1))
-
-# Sistema bifásico
-# mdes(c(13.5, 12.1))
 }
