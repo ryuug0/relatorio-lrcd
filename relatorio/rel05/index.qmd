@@ -49,13 +49,15 @@ A documentação integrada del código foi construída utilizando a sintaxe de c
 ### Pipeline de Compilação e Instalação Local
 Para consolidar as alterações no código-fonte, gerar os manuais estruturados e injetar o pacote diretamente na biblioteca nativa do R, o fluxo sistemático de desenvolvimento exige a execução sequencial dos seguintes comandos no console:
 
-```{r}
+```r
 # 1. Processa as tags roxygen, gera os arquivos .Rd e atualiza o NAMESPACE
 devtools::document()
 
 # 2. Executa o build físico e instala o pacote 'graf' no repositório local do R
 devtools::install()
+```
 
+```{r}
 # 3. Carrega o pacote na sessão corrente para disponibilizar as funções
 library(graf)
 ```
