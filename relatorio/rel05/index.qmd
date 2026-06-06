@@ -26,37 +26,37 @@ execute:
 
 ## Introdução
 
-Este relatório documenta o processo de desenvolvimento, as decisões de engenharia de software e os fundamentos matemáticos aplicados na criação do pacote R `graf`. O projeto foi projetado para solucionar duas dores latentes no ecossistema de desenvolvimento e manutenção: a automação do pipeline de sincronização com o GitHub e a implementação de rotinas analíticas voltadas à eficiência e diagnóstico operacional de motores elétricos monofásicos, bifásicos e trifásicos.
+Este relatório aborda o processo de desenvolvimento, decisões de engenharia de software e os fundamentos matemáticos aplicados na criação do pacote R `graf`. O projeto foi projetado para solucionar duas dores latentes no ecossistema de desenvolvimento e manutenção técnica: a automação do pipeline de compilação gráfica sincronizada com o GitHub e a implementação de rotinas analíticas robustas voltadas à eficiência e diagnóstico operacional de motores elétricos monofásicos, bifásicos e trifásicos.
 
 ---
 
 ## Criação, Estruturação e Instalação do Pacote
 
-O desenvolvimento do pacote `graf` seguiu as diretrizes rígidas do ecossistema CRAN para a criação de pacotes modulares em R, utilizando as ferramentas `devtools` e `roxygen2`.
+O desenvolvimento do pacote `graf` seguiu estritamente as diretrizes estruturais para a criação de pacotes modulares em R, utilizando as ferramentas de automação `devtools` e `roxygen2`.
 
 ### Arquitetura de Código Separada
-Para manter a interface estável e separar a lógica de negócios da interface do usuário, o código foi dividido em dois arquivos estruturais dentro da pasta `R/`:
-* `graf.R`: Contém as funções de interface voltadas para o usuário, as tags de documentação estruturada e o direcionamento de escopo.
-* `aux.R`: Atua como o motor interno do pacote, armazenando as funções auxiliares que executam o processamento bruto, processamento de strings e chamadas de sistema.
+Para garantir manutenibilidade e isolamento de escopo, o código do pacote foi fracionado em dois arquivos fundamentais armazenados dentro do diretório `R/`:
+* `graf.R`: Responsável por abrigar as funções de interface voltadas diretamente ao usuário final, contendo as declarações de escopo e as diretrizes estruturadas de documentação.
+* `aux.R`: Atua como o motor interno e de bastidores do pacote. Armazena as funções homólogas (prefixadas com `meu_`) que executam o processamento bruto de dados, chamadas de sistema e manipulação de strings.
 
 ### O Papel do roxygen2 na Documentação Científica
-A documentação foi construída utilizando sintaxe comentada por `#'` diretamente acima das funções exportadas em `graf.R`. O uso das tags cumpre os seguintes papéis acadêmicos:
-* `@title` e `@description`: Definem o escopo conceitual da ferramenta para o manual eletrônico.
-* `@param`: Declara formalmente as variáveis físicas aceitas (como tensões, correntes e fatores de potência) e suas respectivas restrições de tipo.
-* `@return`: Especifica rigorosamente a estrutura de saída gerada (seja um valor escalar ou uma lista estruturada).
-* `@export`: Declara formalmente quais funções pertencem à interface pública do usuário, gerando o arquivo `NAMESPACE` de forma automatizada e prevenindo colisões de escopo global no ambiente de execução do R.
+A documentação integrada del código foi construída utilizando a sintaxe de comentários avançados `#'` inserida diretamente acima das funções exportadas em `graf.R`. O uso sistemático das tags cumpre os seguintes papéis técnico-acadêmicos:
+* `@title` e `@description`: Fornecem o mapeamento conceitual e de escopo para os manuais de ajuda nativos do R.
+* `@param`: Define formalmente o comportamento esperado de cada variável de entrada (como tensões, correntes e fatores de potência), mitigando erros de tipagem.
+* `@return`: Especifica rigorosamente a estrutura do objeto de saída devolvido (seja uma lista nomeada estruturada ou um escalar percentual).
+* `@export`: Registra formalmente a função na interface pública do pacote, instruindo o compilador a alimentar o arquivo `NAMESPACE` automaticamente, prevenindo conflitos de mascaramento no ambiente global do R.
 
-### Pipeline de Compilação Local
-Para consolidar as modificações feitas no código-fonte e compilar o pacote localmente, executa-se o seguinte fluxo direto no console do RStudio:
+### Pipeline de Compilação e Instalação Local
+Para consolidar as alterações no código-fonte, gerar os manuais estruturados e injetar o pacote diretamente na biblioteca nativa do R, o fluxo sistemático de desenvolvimento exige a execução sequencial dos seguintes comandos no console:
 
-```r
-# 1. Gera os arquivos de documentação .Rd e atualiza o NAMESPACE via roxygen2
+```{r}
+# 1. Processa as tags roxygen, gera os arquivos .Rd e atualiza o NAMESPACE
 devtools::document()
 
-# 2. Compila e instala o pacote 'graf' de forma nativa no ambiente local
+# 2. Executa o build físico e instala o pacote 'graf' no repositório local do R
 devtools::install()
 
-# 3. Carrega o pacote para disponibilizar as funções no ambiente de trabalho
+# 3. Carrega o pacote na sessão corrente para disponibilizar as funções
 library(graf)
 ```
 
@@ -64,86 +64,86 @@ library(graf)
 
 ## Principais Dificuldades Encontradas e Decisões Técnicas
 
-O desenvolvimento enfrentou obstáculos técnicos que exigiram a reestruturação das chamadas nativas de sistema e a revisão analítica de formulações matemáticas de campo.
+O desenvolvimento do pacote impôs barreiras operacionais de baixo nível associadas à execução de subprocessos no sistema operacional e à readequação de modelos analíticos para manutenção de campo.
 
 ### Renderização Assíncrona (*Background Jobs*)
-* **Problema:** A execução da função padrão `quarto::quarto_render()` disparava processos assíncronos em segundo plano. O interpretador do R continuava o fluxo do script imediatamente e disparava a sequência do terminal `git commit` e `git push` antes de os arquivos finais `.html` terem sido totalmente gerados pelo motor gráfico, resultando no envio de relatórios desatualizados ou corrompidos ao GitHub.
-* **Solução:** Substituição das chamadas de alto nível por comandos diretos de prompt através de funções `system(..., wait = TRUE)`. Isso congelou a execução do R local até que o interpretador externo do Quarto ou RMarkdown finalizasse rigidamente a escrita física do arquivo em disco.
+* **Problema:** A função nativa `quarto::quarto_render()` operava por meio de chamadas assíncronas em segundo plano. O interpretador do R continuava a leitura do script de forma linear e disparava os comandos de terminal `git commit` e `git push` antes que os arquivos físicos de saída `.html` estivessem totalmente compilados em disco, gerando envios incompletos ou desatualizados ao GitHub.
+* **Solução:** Substituição por chamadas síncronas diretas via terminal de sistema utilizando a flag `wait = TRUE` dentro da função `system()`. Esta decisão congela a execução do ambiente R até que o motor externo do Quarto ou RMarkdown encerre completamente a gravação do relatório em disco.
 
 ### Escopo de Caminhos Aninhados e Resolução Dinâmica
-* **Problema:** O comando padrão `quarto render` acionado na raiz falhava ao tentar localizar arquivos estruturais (como `index.qmd`) armazenados em subpastas ou partições profundas (ex: `relatorio/rel05/`), limitando a usabilidade da função.
-* **Solução:** Implementação de varredura recursiva via `list.files(recursive = TRUE)`. A função passou a mapear e isolar dinamicamente os caminhos absolutos de cada arquivo `.qmd` ou `.Rmd` presente do diretório corrente para baixo, executando o compilador de forma cirúrgica em cada alvo localizado.
+* **Problema:** A execução de instruções do Quarto na raiz de projetos complexos falhava em localizar arquivos de documentação intermediários posicionados em subpastas ou partições profundas (ex: `relatorio/rel05/index.qmd`).
+* **Solução:** Implementação de varredura automatizada e recursiva utilizando a instrução `list.files(recursive = TRUE)`. O motor auxiliar passou a mapear dinamicamente toda a árvore de diretórios a partir do ponto de execução, filtrando os arquivos por extensão (`\\.qmd$` e `\\.[Rr]md$`) e aplicando o compilador de forma cirúrgica em cada alvo absoluto isolado.
 
-### Rejeição de Commits Vazios e Captura de Expressões
-* **Problema:** O terminal do Git abortava operações sequenciais de envio caso a função `git()` fosse chamada sem uma mensagem explícita em formato string.
-* **Solução:** Inclusão da flag de sistema `--allow-empty-message`. Complementarmente, aplicou-se a combinação de `deparse(substitute())` com expressões regulares (`gsub`) na interface principal para permitir que o usuário digite o commit diretamente no console como um símbolo de texto livre (ex: `git(versao_3)`), eliminando o erro humano de omissão de aspas.
+### Rejeição de Commits Vazios e Captura de Símbolos do Console
+* **Problema:** O interpretador do Git rejeitava a execução de pipelines de envio caso o parâmetro de comentário fosse omitido ou enviado sem formatação estrita de strings (aspas).
+* **Solução:** Injeção da flag `--allow-empty-message` diretamente na montagem da string de comando enviada ao terminal. Adicionalmente, implementou-se a captura de expressões via `deparse(substitute())` combinada com expressões regulares (`gsub`), permitindo que o usuário digite o comentário diretamente como um símbolo livre no console (ex: `git(versao_final)`), sem a obrigatoriedade do uso de aspas.
 
-### Modelagem do Desbalanceamento de Corrente: Abordagem Prática
-* **Problema:** As modelagens clássicas de livros didáticos (como a norma NEMA) baseiam o desbalanceamento em desvios complexos em relação à média aritmética. Embora estatisticamente elegantes, as médias tendem a amortecer desvios extremos nas fases e demandam esforço computacional desnecessário para diagnósticos rápidos de manutenção preventiva em campo.
-* **Solução:** Adopção da fórmula de sensibilidade pessimista para o cálculo de desbalanceamento trifásico de campo:
+### Modelagem do Desbalanceamento de Corrente: Abordagem de Campo
+* **Problema:** Formulações acadêmicas clássicas (como a norma NEMA) baseiam o cálculo de desbalanceamento em desvios complexos relacionados à média aritmética. Em cenários reais de manutenção preventiva, as médias atenuam estatisticamente os picos de assimetria e impõem passos matemáticos desnecessários para diagnósticos rápidos na linha de produção.
+* **Solução:** Implementação da fórmula de extremos de corrente, amplamente adotada em procedimentos rigorosos de manutenção industrial para avaliação de desequilíbrio de fases:
 
 $$\text{Desbal} (\%) = \left( \frac{I_{\text{máx}}}{I_{\text{mín}}} - 1 \right) \times 100$$
 
-Esta formulação provou ser matematicamente mais conservadora e segura para proteção patrimonial, pois expõe de forma direta o estresse térmico induzido pela assimetria entre a fase mais sobrecarregada e a fase mais ociosa. A lógica foi blindada para disparar gatilhos de aviso sempre que a assimetria calculada violar o teto normativo de **5%**, limiar crítico para evitar a degradação acelerada do verniz dielétrico dos enrolamentos.
+Esta abordagem apresenta um caráter intencionalmente mais conservador e pessimista, evidenciando o estresse térmico real provocado pelo desalinhamento entre a fase mais carregada e a fase mais ociosa. A lógica foi projetada com um gatilho de segurança para emitir mensagens de aviso automáticas (`warning`) caso o desbalanceamento supere o limite técnico crítico de **5%**, limiar que expõe o isolamento das bobinas a riscos severos de degradação por efeito Joule.
 
 ---
 
 ## Desenvolvimento e Demonstração das Funções
 
-As funções foram implementadas e testadas. Os blocos de código abaixo demonstram o comportamento do pacote em simulações controladas.
+As funções desenvolvidas foram testadas e validadas. Abaixo constam os exemplos práticos de execução e seus respectivos comportamentos.
 
 ### Sincronização e Compilação Dinâmica via `git()`
 
-A função gerencia e automatiza todo o pipeline de build estático e deploy do projeto para o repositório remoto.
+A função mapeia o projeto recursivamente, renderiza os documentos pendentes e realiza a sincronização automática com o repositório remoto. Esta seção é apenas demonstrativa.
 
 ```r
-# Uso simplificado (Gera um commit com espaço em branco permitido pela flag)
+# Chamada simplificada (Gera commit com comentário vazio e força o push)
 git()
 
-# Uso com mensagem de histórico identificada sem a obrigatoriedade de aspas
-git(correcao_filtros_motores)
+# Chamada com passagem de símbolo direto sem aspas no console
+git(implementacao_funcoes_motores)
 ```
 
-### Dimensionamento Energético via `mpot()`
+### Dimensionamento Energético e Eficiência via `mpot()`
 
-A função realiza o processamento da potência elétrica ativa ou mecânica no eixo. Se o parâmetro `rendimento` for omitido, a função assume comportamento puramente elétrico. Caso informado, aplica o fator de eficiência energética e retorna a potência real mecânica disponível na ponta do eixo. Os retornos são calculados simultaneamente para as unidades do Sistema Internacional (kW) e do sistema técnico (CV).
+A função processa as variáveis elétricas da instalação. Na ausência do parâmetro de rendimento, retorna a **Potência Elétrica Ativa** consumida da rede. Caso o rendimento seja fornecido, calcula a **Potência Mecânica Real no Eixo**, expressando os resultados de forma simultânea em kW e CV.
 
-Para motores trifásicos, o modelo aplica o fator angular de correção fasorial para cargas equilibradas:
+Para configurações trifásicas (fases = 3), o cálculo utiliza a equação de equilíbrio fasorial:
 
 $$\text{Potência (kW)} = \frac{\sqrt{3} \times V \times I \times FP \times \eta}{1000}$$
 
-Para cenários monofásicos ou bifásicos, a equação assume:
+Para cenários monofásicos ou bifásicos (fases = 1 ou 2), a equação assume o modelo direto:
 
 $$\text{Potência (kW)} = \frac{V \times I \times FP \times \eta}{1000}$$
 
 ```{r}
-# Cenário A: Verificação da Potência Elétrica Ativa total consumida da rede
-# Entrada: Motor Trifásico (3 fases), 220V, 13.5A, FP = 0.89. Sem rendimento informado.
+# Inicialização obrigatória do pacote para execução do relatório
+library(graf)
+
+# Caso A: Avaliação de Potência Elétrica Ativa (Sem rendimento informado)
+# Entrada: Motor Trifásico, 220V, 13.5A, Fator de Potência 0.89
 mpot(fases = 3, v = 220, i = 13.5, fp = 0.89)
 
-# Cenário B: Verificação da Potência Mecânica Real disponível no eixo
-# Entrada: Mesmos parâmetros elétricos, mas com rendimento nominal de 85% (0.85)
+# Caso B: Avaliação de Potência Mecânica Disponível no Eixo (Com rendimento de 85%)
 mpot(fases = 3, v = 220, i = 13.5, fp = 0.89, rendimento = 0.85)
 ```
 
 ### Análise de Assimetria de Fase via `mdes()`
 
-A função avalia o comportamento fasorial das correntes de alimentação fornecidas ao estator do motor, calculando a severidade do desbalanceamento com base no vetor numérico de leituras coletadas por ferramentas de medição (alicate amperímetro).
+A função interpreta um vetor de correntes lidas nas fases do estator e retorna o desbalanceamento com base na equação de extremos.
 
 ```{r}
-# Cenário A: Análise de motor operando dentro dos limites de segurança normativa
-# Leituras estáveis nas três fases: 14.1 A, 14.8 A e 15.2 A
-correntes_normais <- c(14.1, 14.8, 15.2)
-mdes(correntes_normais)
+# Caso A: Sistema operando sob condições normais e equilibradas de carga
+correntes_estaveis <- c(14.1, 14.8, 15.2)
+mdes(correntes_estaveis)
 
-# Cenário B: Disparo de gatilho térmico de segurança (Warning)
-# Leitura com desequilíbrio crítico de fases: 13.0 A, 14.5 A e 17.2 A
-correntes_criticas <- c(13.0, 14.5, 17.2)
-mdes(correntes_criticas)
+# Caso B: Sistema operando sob desequilíbrio crítico (Gera alerta de segurança)
+correntes_assimetricas <- c(13.0, 14.5, 17.2)
+mdes(correntes_assimetricas)
 ```
 
 ---
 
 ## Conclusão
 
-A consolidação do pacote `graf` eliminou a necessidade de gestão manual de caminhos de arquivos e chamadas de terminal de versionamento, mitigando falhas humanas durante a compilação e publicação de relatórios no Quarto. Sob a ótica da engenharia, o enriquecimento do pacote com as funções analíticas de motores (`mpot` e `mdes`) estabeleceu uma base matemática sólida para o diagnóstico rápido em campo. A aplicação da fórmula de desbalanceamento por extremos de corrente otimizou a sensibilidade do monitoramento, garantindo uma ferramenta de alta confiabilidade mecânico-elétrica, pronta para ser expandida para ambientes mobile offline estruturados no futuro.
+A consolidação do pacote `graf` resolveu os gargalos operacionais de sincronização assíncrona durante o desenvolvimento de relatórios dinâmicos na plataforma Quarto. Sob a perspectiva da engenharia, o encapsulamento das funções matemáticas `mpot` e `mdes` forneceu uma ferramenta computacional robusta para o diagnóstico ágil em plantas industriais. A readequação da fórmula de desbalanceamento para o modelo de razão extrema elevou o nível de proteção preventiva dos ativos elétricos analisados, estabelecendo uma estrutura de código sólida e pronta para futuras integrações de bancos de dados multiplataforma.
