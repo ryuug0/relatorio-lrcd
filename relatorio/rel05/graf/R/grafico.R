@@ -15,7 +15,47 @@ git <- function(comentario) {
     texto <- deparse(substitute(comentario))
     msg <- gsub("[\"']", "", texto)
   }
-  
+
   res <- meu_git(msg)
+  return(res)
+}
+
+#' Cálculo de Potência de Motores Elétricos
+#'
+#' \code{mpot} calcula a potência elétrica ativa ou a potência mecânica no eixo (se o rendimento for informado).
+#' @param fases Número de fases (1, 2 ou 3).
+#' @param v Tensão de alimentação (Volts).
+#' @param i Corrente elétrica (Amperes).
+#' @param fp Fator de potência.
+#' @param rendimento Rendimento do motor (opcional, entre 0 e 1).
+#' @return Lista com o tipo de potência e valores em kW e CV.
+#' @examples
+#' library(graf)
+#' # Potência elétrica ativa (sem rendimento) para motor trifásico
+#' # mpot(3, 380, 14.8, 0.85)
+#'
+#' # Potência mecânica no eixo (com rendimento)
+#' # mpot(3, 380, 14.8, 0.85, 0.90)
+#' @export
+mpot <- function(fases, v, i, fp, rendimento = NULL) {
+  res <- meu_mpot(fases, v, i, fp, rendimento)
+  return(res)
+}
+
+#' Cálculo de Desbalanceamento de Correntes
+#'
+#' \code{mdes} calcula o desbalanceamento percentual baseado na razão entre a maior e a menor corrente lida, alertando se ultrapassar 5%.
+#' @param correntes Vetor numérico com as correntes (ex: c(13.5, 12.1, 14.0)).
+#' @return O desbalanceamento em porcentagem.
+#' @examples
+#' library(graf)
+#' # Sistema trifásico
+#' # mdes(c(14.8, 15.2, 14.1))
+#'
+#' # Sistema bifásico
+#' # mdes(c(13.5, 12.1))
+#' @export
+mdes <- function(correntes) {
+  res <- meu_mdes(correntes)
   return(res)
 }

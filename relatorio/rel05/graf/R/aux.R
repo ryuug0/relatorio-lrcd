@@ -8,7 +8,7 @@ meu_git <- function(msg) {
     message("=> Passo 1: Renderizando todos os arquivos .qmd...")
     for (qmd in arquivos_qmd) {
       message(paste("-> Renderizando:", basename(qmd)))
-      system(paste("quarto render", shQuote(qmd)))
+      system(paste("quarto render", shQuote(qmd)), wait = TRUE)
     }
   }
 
@@ -31,4 +31,41 @@ meu_git <- function(msg) {
 
   system("git push")
   message("=> Feito! Tudo atualizado e no ar.")
+}
+
+meu_mpot <- function(fases, v, i, fp, rendimento) {
+  fator <- ifelse(fases == 3, sqrt(3), 1)
+  p_kw <- (fator * v * i * fp) / 1000
+
+  if (is.null(rendimento)) {
+    tipo <- "Potência Elétrica Ativa"
+  } else {
+    tipo <- "Potência Mecânica no Eixo"
+    p_kw <- p_kw * rendimento
+  }
+
+  p_cv <- p_kw * 1.35962 # 1 kW = 1.35962 CV
+
+  list(
+    Tipo = tipo,
+    kW = round(p_kw, 2),
+    CV = round(p_cv, 2)
+  )
+}
+
+meu_mdes <- function(correntes) {
+  n <- length(correntes)
+
+  if (n == 1) {
+    warning("Motores monofásicos não possuem desbalanceamento de fase.")
+    return(NA)
+  } else if (n >= 2) {
+    desbal <- (((max(correntes) / min(correntes)) - 1) * 100)
+  }
+
+  if (!is.na(desbal) && desbal > 5) {
+    warning("ALERTA: Desbalanceamento acima de 5% (risco de superaquecimento).")
+  }
+
+  return(round(desbal, 2))
 }

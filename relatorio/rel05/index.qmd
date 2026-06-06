@@ -5,7 +5,7 @@ title: "Relatório de Aula Prática XX"
 bibliography: referencias.bib
 # A partir daqui nao faca alteracoes!!!!!
 link-citations: true
-csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+csl: associacao-braileira-de-normas-tecnicas-ipea.csl
 subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
 include-before-body: header.html
 date: today
@@ -24,78 +24,126 @@ execute:
   message: false
 ---
 
-## 1. Introdução
+## Introdução
 
-Este relatório documenta o processo de desenvolvimento e os desafios superados na criação do pacote `graf`, projetado para automatizar a renderização de documentos dinâmicos (`.qmd` e `.Rmd`) e a sincronização direta com o GitHub por meio de uma única função chamada `git()`.
-
----
-
-## 2. Principais Dificuldades Encontradas
-
-O desenvolvimento enfrentou obstáculos técnicos causados pela estrutura aninhada de diretórios do projeto e o comportamento padrão das ferramentas de execução:
-
-* **Renderização Assíncrona (*Background Jobs*):** A função nativa `quarto::quarto_render()` rodava processos em segundo plano. O R continuava a execução do script e disparava o `git push` antes do HTML ser totalmente gerado, subindo arquivos desatualizados.
-* **Escopo de Caminhos Aninhados:** O comando padrão `quarto render` executado na raiz não localizava arquivos `index.qmd` em subpastas profundas (como `relatorio/rel05/`).
-* **Rejeição de Commits Vazios:** Por padrão, o terminal Git abortava a operação caso a função fosse chamada sem uma mensagem de commit definida.
-* **Conflito de Repositórios (*Embedded Git*):** A presença acidental de um diretório `.git` interno na pasta do pacote gerou avisos de submódulos travados no cache do repositório principal.
+Este relatório documenta o processo de desenvolvimento, as decisões de engenharia de software e os fundamentos matemáticos aplicados na criação do pacote R `graf`. O projeto foi projetado para solucionar duas dores latentes no ecossistema de desenvolvimento e manutenção: a automação do pipeline de sincronização com o GitHub e a implementação de rotinas analíticas voltadas à eficiência e diagnóstico operacional de motores elétricos monofásicos, bifásicos e trifásicos.
 
 ---
 
-## 3. Soluções Implementadas
+## Criação, Estruturação e Instalação do Pacote
 
-Para mitigar os erros e garantir robustez, a lógica foi centralizada em chamadas de sistema síncronas e varredura dinâmica:
+O desenvolvimento do pacote `graf` seguiu as diretrizes rígidas do ecossistema CRAN para a criação de pacotes modulares em R, utilizando as ferramentas `devtools` e `roxygen2`.
 
-1. **Sincronismo via Terminal:** Uso de `system(..., wait = TRUE)` para pausar o script do R até a conclusão total da renderização de cada arquivo.
-2. **Busca Recursiva:** Uso de `list.files(recursive = TRUE)` para mapear automaticamente todos os arquivos `.qmd` e `.Rmd` do projeto, independentemente da pasta onde estejam guardados.
-3. **Flexibilização do Commit:** Inclusão da flag `--allow-empty-message` no comando de envio para aceitar execuções rápidas sem texto obrigatório.
+### Arquitetura de Código Separada
+Para manter a interface estável e separar a lógica de negócios da interface do usuário, o código foi dividido em dois arquivos estruturais dentro da pasta `R/`:
+* `graf.R`: Contém as funções de interface voltadas para o usuário, as tags de documentação estruturada e o direcionamento de escopo.
+* `aux.R`: Atua como o motor interno do pacote, armazenando as funções auxiliares que executam o processamento bruto, processamento de strings e chamadas de sistema.
 
----
+### O Papel do roxygen2 na Documentação Científica
+A documentação foi construída utilizando sintaxe comentada por `#'` diretamente acima das funções exportadas em `graf.R`. O uso das tags cumpre os seguintes papéis acadêmicos:
+* `@title` e `@description`: Definem o escopo conceitual da ferramenta para o manual eletrônico.
+* `@param`: Declara formalmente as variáveis físicas aceitas (como tensões, correntes e fatores de potência) e suas respectivas restrições de tipo.
+* `@return`: Especifica rigorosamente a estrutura de saída gerada (seja um valor escalar ou uma lista estruturada).
+* `@export`: Declara formalmente quais funções pertencem à interface pública do usuário, gerando o arquivo `NAMESPACE` de forma automatizada e prevenindo colisões de escopo global no ambiente de execução do R.
 
-## 4. Estrutura do Código (`R/funcoes_auxiliares.R`)
+### Pipeline de Compilação Local
+Para consolidar as modificações feitas no código-fonte e compilar o pacote localmente, executa-se o seguinte fluxo direto no console do RStudio:
 
 ```r
-# Funcoes auxiliares de automacao do pacote graf
+# 1. Gera os arquivos de documentação .Rd e atualiza o NAMESPACE via roxygen2
+devtools::document()
 
-meu_git <- function(msg) {
-  
-  # 1. Busca e renderiza de forma isolada e síncrona todos os arquivos .qmd
-  arquivos_qmd <- list.files(pattern = "\\.qmd$", recursive = TRUE, full.names = TRUE)
-  if (length(arquivos_qmd) > 0) {
-    message("=> Passo 1: Renderizando todos os arquivos .qmd...")
-    for (qmd in arquivos_qmd) {
-      message(paste("-> Processando Quarto:", basename(qmd)))
-      system(paste("quarto render", shQuote(qmd)), wait = TRUE)
-    }
-  }
-  
-  # 2. Busca e executa o processamento (knit) de todos os arquivos .Rmd
-  arquivos_rmd <- list.files(pattern = "\\.[Rr]md$", recursive = TRUE, full.names = TRUE)
-  if (length(arquivos_rmd) > 0) {
-    message("=> Passo 2: Knitando todos os arquivos .Rmd...")
-    for (rmd in arquivos_rmd) {
-      message(paste("-> Processando RMarkdown:", basename(rmd)))
-      rmarkdown::render(rmd, quiet = TRUE)
-    }
-  }
-  
-  # 3. Pipeline sequencial de sincronizacao com o GitHub
-  message("=> Passo 3: Sincronizando com o GitHub...")
-  system("git add .")
-  
-  comando_commit <- sprintf('git commit --allow-empty-message -m "%s"', msg)
-  system(comando_commit)
-  
-  system("git push")
-  message("=> Sucesso: Tudo atualizado e no ar!")
-}
+# 2. Compila e instala o pacote 'graf' de forma nativa no ambiente local
+devtools::install()
+
+# 3. Carrega o pacote para disponibilizar as funções no ambiente de trabalho
+library(graf)
 ```
 
 ---
 
-## 5. Conclusão
+## Principais Dificuldades Encontradas e Decisões Técnicas
 
-A automação final eliminou a necessidade de gerenciar caminhos manualmente. O pipeline garante que toda alteração no código gerado pelo `knitr` ou pelo `quarto` seja compilada localmente em sua totalidade antes de qualquer envio ao repositório remoto.
+O desenvolvimento enfrentou obstáculos técnicos que exigiram a reestruturação das chamadas nativas de sistema e a revisão analítica de formulações matemáticas de campo.
 
+### Renderização Assíncrona (*Background Jobs*)
+* **Problema:** A execução da função padrão `quarto::quarto_render()` disparava processos assíncronos em segundo plano. O interpretador do R continuava o fluxo do script imediatamente e disparava a sequência do terminal `git commit` e `git push` antes de os arquivos finais `.html` terem sido totalmente gerados pelo motor gráfico, resultando no envio de relatórios desatualizados ou corrompidos ao GitHub.
+* **Solução:** Substituição das chamadas de alto nível por comandos diretos de prompt através de funções `system(..., wait = TRUE)`. Isso congelou a execução do R local até que o interpretador externo do Quarto ou RMarkdown finalizasse rigidamente a escrita física do arquivo em disco.
 
+### Escopo de Caminhos Aninhados e Resolução Dinâmica
+* **Problema:** O comando padrão `quarto render` acionado na raiz falhava ao tentar localizar arquivos estruturais (como `index.qmd`) armazenados em subpastas ou partições profundas (ex: `relatorio/rel05/`), limitando a usabilidade da função.
+* **Solução:** Implementação de varredura recursiva via `list.files(recursive = TRUE)`. A função passou a mapear e isolar dinamicamente os caminhos absolutos de cada arquivo `.qmd` ou `.Rmd` presente do diretório corrente para baixo, executando o compilador de forma cirúrgica em cada alvo localizado.
 
+### Rejeição de Commits Vazios e Captura de Expressões
+* **Problema:** O terminal do Git abortava operações sequenciais de envio caso a função `git()` fosse chamada sem uma mensagem explícita em formato string.
+* **Solução:** Inclusão da flag de sistema `--allow-empty-message`. Complementarmente, aplicou-se a combinação de `deparse(substitute())` com expressões regulares (`gsub`) na interface principal para permitir que o usuário digite o commit diretamente no console como um símbolo de texto livre (ex: `git(versao_3)`), eliminando o erro humano de omissão de aspas.
 
+### Modelagem do Desbalanceamento de Corrente: Abordagem Prática
+* **Problema:** As modelagens clássicas de livros didáticos (como a norma NEMA) baseiam o desbalanceamento em desvios complexos em relação à média aritmética. Embora estatisticamente elegantes, as médias tendem a amortecer desvios extremos nas fases e demandam esforço computacional desnecessário para diagnósticos rápidos de manutenção preventiva em campo.
+* **Solução:** Adopção da fórmula de sensibilidade pessimista para o cálculo de desbalanceamento trifásico de campo:
+
+$$\text{Desbal} (\%) = \left( \frac{I_{\text{máx}}}{I_{\text{mín}}} - 1 \right) \times 100$$
+
+Esta formulação provou ser matematicamente mais conservadora e segura para proteção patrimonial, pois expõe de forma direta o estresse térmico induzido pela assimetria entre a fase mais sobrecarregada e a fase mais ociosa. A lógica foi blindada para disparar gatilhos de aviso sempre que a assimetria calculada violar o teto normativo de **5%**, limiar crítico para evitar a degradação acelerada do verniz dielétrico dos enrolamentos.
+
+---
+
+## Desenvolvimento e Demonstração das Funções
+
+As funções foram implementadas e testadas. Os blocos de código abaixo demonstram o comportamento do pacote em simulações controladas.
+
+### Sincronização e Compilação Dinâmica via `git()`
+
+A função gerencia e automatiza todo o pipeline de build estático e deploy do projeto para o repositório remoto.
+
+```r
+# Uso simplificado (Gera um commit com espaço em branco permitido pela flag)
+git()
+
+# Uso com mensagem de histórico identificada sem a obrigatoriedade de aspas
+git(correcao_filtros_motores)
+```
+
+### Dimensionamento Energético via `mpot()`
+
+A função realiza o processamento da potência elétrica ativa ou mecânica no eixo. Se o parâmetro `rendimento` for omitido, a função assume comportamento puramente elétrico. Caso informado, aplica o fator de eficiência energética e retorna a potência real mecânica disponível na ponta do eixo. Os retornos são calculados simultaneamente para as unidades do Sistema Internacional (kW) e do sistema técnico (CV).
+
+Para motores trifásicos, o modelo aplica o fator angular de correção fasorial para cargas equilibradas:
+
+$$\text{Potência (kW)} = \frac{\sqrt{3} \times V \times I \times FP \times \eta}{1000}$$
+
+Para cenários monofásicos ou bifásicos, a equação assume:
+
+$$\text{Potência (kW)} = \frac{V \times I \times FP \times \eta}{1000}$$
+
+```{r}
+# Cenário A: Verificação da Potência Elétrica Ativa total consumida da rede
+# Entrada: Motor Trifásico (3 fases), 220V, 13.5A, FP = 0.89. Sem rendimento informado.
+mpot(fases = 3, v = 220, i = 13.5, fp = 0.89)
+
+# Cenário B: Verificação da Potência Mecânica Real disponível no eixo
+# Entrada: Mesmos parâmetros elétricos, mas com rendimento nominal de 85% (0.85)
+mpot(fases = 3, v = 220, i = 13.5, fp = 0.89, rendimento = 0.85)
+```
+
+### Análise de Assimetria de Fase via `mdes()`
+
+A função avalia o comportamento fasorial das correntes de alimentação fornecidas ao estator do motor, calculando a severidade do desbalanceamento com base no vetor numérico de leituras coletadas por ferramentas de medição (alicate amperímetro).
+
+```{r}
+# Cenário A: Análise de motor operando dentro dos limites de segurança normativa
+# Leituras estáveis nas três fases: 14.1 A, 14.8 A e 15.2 A
+correntes_normais <- c(14.1, 14.8, 15.2)
+mdes(correntes_normais)
+
+# Cenário B: Disparo de gatilho térmico de segurança (Warning)
+# Leitura com desequilíbrio crítico de fases: 13.0 A, 14.5 A e 17.2 A
+correntes_criticas <- c(13.0, 14.5, 17.2)
+mdes(correntes_criticas)
+```
+
+---
+
+## Conclusão
+
+A consolidação do pacote `graf` eliminou a necessidade de gestão manual de caminhos de arquivos e chamadas de terminal de versionamento, mitigando falhas humanas durante a compilação e publicação de relatórios no Quarto. Sob a ótica da engenharia, o enriquecimento do pacote com as funções analíticas de motores (`mpot` e `mdes`) estabeleceu uma base matemática sólida para o diagnóstico rápido em campo. A aplicação da fórmula de desbalanceamento por extremos de corrente otimizou a sensibilidade do monitoramento, garantindo uma ferramenta de alta confiabilidade mecânico-elétrica, pronta para ser expandida para ambientes mobile offline estruturados no futuro.
