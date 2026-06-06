@@ -124,10 +124,10 @@ library(graf)
 
 # Caso A: Avaliação de Potência Elétrica Ativa (Sem rendimento informado)
 # Entrada: Motor Trifásico, 220V, 13.5A, Fator de Potência 0.89
-mpot(fases = 3, v = 220, i = 13.5, fp = 0.89)
+mpot(f = 3, v = 220, i = 13.5, fp = 0.89)
 
 # Caso B: Avaliação de Potência Mecânica Disponível no Eixo (Com rendimento de 85%)
-mpot(fases = 3, v = 220, i = 13.5, fp = 0.89, rendimento = 0.85)
+mpot(f = 3, v = 220, i = 13.5, fp = 0.89, rendimento = 0.85)
 ```
 
 ### Análise de Assimetria de Fase via `mdes()`
