@@ -36,9 +36,9 @@ Neste relatório, utilizei dados públicos puxados direto do IBGE para construir
 
 ## Obtenção dos Dados
 
-Os dados não foram baixados manualmente. Utilizei a API pública do SIDRA/IBGE para importar os indicadores oficiais direto para o ambiente do R. Já a malha geográfica dos estados foi obtida direto do servidor do IBGE, o que é essencial para conseguirmos plotar o mapa temático no final.
+Os dados não foram baixados manualmente. Utilizei a API pública do SIDRA/IBGE para importar os indicadores oficiais direto para o ambiente do R. Já a malha geográfica dos estados foi obtida utilizando o pacote oficial `geobr`, que evita problemas de instabilidade com links FTP na hora de plotar o mapa.
 
-Os pacotes que fizeram o trabalho pesado foram:
+Os pacotes utilizados foram:
 
 ```{r pacotes-e-dados}
 #| code-fold: false
@@ -46,6 +46,7 @@ library(sidrar)
 library(tidyverse)
 library(plotly)
 library(sf)
+library(geobr)
 
 #########################################################
 # Obtendo dados do SIDRA
@@ -56,22 +57,16 @@ pop <- get_sidra(
 )
 
 #########################################################
-# Obtendo malha territorial do IBGE
+# Obtendo malha territorial do IBGE via geobr
 #########################################################
-url_malha <- "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/br_unidades_da_federacao.zip"
-
-# Cria um arquivo temporário e baixa o shapefile
-temp <- tempfile()
-download.file(url_malha, temp)
-unzip(temp, exdir = "malha_ibge")
-estados <- st_read("malha_ibge/BR_UF_2020.shp", quiet = TRUE)
+estados <- read_state(year = 2020, showProgress = FALSE)
 ```
 
 ---
 
 ## Tratamento dos Dados
 
-Dado bruto de API quase nunca vem pronto para o uso. Foi necessário limpar os nomes, converter os códigos dos estados para números (para bater com o código da malha geográfica) e classificar todo mundo por região para facilitar a análise visual. Também criei uma flag para separar rapidamente quem está acima ou abaixo da média nacional.
+Foi necessário limpar os nomes, converter os códigos dos estados para números e classificar todo mundo por região para facilitar a análise visual. Também criei uma flag para separar rapidamente quem está acima ou abaixo da média nacional.
 
 ```{r tratamento}
 #########################################################
@@ -108,7 +103,7 @@ pop <- pop |>
     acima_media = ifelse(populacao > media_brasil, "Sim", "Não")
   )
 
-estados <- estados |> mutate(code_state = as.numeric(CD_UF))
+# O geobr já traz a coluna 'code_state' no formato correto
 mapa <- estados |> left_join(pop, by = "code_state")
 ```
 
@@ -173,9 +168,9 @@ ggplot(
 
 ### Histograma (Escala Logarítmica)
 
-Aqui temos um detalhe técnico importante. Se plotarmos a população em uma escala linear padrão, o gráfico fica com um "buraco" no meio. Isso acontece porque o estado de São Paulo, com mais de 46 milhões de habitantes, puxa o limite do gráfico lá para a frente e espreme quase todos os outros estados no primeiro bloco. 
+Se plotarmos a população em uma escala linear padrão, o gráfico fica com um "buraco" no meio. Isso acontece porque o estado de São Paulo, com mais de 46 milhões de habitantes, puxa o limite do gráfico lá para a frente e espreme os outros estados no primeiro bloco. 
 
-Para resolver essa distorção e enxergar como os estados realmente se agrupam, apliquei uma escala logarítmica (log10) no eixo X. Agora o formato real da distribuição populacional do Brasil aparece com clareza.
+Para resolver essa distorção, apliquei uma escala logarítmica (log10) no eixo X. Agora o formato real da distribuição populacional do Brasil aparece com clareza.
 
 ```{r histograma}
 #| code-fold: false
@@ -199,7 +194,7 @@ ggplot(pop, aes(x = populacao)) +
 
 ### Boxplot
 
-O boxplot evidencia a assimetria dentro de cada região. O Sudeste se estica para cima justamente por causa de São Paulo e Minas Gerais, enquanto o Sul, por exemplo, é muito mais uniforme.
+O boxplot evidencia a assimetria dentro de cada região. O Sudeste se estica para cima justamente por causa de São Paulo e Minas Gerais, enquanto o Sul é muito mais uniforme.
 
 ```{r boxplot}
 ggplot(
@@ -223,7 +218,7 @@ ggplot(
 
 ### Mapa Temático
 
-Nada bate a clareza de jogar isso direto no mapa do Brasil. O mapa temático mostra espacialmente a concentração da população brasileira no litoral e nas regiões mais ao sul/sudeste.
+O mapa temático mostra espacialmente a concentração da população brasileira no litoral e nas regiões mais ao sul/sudeste.
 
 ```{r mapa}
 #| code-fold: false
@@ -243,7 +238,7 @@ ggplot(mapa) +
 
 ### Gráfico Interativo
 
-Transformei o gráfico de barras em interativo usando o `plotly`. Isso é essencial para apresentações, pois permite que o usuário passe o mouse, leia os valores exatos e dê zoom no que interessa.
+Transformei o gráfico de barras em interativo usando o `plotly`. Isso permite passar o mouse, ler os valores exatos e dar zoom no que interessa.
 
 ```{r interativo}
 g <- ggplot(
@@ -272,7 +267,7 @@ ggplotly(g)
 
 ### Base R
 
-O R nativo (Base R) entrega o gráfico rápido e sem muita cerimônia.
+O R nativo entrega o gráfico rápido e direto.
 
 ```{r base_r}
 barplot(
@@ -289,7 +284,7 @@ barplot(
 
 ### ggplot2
 
-O `ggplot2` exige um pouco mais de código e trabalha com o conceito de camadas, mas entrega um resultado final infinitamente mais bem acabado.
+O `ggplot2` exige um pouco mais de código, mas entrega um resultado visualmente muito superior.
 
 ```{r ggplot_comp}
 ggplot(
@@ -313,20 +308,20 @@ ggplot(
 
 ### Qual a diferença na prática?
 
-O Base R é aquela ferramenta rápida para quebrar galho: você está no meio da análise, quer ver o formato do dado na hora, escreve uma linha de código e a tela cospe o gráfico. Ponto.
+O Base R é aquela ferramenta rápida para quebrar galho durante a análise. Escreve uma linha, a tela cospe o gráfico e pronto.
 
-O `ggplot2` é para construir um produto final. Ele permite personalização de paletas de cor, inserção de temas estruturados, ordenação fácil de eixos e cria visualizações com cara de relatório profissional. Se o objetivo é apresentar os dados para alguém, o `ggplot2` ganha de lavada pela estética e pela flexibilidade.
+O `ggplot2` é para construir um produto final. Ele permite personalização e cria visualizações com cara de relatório profissional. Se o objetivo é apresentar os dados, o `ggplot2` ganha pela estética e flexibilidade.
 
 ---
 
 ## Interpretação dos Resultados
 
-Olhando o conjunto das análises, fica nítido que o Brasil tem a sua população altamente ancorada no Sudeste. São Paulo não é apenas o estado mais populoso; ele distorce completamente a média nacional, forçando ajustes matemáticos (como a escala logarítmica que usamos no histograma) para conseguirmos ver o resto do país.
+Olhando o conjunto das análises, fica nítido que o Brasil tem a sua população altamente ancorada no Sudeste. São Paulo não é apenas o estado mais populoso; ele distorce completamente a média nacional, forçando ajustes matemáticos para conseguirmos ver o resto do país.
 
-Por outro lado, os estados da região Norte, que detêm a maior faixa territorial do Brasil, apresentam populações menores e muito mais dispersas. O contraste regional é enorme.
+Por outro lado, os estados da região Norte, que detêm a maior faixa territorial do Brasil, apresentam populações menores e dispersas. O contraste regional é enorme.
 
 ## Conclusão
 
-Ter utilizado o R para tratar esse problema eliminou o trabalho braçal de baixar planilhas do IBGE. O ecossistema puxa os dados pela API, faz o join com a malha geográfica e cospe o mapa pronto, o que é um ganho de produtividade enorme.
+Utilizar o R para tratar esse problema eliminou o trabalho braçal de baixar planilhas. O ecossistema puxa os dados pela API, faz o join espacial e cospe o mapa pronto.
 
-De todas as abordagens, o **mapa temático** e o **histograma logarítmico** foram de longe os recursos mais valiosos desta análise, pois eles conseguiram traduzir a desigualdade demográfica absurda do Brasil de uma maneira que números brutos em uma tabela jamais conseguiriam mostrar.
+De todas as abordagens, o **mapa temático** e o **histograma logarítmico** foram os recursos mais valiosos desta análise, traduzindo a desigualdade demográfica do Brasil de uma maneira que números brutos em uma tabela não conseguiriam mostrar.
