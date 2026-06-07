@@ -58,7 +58,7 @@ pop <- get_sidra(
 #########################################################
 # Obtendo malha territorial do IBGE
 #########################################################
-url_malha <- "[https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/br_unidades_da_federacao.zip](https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/br_unidades_da_federacao.zip)"
+url_malha <- "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/br_unidades_da_federacao.zip"
 
 # Cria um arquivo temporário e baixa o shapefile
 temp <- tempfile()
