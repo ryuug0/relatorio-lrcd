@@ -174,6 +174,8 @@ Exemplo prático de execução identificando um motor com desequilíbrio crític
 ```{r}
 #| code-fold: false
 #| echo: true
+#| warning: true
+
 correntes_lidas <- c(13.0, 14.5, 17.2)
 mdes(correntes_lidas)
 ```
