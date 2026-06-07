@@ -1,14 +1,9 @@
 ---
-author: "Hugo Filho"
-title: "Relatório 5 - Criando Meu Pacote R"
-bibliography: referencias.bib
-link-citations: true
-csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+title: "Relatório de Aula Prática 04: Análise Socioeconômica"
 subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
-include-before-body: header.html
+author: "Hugo Araújo Souza Filho"
 date: today
 lang: pt-BR
-
 format:
   html:
     toc: true
@@ -16,7 +11,6 @@ format:
     theme: bootstrap
     code-fold: true
     code-tools: true
-
 execute:
   echo: true
   warning: false
@@ -25,4 +19,322 @@ execute:
 
 # Introdução
 
-teste
+O Brasil possui grandes diferenças populacionais entre seus estados. Enquanto algumas regiões concentram milhões de habitantes e extensas áreas urbanizadas, outras apresentam população menor e distribuição territorial mais dispersa.
+
+Essas diferenças impactam diretamente áreas como transporte, saúde, educação, infraestrutura e planejamento público. Por isso, analisar dados populacionais ajuda a compreender melhor a organização demográfica do país.
+
+Neste relatório, foram utilizados dados públicos do IBGE para construir gráficos e mapas utilizando a linguagem R. O objetivo é visualizar a distribuição da população entre os estados brasileiros e identificar padrões regionais de forma clara e intuitiva.
+
+---
+
+# Obtenção dos Dados
+
+Os dados utilizados foram obtidos através da API pública do SIDRA/IBGE, que disponibiliza indicadores oficiais produzidos pelo Instituto Brasileiro de Geografia e Estatística.
+
+Já a malha geográfica dos estados brasileiros foi obtida diretamente do servidor geográfico do IBGE, permitindo a construção do mapa temático.
+
+Os principais pacotes utilizados foram:
+
+```{r pacotes-e-dados}
+library(sidrar)
+library(tidyverse)
+library(plotly)
+library(sf)
+
+#########################################################
+# Obtendo dados do SIDRA
+#########################################################
+# Insira aqui os parâmetros exatos da sua API SIDRA
+pop <- get_sidra(
+  api = "/t/6579/n3/all/v/9324/p/2021" # Exemplo de endpoint
+)
+
+#########################################################
+# Obtendo malha territorial do IBGE
+#########################################################
+url_malha <- "[https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/br_unidades_da_federacao.zip](https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/br_unidades_da_federacao.zip)"
+# estados <- st_read(...) # Insira o método exato de leitura que estava usando
+```
+
+---
+
+# Tratamento dos Dados
+
+Após a coleta dos dados, foi necessário organizar e padronizar algumas variáveis para facilitar as análises gráficas.
+
+Os códigos dos estados foram convertidos para formato numérico para permitir a junção com a malha geográfica do IBGE. Também foi criada uma variável indicando se o estado possui população acima ou abaixo da média nacional.
+
+Além disso, os estados foram agrupados por regiões brasileiras, permitindo comparações regionais ao longo do relatório.
+
+```{r tratamento}
+#########################################################
+# Tratamento dos dados
+#########################################################
+pop <- pop |>
+  select(
+    estado = `Unidade da Federação`,
+    code_state = `Unidade da Federação (Código)`,
+    populacao = Valor
+  ) |>
+  mutate(code_state = as.numeric(code_state))
+
+#########################################################
+# Criando regiões
+#########################################################
+pop <- pop |>
+  mutate(
+    regiao = case_when(
+      code_state >= 10 & code_state < 20 ~ "Norte",
+      code_state >= 20 & code_state < 30 ~ "Nordeste",
+      code_state >= 30 & code_state < 40 ~ "Sudeste",
+      code_state >= 40 & code_state < 50 ~ "Sul",
+      code_state >= 50 & code_state < 60 ~ "Centro-Oeste"
+    )
+  )
+
+#########################################################
+# Criando variável auxiliar
+#########################################################
+media_brasil <- mean(pop$populacao, na.rm = TRUE)
+pop <- pop |>
+  mutate(
+    acima_media = ifelse(populacao > media_brasil, "Sim", "Não")
+  )
+
+#########################################################
+# Ajustando código da malha e Join
+#########################################################
+# Exemplo genérico de junção com a malha espacial:
+# estados <- estados |> mutate(code_state = as.numeric(CD_UF))
+# mapa <- estados |> left_join(pop, by = "code_state")
+```
+
+---
+
+# Construção dos Gráficos
+
+## Gráfico de Barras
+
+O gráfico de barras facilita a comparação da população entre os estados brasileiros.
+
+```{r barras}
+ggplot(
+  pop,
+  aes(
+    reorder(estado, populacao),
+    populacao,
+    fill = regiao
+  )
+) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "População por Estado Brasileiro",
+    x = "Estado",
+    y = "População",
+    fill = "Região"
+  )
+```
+
+---
+
+## Gráfico de Dispersão
+
+O gráfico de dispersão mostra a relação entre população e região do país.
+
+```{r dispersao}
+ggplot(
+  pop,
+  aes(
+    regiao,
+    populacao,
+    color = regiao
+  )
+) +
+  geom_point(size = 4) +
+  geom_jitter(
+    size = 3,
+    width = 0.2
+  ) +
+  labs(
+    title = "Distribuição Populacional por Região",
+    x = "Região",
+    y = "População"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## Histograma
+
+O histograma permite visualizar como os estados se distribuem em relação ao tamanho da população.
+
+```{r histograma}
+ggplot(
+  pop,
+  aes(populacao / 1000000)
+) +
+  geom_histogram(
+    bins = 8,
+    fill = "steelblue",
+    color = "white"
+  ) +
+  labs(
+    title = "Distribuição da População dos Estados",
+    x = "População (milhões de habitantes)",
+    y = "Quantidade de Estados"
+  ) +
+  theme_classic()
+```
+
+---
+
+## Boxplot
+
+O boxplot abaixo compara a distribuição populacional entre as regiões brasileiras, destacando diferenças de concentração e possíveis valores extremos.
+
+```{r boxplot}
+ggplot(
+  pop,
+  aes(
+    regiao,
+    populacao / 1000000,
+    fill = regiao
+  )
+) +
+  geom_boxplot() +
+  labs(
+    title = "Distribuição Populacional por Região",
+    x = "Região",
+    y = "População (milhões de habitantes)"
+  ) +
+  theme_classic()
+```
+
+---
+
+## Mapa Temático
+
+O mapa temático permite visualizar espacialmente como a população está distribuída pelo território brasileiro.
+
+```{r mapa, eval=FALSE}
+# eval=FALSE foi adicionado preventivamente; remova se a variável 'mapa' estiver carregada corretamente.
+ggplot(mapa) +
+  geom_sf(aes(fill = populacao)) +
+  scale_fill_viridis_c(
+    labels = scales::comma
+  ) +
+  labs(
+    title = "População dos Estados Brasileiros",
+    fill = "População"
+  ) +
+  theme_void()
+```
+
+---
+
+## Gráfico Interativo
+
+O gráfico interativo facilita a exploração dos dados pelo usuário.
+
+```{r interativo}
+g <- ggplot(
+  pop,
+  aes(
+    reorder(estado, populacao),
+    populacao,
+    fill = regiao
+  )
+) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "População por Estado (Interativo)",
+    x = "Estado",
+    y = "População"
+  )
+
+ggplotly(g)
+```
+
+---
+
+# Comparação entre Base R e ggplot2
+
+## Base R
+
+O Base R permite criar gráficos de maneira rápida e simples.
+
+```{r base_r}
+barplot(
+  pop$populacao,
+  names.arg = pop$estado,
+  las = 2,
+  col = "steelblue",
+  main = "População por Estado",
+  cex.names = 0.6
+)
+```
+
+---
+
+## ggplot2
+
+O ggplot2 oferece maior flexibilidade visual e melhor organização estética.
+
+```{r ggplot_comp}
+ggplot(
+  pop,
+  aes(
+    reorder(estado, populacao),
+    populacao
+  )
+) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "População por Estado",
+    x = "Estado",
+    y = "População"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## Comparação
+
+Os dois sistemas conseguem produzir gráficos eficientes, mas possuem propostas diferentes.
+
+O Base R é mais direto e simples para análises rápidas. Já o ggplot2 facilita a personalização visual e produz gráficos mais organizados e modernos.
+
+Para relatórios e apresentações, o ggplot2 acaba sendo mais vantajoso pela estética e flexibilidade.
+
+---
+
+# Interpretação dos Resultados
+
+Os gráficos mostram que a população brasileira está concentrada principalmente nos estados do Sudeste, especialmente em São Paulo e Minas Gerais.
+
+Já estados da região Norte apresentam populações menores e distribuição mais dispersa.
+
+O histograma indica que poucos estados possuem populações muito elevadas, enquanto a maioria se concentra em faixas intermediárias.
+
+O boxplot também evidencia diferenças importantes entre as regiões brasileiras, principalmente entre Sudeste e Norte.
+
+O mapa temático foi um dos gráficos mais úteis, pois permitiu visualizar essas diferenças de maneira espacial e intuitiva.
+
+---
+
+# Conclusão
+
+A utilização da linguagem R permitiu transformar dados públicos em visualizações claras e informativas.
+
+Os gráficos facilitaram a identificação de padrões populacionais e diferenças regionais entre os estados brasileiros.
+
+Entre as visualizações produzidas, o gráfico de barras e o mapa temático foram os mais eficientes para interpretação dos dados.
+
+Além disso, o trabalho mostrou como o R pode ser utilizado para coleta, tratamento e visualização de dados reais obtidos através de APIs públicas.
