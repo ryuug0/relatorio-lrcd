@@ -222,6 +222,7 @@ O mapa temático mostra espacialmente a concentração da população brasileira
 
 ```{r mapa}
 #| code-fold: false
+
 ggplot(mapa) +
   geom_sf(aes(fill = populacao)) +
   scale_fill_viridis_c(
