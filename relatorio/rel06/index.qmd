@@ -26,24 +26,24 @@ execute:
 
 ## Introdução
 
-Esta prática teve como objetivo o desenvolvimento e a publicação de uma página web pessoal no GitHub, estruturada para funcionar como um portfólio acadêmico. Para isso, utilizou-se o pacote `blogdown` no ambiente R, perfeitamente integrado ao gerador de sites estáticos Hugo.
+A presente prática tem como objetivo o desenvolvimento e a publicação de uma página web pessoal estruturada como portfólio acadêmico e hospedada no GitHub. Para a construção do site, utilizou-se o pacote `blogdown` do ambiente R, que opera de forma integrada ao gerador de sites estáticos Hugo.
 
 ## Seleção do Tema
 
-A primeira etapa consistiu na escolha de um tema no repositório oficial do Hugo (https://themes.gohugo.io/). O critério principal foi encontrar um layout que comportasse o armazenamento organizado de projetos pessoais e materiais públicos de estudo. O tema selecionado foi o [Blowfish](https://themes.gohugo.io/themes/blowfish/), desenvolvido por Nuno Coração, escolhido por seu design limpo, suporte nativo a modo escuro e excelente organização hierárquica.
+A etapa inicial consistiu na escolha de um template no repositório oficial de [Temas do Hugo](https://themes.gohugo.io/). O critério adotado foi a necessidade de uma interface simples e bem organizada para o armazenamento de projetos e materiais de estudo. A escolha foi o tema [Blowfish](https://themes.gohugo.io/themes/blowfish/), desenvolvido por Nuno Coração, devido à sua estrutura minimalista, suporte nativo ao modo escuro e alta personalização.
 
 ## Inicialização do Site
 
-O projeto foi iniciado no RStudio através da criação de um novo *Blogdown Site*. Durante essa configuração, o repositório GitHub do tema Blowfish foi fornecido como parâmetro. A estrutura base de diretórios foi gerada e o site instanciado localmente (em *localhost*) utilizando a função `blogdown::serve_site()`, permitindo a visualização em tempo real das alterações em fase de desenvolvimento.
+A criação do projeto foi realizada no RStudio por meio da opção *Blogdown Site*, na qual o link do repositório GitHub do tema Blowfish foi fornecido como parâmetro. A estrutura base de diretórios foi gerada utilizando a função `blogdown::new_site()`. Em seguida, o servidor local foi inicializado com a função `blogdown::serve_site()`, permitindo o monitoramento das alterações em tempo real ao longo do desenvolvimento.
 
 ## Configuração do Ambiente
 
-Seguindo as boas práticas recomendadas, todo o ambiente foi configurado antes da inserção de conteúdos. Inicialmente, os arquivos de configuração foram padronizados de `.toml` para `.yaml`, garantindo maior integração. Em seguida, os metadados pessoais foram ajustados e a taxonomia do site foi estruturada em duas seções principais: "Estudos" e "Projetos". O objetivo visual foi estabelecer um tema escuro com uma página inicial minimalista, categorizando claramente o escopo de cada material.
+Conforme recomendado, todo o ambiente foi configurado antes da inserção do conteúdo. Os arquivos de configuração foram convertidos de `.toml` para `.yaml` pela familiaridade com este tipo de extensão. Após o ajuste dos dados pessoais, a arquitetura de navegação foi dividida em duas categorias principais: "Estudos" e "Projetos". O padrão visual estabelecido foi um tema escuro com uma página inicial objetiva para uma sensação menos carregada.
 
 ## Estruturação de Conteúdo
 
-Com a infraestrutura pronta, a seção "Projetos" foi alimentada com o conteúdo da página da equipe [E-CAP](ryuug0.github.io/ecap), da qual faço parte. Já na seção "Estudos", foi criada uma categoria dedicada à atual disciplina de Linguagem R em Ciência de Dados, onde os relatórios das aulas práticas foram hospedados. Durante este processo, ocorreu uma falha técnica no versionamento que resultou na perda temporária dos relatórios no repositório original do curso. A necessidade de reconstrução e readequação dos arquivos justifica a submissão tardia do presente relatório.
+Na seção "Projetos", foi integrado o link da página desenvolvida para a equipe [E-CAP](ryuug0.github.io/ecap), que aparece como um conteúdo interno do site. Na seção "Estudos", elaborou-se uma categoria específica para a disciplina de Linguagem R na Ciência de Dados, destinada ao armazenamento dos relatórios práticos. Devido a uma falha pessoal nesta etapa, os relatórios do repositório original da disciplina foram perdidos temporariamente, o que justifica meu atraso na entrega do atual relatório (mesmo com a página pronta há 2 semanas).
 
 ## Implantação e Conclusão
 
-Para finalizar e automatizar o fluxo de trabalho, utilizei a função `git()`, proveniente do meu pacote autoral `graf` (desenvolvido na prática anterior). Essa função foi executada para renderizar o documento, compilar (via *knit*), realizar o *commit* e efetuar o *push* dos arquivos para o repositório remoto de forma eficiente. Após esse envio, ativei o *deployment* no GitHub Pages, consolidando [minha página pessoal](ryuug0.github.io). Com isso, o ambiente encontra-se ativado, totalmente funcional e pronto para hospedar de maneira contínua meus projetos e materiais de estudo.
+Para facilitar o fluxo de trabalho, utilizou-se a função `git()` pertencente ao pacote `graf`, desenvolvido na prática anterior. A execução desta função realizou a renderização do documento, a compilação (*knit*), o registro de alterações (*commit*) e o envio (*push*) para o repositório. Por fim, o recurso de *deployment* foi ativado via GitHub Pages, consolidando a publicação da [minha página pessoal](ryuug0.github.io), que se encontra ativa e pronta para receber novos projetos e materiais acadêmicos.
