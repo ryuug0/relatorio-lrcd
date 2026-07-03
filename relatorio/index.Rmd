@@ -180,4 +180,4 @@ Relatórios desenvolvidos:
 - [Relatório 03 (24/04/2026)](rel03/index.html){target="_blank"}
 - [Relatório 04 (26/05/2026)](rel04/index.html){target="_blank"}
 - [Relatório 05 (31/05/2026)](rel05/index.html){target="_blank"}
-- ...
+- [Relatório 06 (03/07/2026)](rel06/index.html){target="_blank"}
