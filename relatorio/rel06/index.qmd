@@ -46,4 +46,4 @@ Na seção "Projetos", foi integrado o link da página desenvolvida para a equip
 
 ## Implantação e Conclusão
 
-Para facilitar o fluxo de trabalho, utilizou-se a função `git()` pertencente ao pacote `graf`, desenvolvido na prática anterior. A execução desta função realizou a renderização do documento, a compilação (*knit*), o registro de alterações (*commit*) e o envio (*push*) para o repositório. Por fim, o recurso de *deployment* foi ativado via GitHub Pages, consolidando a publicação da [minha página pessoal](ryuug0.github.io), que se encontra ativa e pronta para receber novos projetos e materiais acadêmicos.
+Para facilitar o fluxo de trabalho, utilizou-se a função `git()` pertencente ao pacote `graf`, desenvolvido na prática anterior. A execução desta função realizou a renderização do documento, a compilação (*knit*), o registro de alterações (*commit*) e o envio (*push*) para o repositório. Por fim, o recurso de *deployment* foi ativado via GitHub Pages, consolidando a publicação da [minha página pessoal](https://ryuug0.github.io/), que se encontra ativa e pronta para receber novos projetos e materiais acadêmicos.
