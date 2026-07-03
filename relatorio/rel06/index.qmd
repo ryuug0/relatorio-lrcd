@@ -1,7 +1,7 @@
 ---
 # Só mude aqui!!!!
-author: "Nome do Aluno"
-title: "Relatório de Aula Prática XX"
+author: "Hugo Araújo Souza Filho"
+title: "Relatório de Aula Prática 06"
 bibliography: referencias.bib
 # A partir daqui nao faca alteracoes!!!!!
 link-citations: true
@@ -24,102 +24,26 @@ execute:
   message: false
 ---
 
+## Introdução
 
-## 📌 Introdução
+Esta prática teve como objetivo o desenvolvimento e a publicação de uma página web pessoal no GitHub, estruturada para funcionar como um portfólio acadêmico. Para isso, utilizou-se o pacote `blogdown` no ambiente R, perfeitamente integrado ao gerador de sites estáticos Hugo.
 
-Descreva o contexto da prática e sua importância.
+## Seleção do Tema
 
-> Exemplo: análise da variabilidade em experimentos físicos utilizando uma catapulta.
+A primeira etapa consistiu na escolha de um tema no repositório oficial do Hugo (https://themes.gohugo.io/). O critério principal foi encontrar um layout que comportasse o armazenamento organizado de projetos pessoais e materiais públicos de estudo. O tema selecionado foi o [Blowfish](https://themes.gohugo.io/themes/blowfish/), desenvolvido por Nuno Coração, escolhido por seu design limpo, suporte nativo a modo escuro e excelente organização hierárquica.
 
+## Inicialização do Site
 
+O projeto foi iniciado no RStudio através da criação de um novo *Blogdown Site*. Durante essa configuração, o repositório GitHub do tema Blowfish foi fornecido como parâmetro. A estrutura base de diretórios foi gerada e o site instanciado localmente (em *localhost*) utilizando a função `blogdown::serve_site()`, permitindo a visualização em tempo real das alterações em fase de desenvolvimento.
 
-## 🎯 Objetivos
+## Configuração do Ambiente
 
-### Objetivo geral
+Seguindo as boas práticas recomendadas, todo o ambiente foi configurado antes da inserção de conteúdos. Inicialmente, os arquivos de configuração foram padronizados de `.toml` para `.yaml`, garantindo maior integração. Em seguida, os metadados pessoais foram ajustados e a taxonomia do site foi estruturada em duas seções principais: "Estudos" e "Projetos". O objetivo visual foi estabelecer um tema escuro com uma página inicial minimalista, categorizando claramente o escopo de cada material.
 
-Descrever o objetivo principal da prática.
+## Estruturação de Conteúdo
 
-### Objetivos específicos
+Com a infraestrutura pronta, a seção "Projetos" foi alimentada com o conteúdo da página da equipe [E-CAP](ryuug0.github.io/ecap), da qual faço parte. Já na seção "Estudos", foi criada uma categoria dedicada à atual disciplina de Linguagem R em Ciência de Dados, onde os relatórios das aulas práticas foram hospedados. Durante este processo, ocorreu uma falha técnica no versionamento que resultou na perda temporária dos relatórios no repositório original do curso. A necessidade de reconstrução e readequação dos arquivos justifica a submissão tardia do presente relatório.
 
-- Coletar dados experimentais  
-- Aplicar estatística descritiva  
-- Construir gráficos  
-- Interpretar resultados  
+## Implantação e Conclusão
 
----
-
-## 📚  Fundamentação Teórica
-
-Apresente os conceitos principais:
-
-- Média
-- Variância
-- Desvio padrão
-- Amostragem
-
-$$
-\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
-$$
-
----
-
-## ⚙️ Metodologia
-
-::: {.callout-note}
-Descreva como o experimento foi realizado.
-:::
-
-- Materiais utilizados  
-- Procedimento  
-- Número de repetições  
-
----
-
-## 🔍 Resultados e Discussão
-
-Apresente e interprete os resultados obtidos a partir dos dados coletados.
-
-- Descreva os principais resultados numéricos (média, variabilidade, etc.).
-- Comente o comportamento dos dados observados nos gráficos.
-- Indique se há presença de valores discrepantes (outliers).
-- Avalie se os dados apresentam simetria ou tendência.
-
-Em seguida, discuta os resultados à luz dos conceitos teóricos:
-
-- Os resultados estão de acordo com o esperado?
-- Há grande variabilidade? O que isso significa no contexto do experimento?
-- Quais fatores podem ter influenciado os resultados?
-- Existem possíveis fontes de erro experimental?
-
-Procure não apenas descrever, mas **interpretar os dados**.
-
-### 💬 Exemplo de como citar uma referência bibliográfica
-
-Depois de inserido as informaçõe no arquivo **referencias.bib**, use:
-
-- Segundo @Rbasico2022
-- Tudo é um objeto em R [@Rbasico2022]
-
-### 📊  Análise de Dados
-
-```{r}
-distancia <- c(10.2, 9.8, 10.5, 10.1, 9.9, 10.3)
-distancia
-```
-
-## 🧠 Considerações finais
-
-Apresente uma síntese dos principais pontos observados no experimento.
-
-- Retome o objetivo da prática e indique se ele foi alcançado.
-- Destaque os principais aprendizados obtidos.
-- Comente brevemente sobre a qualidade dos dados coletados.
-- Sugira possíveis melhorias no procedimento experimental.
-
-Evite repetir apenas os resultados; foque nas **conclusões e reflexões** sobre a prática realizada.
-
-## Aprenda Quarto
-
-Acesse [Quarto](https://quarto.org/).
-
-## 📖 Referências
+Para finalizar e automatizar o fluxo de trabalho, utilizei a função `git()`, proveniente do meu pacote autoral `graf` (desenvolvido na prática anterior). Essa função foi executada para renderizar o documento, compilar (via *knit*), realizar o *commit* e efetuar o *push* dos arquivos para o repositório remoto de forma eficiente. Após esse envio, ativei o *deployment* no GitHub Pages, consolidando [minha página pessoal](ryuug0.github.io). Com isso, o ambiente encontra-se ativado, totalmente funcional e pronto para hospedar de maneira contínua meus projetos e materiais de estudo.
